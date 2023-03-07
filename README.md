@@ -1,25 +1,27 @@
-Must use 2 server side APIs
-Must use CSS framework other than Bootstrap (try Tailwind, or Bulma)
-Must use client-side storage for persistent data 
-Must have polished mobil first UI
-Must meet good quality coding standards (indentation, scoping, naming, etc.)
-Does NOT use alerts, confirms, or prompts (look into modals)
-Must be deployed to GetHub Pgaes
-Must be interactive 
+# Pokedex Web Application
+OSU Bootcamp - Group 8 Project 1
 
-elevator pitch: one minute description of our applacation
-concept: what is your user story? What was your motivation for development
-Process: What were the technologies used? how were the roles broken down and assinged? what challenges did you encounter? what were your successes?
-Demo: show off
-directions for future development
-links to the deployed applacation and the gethub repository
+## User Story
 
-aim for no authentacation or api key, HTTPS yes, CORS unknown or no. 
+```
+As a User
+I WANT to be able to search for information on any Pokemon from any generation.
+SO THAT I can be fully informed about my Pokemon encounters
+As a User
+I WANT to use the information I’ve gathered to save my favorite Pokemon
+SO THAT I can build the best team for Pokemon battles
+```
 
-today task
-project tital and description - home page with array of pokemon, on click takes to pokedex with pokemons info and evolutions, can track pokemon on a team builder that retains up to six favoreted pokemon, on seventh you are prompted to remove one. 
-repository
-user story
-wireframe or sketch of design
-APIs identified 
-Tasks created and assigned 
+## Acceptance Criteria
+
+```
+GIVEN I am searching for information on Pokemon
+WHEN I search for a Pokemon by name
+THEN I’m redirected to information on the Pokemon’s type, moveset, etc.
+WHEN I want to save a Pokemon as a favorite
+THEN it is saved so that I can view it later
+WHEN I want to add a Pokemon to my team
+THEN I can select a Pokemon from my favorites and save it in my team-builder
+WHEN I want to rearrange my team
+THEN I can move around my Pokemon in the order that I want use to them in a Pokemon battle
+```
