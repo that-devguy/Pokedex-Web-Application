@@ -6,12 +6,30 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="https://code.jquery.com/ui/1.11.4/themes/smoothness/jquery-ui.css">
     <link rel="stylesheet" href="./assets/css/reset.css">
+    <script src="https://cdn.tailwindcss.com"></script>
     <link rel="stylesheet" href="./assets/css/style.css">
     <title>Pokedex</title>
 </head>
-<body>
+<body class="bg-slate-200">
+    <nav class="p-4 bg-white shadow flex justify-between">
+        <div class="mx-4">
+            <span class="text-2xl cursor-pointer flex align-center">
+                <img id="website-logo" class="h-8 inline mr-2" src="./assets/img/pokeball-logo.png" alt="website-logo">
+                Pokedex Portal
+            </span>
+        </div>
+        <ul class="flex items-center">
+            <li class="mx-4">
+                <a href="#" class="text-x1">Pokedex</a>
+            </li>
+            <li class="mx-4">
+                <a href="#" class="text-x1">Team Builder</a>
+            </li>
+        </ul>
+    </nav>
     <main>
-        <div class = "searchbox ui-widget" aria-autocomplete="off">
+
+        <!-- <div class = "searchbox ui-widget" aria-autocomplete="off">
             <input id = "pokemonName" onfocus = "this.value=''"  placeholder = "Pokemon Name" type = "text">
             <button id = "search">Search</button>
         </div>
@@ -32,7 +50,7 @@
                     <li id = "speed">Speed: </li>
                 </ul>
             </div>
-        </div>
+        </div> -->
     </main>
     <script src="https://code.jquery.com/jquery-3.6.0.js"></script>
     <script src="https://code.jquery.com/ui/1.13.2/jquery-ui.js"></script>
