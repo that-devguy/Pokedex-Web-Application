@@ -1087,7 +1087,7 @@ function searchPokemon(){
   }
 }
 
-$("#pokemonName").autocomplete({  
+$("#pokemonName").autocomplete({
   source: function(request, response) {
     let matches = $.map(allPokemon, function(sort) {
       if ( sort.toUpperCase().indexOf(request.term.toUpperCase()) === 0 ) {
