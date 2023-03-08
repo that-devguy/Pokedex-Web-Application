@@ -1051,7 +1051,7 @@ function getPokemon(){
     specialAttackStat.innerText = "Special Attack: "+data.stats[3].base_stat
     specialDefenceStat.innerText = "Special Defence: "+data.stats[4].base_stat
     speedStat.innerText = "Speed: "+data.stats[5].base_stat
-    // descriptionP.innerText = getFlavorText(data.id)
+    descriptionP.innerText = getFlavorText(data.id)
 
   })
   .catch(function(err){
@@ -1060,16 +1060,28 @@ function getPokemon(){
 }
 getPokemon()
 
-// function getFlavorText(dexNum){
-//   fetch(('https://pokeapi.co/api/v2/pokemon-species/'+dexNum))
-//   .then(function(response){
-//     return response.json()
-//   })
-//   .then(function(data){
-//     console.log(data.flavor_text_entries)
-//     return (data.flavor_text_entries) // need a way to guarantee an english dex entry 
-//   })
-// }
+function getFlavorText(dexNum){
+  fetch(('https://pokeapi.co/api/v2/pokemon-species/'+dexNum))
+  .then(function(response){
+    return response.json()
+  })
+  .then(function(data){
+    console.log(data.flavor_text_entries)
+    const filter = 'language';
+    const filteredResult = data.flavor_text_entries.filter((item) => {
+    return (item.language.name === 'en');
+    });
+    console.log(filteredResult);
+    function getRandomFlavorText(max) {
+      let flavorText = Math.floor(Math.random() * filteredResult.length);
+      console.log(flavorText)
+      console.log(filteredResult[flavorText])
+      return flavorText
+    }
+    getRandomFlavorText()
+  })
+}
+getFlavorText()
 
 function searchPokemon(){
   let check = capitalize(searchBox.value)
