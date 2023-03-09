@@ -1,0 +1,134 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <script src="https://kit.fontawesome.com/ced0ff2264.js" crossorigin="anonymous"></script>
+    <link
+      rel="stylesheet"
+      href="https://code.jquery.com/ui/1.11.4/themes/smoothness/jquery-ui.css"
+    />
+    <link rel="stylesheet" href="./assets/css/reset.css" />
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link
+      href="https://cdnjs.cloudflare.com/ajax/libs/flowbite/1.6.3/flowbite.min.css"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" href="./assets/css/style.css" />
+    <!-- <link rel="stylesheet" href="./assets/css/breakpoints.css"> -->
+    <title>Pokemon Name - Pokedex Portal</title>
+  </head>
+  <body class="bg-gray-100">
+
+    <!-- nav bar -->
+    <nav class="bg-white px-2 sm:px-4 py-2.5">
+      <div
+        class="container flex flex-wrap items-center justify-between mx-auto"
+      >
+        <a href="./home-page.html" class="flex items-center">
+          <img
+            src="./assets/img/pokeball-logo.png"
+            class="h-9 mr-1 md:mr-3"
+            alt="Pokemon Portal Logo"
+          />
+          <span class="self-center text-xl whitespace-nowrap"
+            >Pokedex Portal</span
+          >
+        </a>
+        <a href="./home-page.html" class="flex items-center">
+          <p class="self-center text-lg whitespace-nowrap hover:text-red-700 mr-4"
+            ><i class="fa-solid fa-house"></i></p>
+        </a>
+      </div>
+    </nav>
+
+    <!-- Main page container -->
+    <main>
+        
+        <!-- Pokemon official art container -->
+        <div class="flex w-10/12 mx-auto justify-center">
+            <img src="./assets/img/pikachu-placeholder.png" alt="">
+        </div>
+
+        <!-- Pokemon name, number, type container -->
+        <div class="flex w-9/12 mx-auto justify-between items-end mb-5">
+            <div class="flex flex-col">
+                <p class="pokedex-num text-xs mt-1 text-gray-500">#0025</p>
+                <h1 class="pokemon-name text-2xl leading-tight">Pikachu</h1>
+            </div>
+            <div class="pokemon-types flex-col text-right">
+                <p class="text-xs font-medium bg-yellow-400 rounded px-1 mb-1.5">Electric</p>
+            </div>
+        </div>
+
+        <!-- About container -->
+        <div class="flex flex-col w-11/12 mx-auto bg-white rounded-lg mb-4">
+            <div class="type-bar h-1 w-full bg-yellow-400 mb-3"></div>
+            <div class="pokemon-about px-5">
+                <p class="text-lg text-gray-500">About</p>
+                <hr class="w-1/2 mb-2">
+                <p class="text-sm mb-2">When it is angered, it immediately discharges the energy stored in the pouches in its cheeks.</p>
+                
+                <div class="flex-col grid grid-cols-2 mb-2">
+                    <!-- Height -->
+                    <div class="mb-2">
+                        <p class="text-md text-gray-500">Height</p>
+                        <p class="text-sm">1'04"</p>
+                    </div>
+                    <!-- Category -->
+                    <div class="mb-2">
+                        <p class="text-md text-gray-500">Category</p>
+                        <p class="text-sm">Mouse</p>
+                    </div>
+                    <!-- Weight -->
+                    <div class="mb-2">
+                        <p class="text-md text-gray-500">Weight</p>
+                        <p class="text-sm">13.2 lbs</p>
+                    </div>
+                    <!-- Abilities -->
+                    <div class="mb-2">
+                        <p class="text-md text-gray-500">Abilities</p>
+                        <p class="text-sm">Static</p>
+                    </div>
+                    <!-- Gender -->
+                    <div class="mb-2">
+                        <p class="text-md text-gray-500">Gender</p>
+                        <p class="text-sm">
+                            <i class="fa-solid fa-mars"></i>
+                            <i class="fa-solid fa-venus"></i>
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Stats container -->
+        <div class="flex flex-col w-11/12 mx-auto bg-white rounded-lg">
+            <div class="type-bar h-1 w-full bg-yellow-400 mb-3"></div>
+                <div class="pokemon-stats px-5">
+                    <p class="text-lg text-gray-500">Stats</p>
+                    <hr class="w-1/2 mb-2">
+                    <!-- Stats -->
+                    <div class="flex-col mb-2">
+                        <p class="text-sm">HP</p>
+                    </div>
+                    <div class="flex-col mb-2">
+                        <p class="text-sm">Atk.</p>
+                    </div>
+                    <div class="flex-col mb-2">
+                        <p class="text-sm">Def.</p>
+                    </div>
+                    <div class="flex-col mb-2">
+                        <p class="text-sm">Sp. Atk.</p>
+                    </div>
+                    <div class="flex-col mb-2">
+                        <p class="text-sm">Sp. Def.</p>
+                    </div>
+                    <div class="flex-col mb-2">
+                        <p class="text-sm">Speed</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
