@@ -20,22 +20,6 @@
     <title>Pokedex</title>
   </head>
   <body class="bg-gray-100">
-    <!-- <nav class="p-4 bg-white shadow flex justify-between">
-        <div class="mx-4">
-            <span class="text-2xl cursor-pointer flex align-center">
-                <img id="website-logo" class="h-8 inline mr-2" src="./assets/img/pokeball-logo.png" alt="website-logo">
-                Pokedex Portal
-            </span>
-        </div>
-        <ul class="flex items-center">
-            <li class="mx-4">
-                <a href="#" class="text-x1">Pokedex</a>
-            </li>
-            <li class="mx-4">
-                <a href="#" class="text-x1">Team Builder</a>
-            </li>
-        </ul>
-    </nav> -->
 
     <!-- nav bar -->
     <nav class="bg-white px-2 sm:px-4 py-2.5">
@@ -156,14 +140,14 @@
         <!-- Type dropdown menu -->
         <div
           id="dropdownDefaultCheckbox"
-          class="z-10 hidden w-48 bg-white divide-y divide-gray-100 rounded-lg shadow origin-top-left"
+          class="z-10 hidden w-48 bg-white rounded-lg shadow"
         >
           <ul
-            class="p-3 grid grid-cols-2 text-sm text-gray-700 transform"
+            class="p-3 grid grid-cols-2 space-y-2 text-sm text-gray-700"
             aria-labelledby="dropdownCheckboxButton"
           >
             <li>
-              <div class="flex items-center">
+              <div class="flex items-center mt-2">
                 <input
                   id="checkbox-normal"
                   type="checkbox"
@@ -172,7 +156,7 @@
                 />
                 <label
                   for="checkbox-normal"
-                  class="ml-2 text-sm font-medium text-gray-900"
+                  class="inline-block w-full mx-2 text-center text-2xs font-medium px-1 text-gray-900 bg-stone-200 rounded"
                   >Normal</label
                 >
               </div>
@@ -188,7 +172,7 @@
                 />
                 <label
                   for="checkbox-fighting"
-                  class="ml-2 text-sm font-medium text-gray-900"
+                  class="inline-block w-full mx-2 text-center ml-2 text-2xs font-medium px-1 text-white bg-red-600 rounded"
                   >Fighting</label
                 >
               </div>
@@ -203,7 +187,7 @@
                 />
                 <label
                   for="checkbox-flying"
-                  class="ml-2 text-sm font-medium text-gray-900"
+                  class="inline-block w-full mx-2 text-center ml-2 text-2xs font-medium px-1 bg-indigo-400 text-white rounded"
                   >Flying</label
                 >
               </div>
@@ -218,7 +202,7 @@
                 />
                 <label
                   for="checkbox-poison"
-                  class="ml-2 text-sm font-medium text-gray-900"
+                  class="inline-block w-full mx-2 text-center ml-2 text-2xs font-medium px-1 bg-purple-400 text-white rounded"
                   >Poison</label
                 >
               </div>
@@ -233,7 +217,7 @@
                 />
                 <label
                   for="checkbox-ground"
-                  class="ml-2 text-sm font-medium text-gray-900"
+                  class="inline-block w-full mx-2 text-center ml-2 text-2xs font-medium px-1 bg-amber-400 text-gray-900 rounded"
                   >Ground</label
                 >
               </div>
@@ -248,7 +232,7 @@
                 />
                 <label
                   for="checkbox-rock"
-                  class="ml-2 text-sm font-medium text-gray-900"
+                  class="inline-block w-full mx-2 text-center ml-2 text-2xs font-medium px-1 bg-yellow-600 text-white rounded"
                   >Rock</label
                 >
               </div>
@@ -263,7 +247,7 @@
                 />
                 <label
                   for="checkbox-bug"
-                  class="ml-2 text-sm font-medium text-gray-900"
+                  class="inline-block w-full mx-2 text-center ml-2 text-2xs font-medium px-1 bg-lime-400 text-gray-900 rounded"
                   >Bug</label
                 >
               </div>
@@ -278,7 +262,7 @@
                 />
                 <label
                   for="checkbox-ghost"
-                  class="ml-2 text-sm font-medium text-gray-900"
+                  class="inline-block w-full mx-2 text-center ml-2 text-2xs font-medium px-1 bg-purple-700 text-white rounded"
                   >Ghost</label
                 >
               </div>
@@ -293,7 +277,7 @@
                 />
                 <label
                   for="checkbox-steel"
-                  class="ml-2 text-sm font-medium text-gray-900"
+                  class="inline-block w-full mx-2 text-center ml-2 text-2xs font-medium px-1 bg-zinc-500 text-white rounded"
                   >Steel</label
                 >
               </div>
@@ -308,7 +292,7 @@
                 />
                 <label
                   for="checkbox-fire"
-                  class="ml-2 text-sm font-medium text-gray-900"
+                  class="inline-block w-full mx-2 text-center ml-2 text-2xs font-medium px-1 bg-orange-500 text-white rounded"
                   >Fire</label
                 >
               </div>
@@ -323,7 +307,7 @@
                 />
                 <label
                   for="checkbox-water"
-                  class="ml-2 text-sm font-medium text-gray-900"
+                  class="inline-block w-full mx-2 text-center ml-2 text-2xs font-medium px-1 bg-blue-500 text-white rounded"
                   >Water</label
                 >
               </div>
@@ -338,7 +322,7 @@
                 />
                 <label
                   for="checkbox-grass"
-                  class="ml-2 text-sm font-medium text-gray-900"
+                  class="inline-block w-full mx-2 text-center ml-2 text-2xs font-medium px-1 bg-green-400 text-gray-900 rounded"
                   >Grass</label
                 >
               </div>
@@ -353,7 +337,7 @@
                 />
                 <label
                   for="checkbox-electric"
-                  class="ml-2 text-sm font-medium text-gray-900"
+                  class="inline-block w-full mx-2 text-center ml-2 text-2xs font-medium px-1 bg-yellow-400 text-gray-900 rounded"
                   >Electric</label
                 >
               </div>
@@ -368,7 +352,7 @@
                 />
                 <label
                   for="checkbox-pyschic"
-                  class="ml-2 text-sm font-medium text-gray-900"
+                  class="inline-block w-full mx-2 text-center ml-2 text-2xs font-medium px-1 bg-pink-400 text-white rounded"
                   >Pyschic</label
                 >
               </div>
@@ -383,7 +367,7 @@
                 />
                 <label
                   for="checkbox-ice"
-                  class="ml-2 text-sm font-medium text-gray-900"
+                  class="inline-block w-full mx-2 text-center ml-2 text-2xs font-medium px-1 bg-cyan-200 text-gray-900 rounded"
                   >Ice</label
                 >
               </div>
@@ -398,7 +382,7 @@
                 />
                 <label
                   for="checkbox-dragon"
-                  class="ml-2 text-sm font-medium text-gray-900"
+                  class="inline-block w-full mx-2 text-center ml-2 text-2xs font-medium px-1 bg-indigo-600 text-white rounded"
                   >Dragon</label
                 >
               </div>
@@ -413,7 +397,7 @@
                 />
                 <label
                   for="checkbox-dark"
-                  class="ml-2 text-sm font-medium text-gray-900"
+                  class="w-full h-5 mx-2 text-center ml-2 text-2xs font-medium px-1 bg-slate-700 text-white rounded"
                   >Dark</label
                 >
               </div>
@@ -428,7 +412,7 @@
                 />
                 <label
                   for="checkbox-fairy"
-                  class="ml-2 text-sm font-medium text-gray-900"
+                  class="inline-block w-full mx-2 text-center ml-2 text-2xs font-medium px-1 bg-pink-200 text-gray-900 rounded"
                   >Fairy</label
                 >
               </div>
@@ -466,7 +450,7 @@
           class="z-10 hidden w-48 bg-white divide-y divide-gray-100 rounded-lg shadow"
         >
           <ul
-            class="p-3 text-sm text-gray-700"
+            class="p-3 text-sm text-gray-700 space-y-2"
             aria-labelledby="dropdownCheckboxButton"
           >
             <li>
