@@ -1080,6 +1080,7 @@ function getFlavorText(dexNum){
       let flavorTextCard  = document.createElement('div')
       flavorTextCard.innerHTML = `
         <p>${filteredResult[flavorText].flavor_text}<p>
+        <p>Pokedex Entry Generation: Pokemon ${filteredResult[flavorText].version.name.charAt(0).toUpperCase() + filteredResult[flavorText].version.name.slice(1)}<p>
         `
       flavorTextStat.appendChild(flavorTextCard)
       return flavorText
