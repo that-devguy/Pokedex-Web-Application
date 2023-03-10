@@ -1015,7 +1015,6 @@ const gen9 = ["Sprigatito",
   "Terapagos"*/]
 // https://www.dragonflycave.com/resources/pokemon-list-generator 
 let allPokemon = gen1.concat(gen2, gen3, gen4, gen5, gen6, gen7, gen8, gen9)
-
 const searchBtn = document.getElementById("search")
 const searchBox = document.getElementById("pokemonName") // names with spaces need a '-' between them
 const pokemonBox = document.getElementById("pokemonBox")
@@ -1024,7 +1023,6 @@ let viewPokemon;
 let startNum = 1
 let endNum = 12
 // console.log(randomPokemon)
-
 function fetchPokemon(){
   const promises = []
   for (let i = startNum; i <= endNum; i++){
@@ -1048,7 +1046,6 @@ function fetchPokemon(){
   })
 }
 fetchPokemon()
-
 function displayPokemon(pokemon){
   console.log(pokemon)
   for(let i = 0; i < pokemon.length; i++){
@@ -1069,10 +1066,29 @@ function displayPokemon(pokemon){
             </ul>
           </div>
         </div>`
+
+        /* <button onclick="location.href='pokemon-page.html'" class= "pokemon-button bg-gray-100 rounded-lg p-3 aspect-w-1 aspect-h-1">
+            <div class="flex justify-end">
+              <i class="fa-regular fa-star text-gray-300 hover:text-yellow-400"></i>
+            </div>
+            <div class="pokemon-gif mb-3 h-30">
+                <img src="./assets/img/pikachu-placeholder-gif.gif" alt="" class="mx-auto">
+            </div>
+            <div class="flex justify-between items-end h-30">
+                <div class="flex-col text-left">
+                    <p class="pokedex-num text-xs mt-1 text-gray-500">#0025</p>
+                    <h4 class="pokedex-num text-md">Pikachu</h4>
+                </div>
+                <div class="flex-col text-right">
+                    <p class="text-2xs bg-yellow-400 rounded px-1 mb-1">Electric</p>
+                    <p class="text-2xs bg-green-400 rounded px-1 mb-1 text-center text-gray-900">Grass</p>
+                </div>
+            </div>
+        </button> */
+
       pokemonBox.append(pokemonCard)
   }
 }
-
 function searchPokemon(){
   pokemonBox.innerHTML = ""
   let check = capitalize(searchBox.value)
@@ -1089,7 +1105,6 @@ function searchPokemon(){
     pictureBox.src = './assets/img/MissingNo.webp'
   }
 }
-
 $("#pokemonName").autocomplete({
   source: function(request, response) {
     let matches = $.map(allPokemon, function(sort) {
@@ -1100,7 +1115,6 @@ $("#pokemonName").autocomplete({
     response(matches)
   }
 })
-
 function capitalize(string) {
   let lower = string.toLowerCase()
   return string.charAt(0).toUpperCase() + lower.slice(1)

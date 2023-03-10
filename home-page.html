@@ -66,7 +66,7 @@
                     <svg aria-hidden="true" class="w-5 h-5 text-gray-500" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path></svg>
                 </div>
                 <input type="search" id="default-search" class="block w-full p-4 pl-10 text-sm text-gray-900 border-gray-300 rounded-lg bg-gray-50 focus:border-gray-300 focus:ring-0" placeholder="Search Pokemon" required>
-                <button type="submit" class="text-white absolute right-2.5 bottom-2.5 bg-red-700 focus:ring-1
+                <button type="submit" id="search" class="text-white absolute right-2.5 bottom-2.5 bg-red-700 focus:ring-1
                 focus:ring-gray-300 focus:outline-none font-medium rounded-lg text-sm px-4 py-2">Search</button>
             </div>
         </form>
@@ -558,148 +558,10 @@
       </div>
 
       <!-- Pokedex grid container -->
-      <div class="w-11/12 p-4 bg-white rounded-lg mx-auto gap-3 grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 lg:max-w-5xl">
-        <button onclick="location.href='pokemon-page.html'" class= "pokemon-button bg-gray-100 rounded-lg p-3 aspect-w-1 aspect-h-1">
-            <div class="flex justify-end">
-              <i class="fa-regular fa-star text-gray-300 hover:text-yellow-400"></i>
-            </div>
-            <div class="pokemon-gif mb-3 h-30">
-                <img src="./assets/img/pikachu-placeholder-gif.gif" alt="" class="mx-auto">
-            </div>
-            <div class="flex justify-between items-end h-30">
-                <div class="flex-col text-left">
-                    <p class="pokedex-num text-xs mt-1 text-gray-500">#0025</p>
-                    <h4 class="pokedex-num text-md">Pikachu</h4>
-                </div>
-                <div class="flex-col text-right">
-                    <p class="text-2xs bg-yellow-400 rounded px-1 mb-1">Electric</p>
-                </div>
-            </div>
-        </button>
-        <button class= "pokemon-button bg-gray-100 rounded-lg p-3 aspect-w-1 aspect-h-1">
-          <div class="flex justify-end">
-            <i class="fa-regular fa-star text-gray-300 hover:text-yellow-400"></i>
-          </div>
-            <div class="pokemon-gif mb-3 h-30">
-                <img src="./assets/img/ivysaur-placeholder-gif.gif" alt="" class="mx-auto">
-            </div>
-            <div class="flex justify-between items-end h-30">
-                <div class="flex-col text-left">
-                    <p class="pokedex-num text-xs mt-1 text-gray-500">#0002</p>
-                    <h4 class="pokedex-num text-md">Ivysaur</h4>
-                </div>
-                <div class="flex-col text-right">
-                    <p class="text-2xs bg-green-400 rounded px-1 mb-1 text-center text-gray-900">Grass</p>
-                    <p class="text-2xs bg-purple-400 rounded px-1 mb-1 text-white">Poison</p>
-                </div>
-            </div>
-        </button>
-         <button class= "pokemon-button bg-gray-100 rounded-lg p-3 aspect-w-1 aspect-h-1">
-            <div class="flex justify-end">
-              <i class="fa-regular fa-star text-gray-300 hover:text-yellow-400"></i>
-            </div>
-            <div class="pokemon-gif mb-3 h-30">
-                <img src="./assets/img/pikachu-placeholder-gif.gif" alt="" class="mx-auto">
-            </div>
-            <div class="flex justify-between items-end h-30">
-                <div class="flex-col text-left">
-                    <p class="pokedex-num text-xs mt-1 text-gray-500">#0025</p>
-                    <h4 class="pokedex-num text-md">Pikachu</h4>
-                </div>
-                <div class="flex-col text-right">
-                    <p class="text-2xs bg-yellow-400 rounded px-1 mb-1">Electric</p>
-                </div>
-            </div>
-        </button>
-        <button class= "pokemon-button bg-gray-100 rounded-lg p-3 aspect-w-1 aspect-h-1">
-          <div class="flex justify-end">
-            <i class="fa-regular fa-star text-gray-300 hover:text-yellow-400"></i>
-          </div>
-            <div class="pokemon-gif mb-3 h-30">
-                <img src="./assets/img/ivysaur-placeholder-gif.gif" alt="" class="mx-auto">
-            </div>
-            <div class="flex justify-between items-end h-30">
-                <div class="flex-col text-left">
-                    <p class="pokedex-num text-xs mt-1 text-gray-500">#0002</p>
-                    <h4 class="pokedex-num text-md">Ivysaur</h4>
-                </div>
-                <div class="flex-col text-right">
-                    <p class="text-2xs bg-green-400 rounded px-1 mb-1 text-center text-gray-900">Grass</p>
-                    <p class="text-2xs bg-purple-400 rounded px-1 mb-1 text-white">Poison</p>
-                </div>
-            </div>
-        </button>
-         <button class= "pokemon-button bg-gray-100 rounded-lg p-3 aspect-w-1 aspect-h-1">
-            <div class="flex justify-end">
-              <i class="fa-regular fa-star text-gray-300 hover:text-yellow-400"></i>
-            </div>
-            <div class="pokemon-gif mb-3 h-30">
-                <img src="./assets/img/pikachu-placeholder-gif.gif" alt="" class="mx-auto">
-            </div>
-            <div class="flex justify-between items-end h-30">
-                <div class="flex-col text-left">
-                    <p class="pokedex-num text-xs mt-1 text-gray-500">#0025</p>
-                    <h4 class="pokedex-num text-md">Pikachu</h4>
-                </div>
-                <div class="flex-col text-right">
-                    <p class="text-2xs bg-yellow-400 rounded px-1 mb-1">Electric</p>
-                </div>
-            </div>
-        </button>
-        <button class= "pokemon-button bg-gray-100 rounded-lg p-3 aspect-w-1 aspect-h-1">
-          <div class="flex justify-end">
-            <i class="fa-regular fa-star text-gray-300 hover:text-yellow-400"></i>
-          </div>
-            <div class="pokemon-gif mb-3 h-30">
-                <img src="./assets/img/ivysaur-placeholder-gif.gif" alt="" class="mx-auto">
-            </div>
-            <div class="flex justify-between items-end h-30">
-                <div class="flex-col text-left">
-                    <p class="pokedex-num text-xs mt-1 text-gray-500">#0002</p>
-                    <h4 class="pokedex-num text-md">Ivysaur</h4>
-                </div>
-                <div class="flex-col text-right">
-                    <p class="text-2xs bg-green-400 rounded px-1 mb-1 text-center text-gray-900">Grass</p>
-                    <p class="text-2xs bg-purple-400 rounded px-1 mb-1 text-white">Poison</p>
-                </div>
-            </div>
-        </button>
-         <button class= "pokemon-button bg-gray-100 rounded-lg p-3 aspect-w-1 aspect-h-1">
-            <div class="flex justify-end">
-              <i class="fa-regular fa-star text-gray-300 hover:text-yellow-400"></i>
-            </div>
-            <div class="pokemon-gif mb-3 h-30">
-                <img src="./assets/img/pikachu-placeholder-gif.gif" alt="" class="mx-auto">
-            </div>
-            <div class="flex justify-between items-end h-30">
-                <div class="flex-col text-left">
-                    <p class="pokedex-num text-xs mt-1 text-gray-500">#0025</p>
-                    <h4 class="pokedex-num text-md">Pikachu</h4>
-                </div>
-                <div class="flex-col text-right">
-                    <p class="text-2xs bg-yellow-400 rounded px-1 mb-1">Electric</p>
-                </div>
-            </div>
-        </button>
-        <button class= "pokemon-button bg-gray-100 rounded-lg p-3 aspect-w-1 aspect-h-1">
-          <div class="flex justify-end">
-            <i class="fa-regular fa-star text-gray-300 hover:text-yellow-400"></i>
-          </div>
-            <div class="pokemon-gif mb-3 h-30">
-                <img src="./assets/img/ivysaur-placeholder-gif.gif" alt="" class="mx-auto">
-            </div>
-            <div class="flex justify-between items-end h-30">
-                <div class="flex-col text-left">
-                    <p class="pokedex-num text-xs mt-1 text-gray-500">#0002</p>
-                    <h4 class="pokedex-num text-md">Ivysaur</h4>
-                </div>
-                <div class="flex-col text-right">
-                    <p class="text-2xs bg-green-400 rounded px-1 mb-1 text-center text-gray-900">Grass</p>
-                    <p class="text-2xs bg-purple-400 rounded px-1 mb-1 text-white">Poison</p>
-                </div>
-            </div>
-        </button>
+      <div id="pokemonBox" class="w-11/12 p-4 bg-white rounded-lg mx-auto gap-3 grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 lg:max-w-5xl">
+        
       </div>
+      
       <div class="flex justify-center">
         <button type="button" class="load-more-btn text-white bg-red-700 focus:ring-0 active:ring-1 active:ring-gray-300 font-medium rounded-lg text-sm px-5 py-2.5 my-3 w-fit">Load more<i class="fa-solid fa-spinner ml-2"></i></button>
       </div>
@@ -731,6 +593,6 @@
     <script src="https://code.jquery.com/jquery-3.6.0.js"></script>
     <script src="https://code.jquery.com/ui/1.13.2/jquery-ui.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/flowbite/1.6.3/flowbite.min.js"></script>
-    <script src="./assets/script.js"></script>
+    <script src="./assets/js/home-page.js"></script>
   </body>
 </html>
