@@ -1021,7 +1021,7 @@ const pokemonBox = document.getElementById("pokemonBox")
 searchBtn.addEventListener("click", searchPokemon)
 let viewPokemon;
 let startNum = 1
-let endNum = 12
+let endNum = 15
 // console.log(randomPokemon)
 function fetchPokemon(){
   const promises = []
@@ -1054,7 +1054,7 @@ function displayPokemon(pokemon){
         <div class="/*needs tailwind classes*/">
           <div class="card-body">
             <h5 class="card-title">${pokemon[i].name}</h5>
-            <h6>Dex No: ${pokemon[i].id}</h6>
+            <h6 id="dexNo">Dex No: ${pokemon[i].id}</h6>
             <img id = "pictureBox" src = "${pokemon[i].image}">
             <ul id = "baseStats">
               <li id = "HP">HP: ${pokemon[i].HP}</li>
@@ -1067,28 +1067,18 @@ function displayPokemon(pokemon){
           </div>
         </div>`
 
-        /* <button onclick="location.href='pokemon-page.html'" class= "pokemon-button bg-gray-100 rounded-lg p-3 aspect-w-1 aspect-h-1">
-            <div class="flex justify-end">
-              <i class="fa-regular fa-star text-gray-300 hover:text-yellow-400"></i>
-            </div>
-            <div class="pokemon-gif mb-3 h-30">
-                <img src="./assets/img/pikachu-placeholder-gif.gif" alt="" class="mx-auto">
-            </div>
-            <div class="flex justify-between items-end h-30">
-                <div class="flex-col text-left">
-                    <p class="pokedex-num text-xs mt-1 text-gray-500">#0025</p>
-                    <h4 class="pokedex-num text-md">Pikachu</h4>
-                </div>
-                <div class="flex-col text-right">
-                    <p class="text-2xs bg-yellow-400 rounded px-1 mb-1">Electric</p>
-                    <p class="text-2xs bg-green-400 rounded px-1 mb-1 text-center text-gray-900">Grass</p>
-                </div>
-            </div>
-        </button> */
 
+        
       pokemonBox.append(pokemonCard)
+      
+      let pokemonLink = document.createElement("a");
+          pokemonLink.setAttribute("href", "pokemon-page.html");
+          pokemonLink.appendChild(pokemonCard) 
+          pokemonBox.appendChild(pokemonLink);
   }
+
 }
+
 function searchPokemon(){
   pokemonBox.innerHTML = ""
   let check = capitalize(searchBox.value)
@@ -1105,6 +1095,10 @@ function searchPokemon(){
     pictureBox.src = './assets/img/MissingNo.webp'
   }
 }
+
+
+
+
 $("#pokemonName").autocomplete({
   source: function(request, response) {
     let matches = $.map(allPokemon, function(sort) {
@@ -1119,3 +1113,9 @@ function capitalize(string) {
   let lower = string.toLowerCase()
   return string.charAt(0).toUpperCase() + lower.slice(1)
 }
+
+
+
+
+
+
