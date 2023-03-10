@@ -1027,6 +1027,7 @@ const defenceStat = document.getElementById("defence")
 const specialAttackStat = document.getElementById("specialAttack")
 const specialDefenceStat = document.getElementById("specialDefence")
 const speedStat = document.getElementById("speed")
+const flavorTextStat = document.getElementById('flavor-text')
 searchBtn.addEventListener("click", searchPokemon)
 let randomPokemon = allPokemon[Math.floor(Math.random() * allPokemon.length)]
 let viewPokemon = randomPokemon.toLocaleLowerCase() // api will not fetch a pokemon with a capital letter
@@ -1076,6 +1077,11 @@ function getFlavorText(dexNum){
       let flavorText = Math.floor(Math.random() * filteredResult.length);
       console.log(flavorText)
       console.log(filteredResult[flavorText])
+      let flavorTextCard  = document.createElement('div')
+      flavorTextCard.innerHTML = `
+        <p>${filteredResult[flavorText].flavor_text}<p>
+        `
+      flavorTextStat.appendChild(flavorTextCard)
       return flavorText
     }
     getRandomFlavorText()
