@@ -1033,8 +1033,9 @@ function fetchPokemon(){
   Promise.all(promises).then((results) => {
       const pokemon = results.map((result) => ({
           name: result.name,
-          image: result.sprites.other["official-artwork"].front_default,
-          type: result.types.map((type) => type.type.name).join(', '),
+          image: result.sprites.front_default,
+          image2: result.sprites.other["official-artwork"].front_default,
+          type: result.types.map((type) => type.type.name),
           id: result.id,
           HP: result.stats[0].base_stat,
           attack: result.stats[1].base_stat,
@@ -1054,42 +1055,63 @@ function displayPokemon(pokemon){
     if(pokemon[i].name.includes(" ")){
       pokemon[i].name.replace(/\s+/g, '-')
     }
+    let type1 = pokemon[i].type[0];
+    let type2 = pokemon[i].type[1] ? pokemon[i].type[1] : null;
     let pokemonCard = document.createElement("div")
         pokemonCard.innerHTML = `
-        <div class="/*needs tailwind classes*/">
-          <div class="card-body">
-            <h5 class="card-title">${capitalize(pokemon[i].name)}</h5>
-            <h6>Dex No: ${pokemon[i].id}</h6>
-            <img id = "pictureBox" src = "${pokemon[i].image}">
-            <ul id = "baseStats">
-              <li id = "HP">HP: ${pokemon[i].HP}</li>
-              <li id = "attack">Attack: ${pokemon[i].attack}</li>
-              <li id = "defence">Defence: ${pokemon[i].defence}</li>
-              <li id = "specialAttack">Special Attack: ${pokemon[i].spAttack}</li>
-              <li id = "specialDefence">Special Defence: ${pokemon[i].spDefence}</li>
-              <li id = "speed">Speed: ${pokemon[i].speed}</li>
-            </ul>
-          </div>
-        </div>`
-
-        /* <button onclick="location.href='pokemon-page.html'" class= "pokemon-button bg-gray-100 rounded-lg p-3 aspect-w-1 aspect-h-1">
+        <button onclick="location.href='pokemon-page.html'" class= "pokemon-button bg-gray-100 rounded-lg p-3 w-full">
             <div class="flex justify-end">
               <i class="fa-regular fa-star text-gray-300 hover:text-yellow-400"></i>
             </div>
             <div class="pokemon-gif mb-3 h-30">
-                <img src="./assets/img/pikachu-placeholder-gif.gif" alt="" class="mx-auto">
+                <img src="${pokemon[i].image}" alt="" class="mx-auto">
             </div>
             <div class="flex justify-between items-end h-30">
                 <div class="flex-col text-left">
-                    <p class="pokedex-num text-xs mt-1 text-gray-500">#0025</p>
-                    <h4 class="pokedex-num text-md">Pikachu</h4>
+                    <p class="pokedex-num text-xs mt-1 text-gray-500">#${pokemon[i].id.toString().padStart(4, '0')}</p>
+                    <h4 class="pokedex-name text-xs sm:text-sm">${capitalize(pokemon[i].name)}</h4>
                 </div>
-                <div class="flex-col text-right">
-                    <p class="text-2xs bg-yellow-400 rounded px-1 mb-1">Electric</p>
-                    <p class="text-2xs bg-green-400 rounded px-1 mb-1 text-center text-gray-900">Grass</p>
+                <div class="flex-col text-right w-12">
+                    <p class="pokemon-type2 text-2xs bg-yellow-400 rounded px-1 mb-1 text-center">${type2}</p>
+                    <p class="pokemon-type1 text-2xs bg-green-400 rounded px-1 sm:mb-1 text-center">${type1}</p>
                 </div>
             </div>
-        </button> */
+        </button>`
+
+        let type1El = pokemonCard.querySelector('.pokemon-type1');
+        let type2El = pokemonCard.querySelector('.pokemon-type2');
+        
+        // Hides the second type element if the pokemon only has one type
+        if (type2El.textContent === "null") {
+          type2El.classList.add("hidden");
+        }
+
+        // Applies the type styles
+
+        // Capitalizes the first letter of the type names
+        type1El.innerText = type1.charAt(0).toUpperCase() + type1.slice(1);
+        type2El.innerText = type2 ? type2.charAt(0).toUpperCase() + type2.slice(1) : "";
+
+        
+        
+        // `
+        // <div class="/*needs tailwind classes*/">
+        //   <div class="card-body">
+        //     <h5 class="card-title">${pokemon[i].name}</h5>
+        //     <h6>Dex No: ${pokemon[i].id}</h6>
+        //     <img id = "pictureBox" src = "${pokemon[i].image}">
+        //     <ul id = "baseStats">
+        //       <li id = "HP">HP: ${pokemon[i].HP}</li>
+        //       <li id = "attack">Attack: ${pokemon[i].attack}</li>
+        //       <li id = "defence">Defence: ${pokemon[i].defence}</li>
+        //       <li id = "specialAttack">Special Attack: ${pokemon[i].spAttack}</li>
+        //       <li id = "specialDefence">Special Defence: ${pokemon[i].spDefence}</li>
+        //       <li id = "speed">Speed: ${pokemon[i].speed}</li>
+        //     </ul>
+        //   </div>
+        // </div>`
+
+      
 
       pokemonBox.append(pokemonCard)
   }
