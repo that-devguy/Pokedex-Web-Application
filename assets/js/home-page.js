@@ -1002,7 +1002,7 @@ const gen9 = ["Sprigatito",
   "Chien-Pao",
   "Ting-Lu",
   "Chi-Yu",
-  "Roaring-Moon",
+  "Roaring Moon",
   "Iron-Valiant",
   "Koraidon",
   "Miraidon"/*,
@@ -1013,6 +1013,7 @@ const gen9 = ["Sprigatito",
   "Fezandipiti",
   "Ogerpon",
   "Terapagos"*/]
+
 // https://www.dragonflycave.com/resources/pokemon-list-generator 
 let allPokemon = gen1.concat(gen2, gen3, gen4, gen5, gen6, gen7, gen8, gen9)
 const searchBtn = document.getElementById("search")
@@ -1023,7 +1024,7 @@ let viewPokemon;
 let totalNum = 1008
 let startNum = 1
 let endNum = 15
-// console.log(randomPokemon)
+
 function fetchPokemon(){
   const promises = []
   for (let i = startNum; i <= endNum; i++){
@@ -1034,7 +1035,8 @@ function fetchPokemon(){
       const pokemon = results.map((result) => ({
           name: result.name,
           image: result.sprites.front_default,
-          type: result.types.map((type) => type.type.name).join(', '),
+          image2: result.sprites.other["official-artwork"].front_default,
+          type: result.types.map((type) => type.type.name),
           id: result.id,
           HP: result.stats[0].base_stat,
           attack: result.stats[1].base_stat,
@@ -1047,49 +1049,109 @@ function fetchPokemon(){
   })
 }
 fetchPokemon()
+
 function displayPokemon(pokemon){
-  console.log(pokemon)
+  // console.log(pokemon)
   for(let i = 0; i < pokemon.length; i++){
+    if(pokemon[i].name.includes(" ")){
+      pokemon[i].name.replace(/\s+/g, '-')
+    }
+    let type1 = pokemon[i].type[0];
+    let type2 = pokemon[i].type[1] ? pokemon[i].type[1] : null;
     let pokemonCard = document.createElement("div")
         pokemonCard.innerHTML = `
         <button onclick="location.href='pokemon-page.html'" class= "pokemon-button bg-gray-100 rounded-lg p-3 w-full">
-        <div class="flex justify-end">
-          <i class="fa-regular fa-star text-gray-300 hover:text-yellow-400"></i>
-        </div>
-        <div class="pokemon-gif mb-3 h-30">
-            <img src="${pokemon[i].image}" alt="" class="mx-auto">
-        </div>
-        <div class="flex justify-between items-end h-30">
-            <div class="flex-col text-left">
-                <p class="pokedex-num text-xs mt-1 text-gray-500">#${pokemon[i].id}</p>
-                <h4 class="pokedex-num text-md">${pokemon[i].name}</h4>
+            <div class="flex justify-end">
+              <i class="fa-regular fa-star text-gray-300 hover:text-yellow-400"></i>
             </div>
-            <div class="flex-col text-right">
-                <p class="text-2xs bg-yellow-400 rounded px-1 mb-1">Electric</p>
-                <p class="text-2xs bg-green-400 rounded px-1 mb-1 text-center text-gray-900">Grass</p>
+            <div class="pokemon-gif mb-3 h-30">
+                <img src="${pokemon[i].image}" alt="" class="mx-auto">
             </div>
-        </div>
-    </button>`
+            <div class="flex justify-between items-end h-30">
+                <div class="flex-col text-left">
+                    <p class="pokedex-num text-xs mt-1 text-gray-500">#${pokemon[i].id.toString().padStart(4, '0')}</p>
+                    <h4 class="pokedex-name text-xs sm:text-sm">${capitalize(pokemon[i].name)}</h4>
+                </div>
+                <div class="flex-col text-right w-12">
+                    <p class="pokemon-type2 text-2xs bg-yellow-400 rounded px-1 mb-1 text-center">${type2}</p>
+                    <p class="pokemon-type1 text-2xs bg-green-400 rounded px-1 sm:mb-1 text-center">${type1}</p>
+                </div>
+            </div>
+        </button>`
+
+        let type1El = pokemonCard.querySelector('.pokemon-type1');
+        let type2El = pokemonCard.querySelector('.pokemon-type2');
+        
+        // Hides the second type element if the pokemon only has one type
+        if (type2El.textContent === "null") {
+          type2El.classList.add("hidden");
+        }
+
+        // Applies the type styles
+
+        // Capitalizes the first letter of the type names
+        type1El.innerText = type1.charAt(0).toUpperCase() + type1.slice(1);
+        type2El.innerText = type2 ? type2.charAt(0).toUpperCase() + type2.slice(1) : "";
+
+        
+        
+        // `
+        // <div class="/*needs tailwind classes*/">
+        //   <div class="card-body">
+        //     <h5 class="card-title">${pokemon[i].name}</h5>
+        //     <h6>Dex No: ${pokemon[i].id}</h6>
+        //     <img id = "pictureBox" src = "${pokemon[i].image}">
+        //     <ul id = "baseStats">
+        //       <li id = "HP">HP: ${pokemon[i].HP}</li>
+        //       <li id = "attack">Attack: ${pokemon[i].attack}</li>
+        //       <li id = "defence">Defence: ${pokemon[i].defence}</li>
+        //       <li id = "specialAttack">Special Attack: ${pokemon[i].spAttack}</li>
+        //       <li id = "specialDefence">Special Defence: ${pokemon[i].spDefence}</li>
+        //       <li id = "speed">Speed: ${pokemon[i].speed}</li>
+        //     </ul>
+        //   </div>
+        // </div>`
+
+      
 
       pokemonBox.append(pokemonCard)
   }
 }
+
 function searchPokemon(){
-  pokemonBox.innerHTML = ""
-  let check = capitalize(searchBox.value)
-  if (allPokemon.includes(check)){
+  event.preventDefault()
+  let promises = []
+  // let check = capitalize(searchBox.value)
+  // if(check.includes(" ")){
+  //   check.replace(/\s+/g, '-');
+  // }
+  // if (allPokemon.includes(check))
+  {
+    pokemonBox.innerHTML = ""
     console.log("Pokemon Found")
-    viewPokemon = check.toLocaleLowerCase()
+    viewPokemon = searchBox.value.toLocaleLowerCase()
+    viewPokemon.replace(/\s+/g, '-')
     url = `https://pokeapi.co/api/v2/pokemon/${viewPokemon}`
     console.log(url)
-    displayPokemon(url)
-  }
-  else{
-    console.log("Pokemon Not Found")
-    let name = "MissingNo"
-    pictureBox.src = './assets/img/MissingNo.webp'
+    promises.push(fetch(url).then((res) => res.json()))
+    Promise.all(promises).then((results) => {
+      const pokemon = results.map((result) => ({
+          name: result.name,
+          image: result.sprites.other["official-artwork"].front_default,
+          type: result.types.map((type) => type.type.name).join(', '),
+          id: result.id,
+          HP: result.stats[0].base_stat,
+          attack: result.stats[1].base_stat,
+          defence: result.stats[2].base_stat,
+          spAttack: result.stats[3].base_stat,
+          spDefence: result.stats[4].base_stat,
+          speed: result.stats[5].base_stat
+      }))
+      displayPokemon(pokemon)
+    }) 
   }
 }
+
 $("#pokemonName").autocomplete({
   source: function(request, response) {
     let matches = $.map(allPokemon, function(sort) {
@@ -1100,6 +1162,7 @@ $("#pokemonName").autocomplete({
     response(matches)
   }
 })
+
 function capitalize(string) {
   let lower = string.toLowerCase()
   return string.charAt(0).toUpperCase() + lower.slice(1)
