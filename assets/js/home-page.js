@@ -1033,6 +1033,7 @@ function fetchPokemon(){
       const pokemon = results.map((result) => ({
           name: result.name,
           image: result.sprites.front_default,
+          image2: result.sprites.other["official-artwork"].front_default,
           type: result.types.map((type) => type.type.name),
           id: result.id,
           HP: result.stats[0].base_stat,
@@ -1063,11 +1064,11 @@ function displayPokemon(pokemon){
             <div class="flex justify-between items-end h-30">
                 <div class="flex-col text-left">
                     <p class="pokedex-num text-xs mt-1 text-gray-500">#${pokemon[i].id.toString().padStart(4, '0')}</p>
-                    <h4 class="pokedex-name text-xs sm:text-sm">${pokemon[i].name.charAt(0).toUpperCase() + pokemon[i].name.slice(1)}</h4>
+                    <h4 class="pokedex-name text-xs sm:text-sm">${capitalize(pokemon[i].name)}</h4>
                 </div>
                 <div class="flex-col text-right w-12">
                     <p class="pokemon-type2 text-2xs bg-yellow-400 rounded px-1 mb-1 text-center">${type2}</p>
-                    <p class="pokemon-type1 text-2xs bg-green-400 rounded px-1 sm:mb-1 text-center text-gray-900">${type1}</p>
+                    <p class="pokemon-type1 text-2xs bg-green-400 rounded px-1 sm:mb-1 text-center">${type1}</p>
                 </div>
             </div>
         </button>`
@@ -1079,6 +1080,8 @@ function displayPokemon(pokemon){
         if (type2El.textContent === "null") {
           type2El.classList.add("hidden");
         }
+
+        // Applies the type styles
 
         // Capitalizes the first letter of the type names
         type1El.innerText = type1.charAt(0).toUpperCase() + type1.slice(1);
