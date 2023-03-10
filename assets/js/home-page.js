@@ -1020,8 +1020,9 @@ const searchBox = document.getElementById("pokemonName") // names with spaces ne
 const pokemonBox = document.getElementById("pokemonBox")
 searchBtn.addEventListener("click", searchPokemon)
 let viewPokemon;
+let totalNum = 1008
 let startNum = 1
-let endNum = 12
+let endNum = 15
 // console.log(randomPokemon)
 function fetchPokemon(){
   const promises = []
@@ -1032,7 +1033,7 @@ function fetchPokemon(){
   Promise.all(promises).then((results) => {
       const pokemon = results.map((result) => ({
           name: result.name,
-          image: result.sprites.other["official-artwork"].front_default,
+          image: result.sprites.front_default,
           type: result.types.map((type) => type.type.name).join(', '),
           id: result.id,
           HP: result.stats[0].base_stat,
@@ -1051,40 +1052,24 @@ function displayPokemon(pokemon){
   for(let i = 0; i < pokemon.length; i++){
     let pokemonCard = document.createElement("div")
         pokemonCard.innerHTML = `
-        <div class="/*needs tailwind classes*/">
-          <div class="card-body">
-            <h5 class="card-title">${pokemon[i].name}</h5>
-            <h6>Dex No: ${pokemon[i].id}</h6>
-            <img id = "pictureBox" src = "${pokemon[i].image}">
-            <ul id = "baseStats">
-              <li id = "HP">HP: ${pokemon[i].HP}</li>
-              <li id = "attack">Attack: ${pokemon[i].attack}</li>
-              <li id = "defence">Defence: ${pokemon[i].defence}</li>
-              <li id = "specialAttack">Special Attack: ${pokemon[i].spAttack}</li>
-              <li id = "specialDefence">Special Defence: ${pokemon[i].spDefence}</li>
-              <li id = "speed">Speed: ${pokemon[i].speed}</li>
-            </ul>
-          </div>
-        </div>`
-
-        /* <button onclick="location.href='pokemon-page.html'" class= "pokemon-button bg-gray-100 rounded-lg p-3 aspect-w-1 aspect-h-1">
-            <div class="flex justify-end">
-              <i class="fa-regular fa-star text-gray-300 hover:text-yellow-400"></i>
+        <button onclick="location.href='pokemon-page.html'" class= "pokemon-button bg-gray-100 rounded-lg p-3 w-full">
+        <div class="flex justify-end">
+          <i class="fa-regular fa-star text-gray-300 hover:text-yellow-400"></i>
+        </div>
+        <div class="pokemon-gif mb-3 h-30">
+            <img src="${pokemon[i].image}" alt="" class="mx-auto">
+        </div>
+        <div class="flex justify-between items-end h-30">
+            <div class="flex-col text-left">
+                <p class="pokedex-num text-xs mt-1 text-gray-500">#${pokemon[i].id}</p>
+                <h4 class="pokedex-num text-md">${pokemon[i].name}</h4>
             </div>
-            <div class="pokemon-gif mb-3 h-30">
-                <img src="./assets/img/pikachu-placeholder-gif.gif" alt="" class="mx-auto">
+            <div class="flex-col text-right">
+                <p class="text-2xs bg-yellow-400 rounded px-1 mb-1">Electric</p>
+                <p class="text-2xs bg-green-400 rounded px-1 mb-1 text-center text-gray-900">Grass</p>
             </div>
-            <div class="flex justify-between items-end h-30">
-                <div class="flex-col text-left">
-                    <p class="pokedex-num text-xs mt-1 text-gray-500">#0025</p>
-                    <h4 class="pokedex-num text-md">Pikachu</h4>
-                </div>
-                <div class="flex-col text-right">
-                    <p class="text-2xs bg-yellow-400 rounded px-1 mb-1">Electric</p>
-                    <p class="text-2xs bg-green-400 rounded px-1 mb-1 text-center text-gray-900">Grass</p>
-                </div>
-            </div>
-        </button> */
+        </div>
+    </button>`
 
       pokemonBox.append(pokemonCard)
   }
@@ -1118,4 +1103,33 @@ $("#pokemonName").autocomplete({
 function capitalize(string) {
   let lower = string.toLowerCase()
   return string.charAt(0).toUpperCase() + lower.slice(1)
+}
+
+// load more button by 15 or remaining number of pokemon
+const loadMoreBtn = document.getElementById("load-more")
+loadMoreBtn.addEventListener("click", loadMore)
+function loadMore(){
+  const remaining = totalNum - endNum
+  startNum += 15
+  endNum += remaining > 15 ? 15 : remaining
+  fetchPokemon()
+}
+
+// when the user scrolls down 30px from the top of the document, show the button on screen. 
+let topbutton = document.getElementById("topBtn");
+
+window.onscroll = function() {scrollFunction()};
+
+function scrollFunction() {
+  if (document.body.scrollTop > 30 || document.documentElement.scrollTop > 30) {
+    topbutton.style.display = "block";
+  } else {
+    topbutton.style.display = "none";
+  }
+}
+
+// When the user clicks on the button, scroll to the top of the document
+function topFunction() {
+  document.body.scrollTop = 0;
+  document.documentElement.scrollTop = 0;
 }
