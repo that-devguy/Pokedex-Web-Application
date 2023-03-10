@@ -1002,7 +1002,7 @@ const gen9 = ["Sprigatito",
   "Chien-Pao",
   "Ting-Lu",
   "Chi-Yu",
-  "Roaring-Moon",
+  "Roaring Moon",
   "Iron-Valiant",
   "Koraidon",
   "Miraidon"/*,
@@ -1013,6 +1013,7 @@ const gen9 = ["Sprigatito",
   "Fezandipiti",
   "Ogerpon",
   "Terapagos"*/]
+
 // https://www.dragonflycave.com/resources/pokemon-list-generator 
 let allPokemon = gen1.concat(gen2, gen3, gen4, gen5, gen6, gen7, gen8, gen9)
 const searchBtn = document.getElementById("search")
@@ -1022,7 +1023,7 @@ searchBtn.addEventListener("click", searchPokemon)
 let viewPokemon;
 let startNum = 1
 let endNum = 15
-// console.log(randomPokemon)
+
 function fetchPokemon(){
   const promises = []
   for (let i = startNum; i <= endNum; i++){
@@ -1047,9 +1048,13 @@ function fetchPokemon(){
   })
 }
 fetchPokemon()
+
 function displayPokemon(pokemon){
-  console.log(pokemon)
+  // console.log(pokemon)
   for(let i = 0; i < pokemon.length; i++){
+    if(pokemon[i].name.includes(" ")){
+      pokemon[i].name.replace(/\s+/g, '-')
+    }
     let type1 = pokemon[i].type[0];
     let type2 = pokemon[i].type[1] ? pokemon[i].type[1] : null;
     let pokemonCard = document.createElement("div")
@@ -1111,22 +1116,41 @@ function displayPokemon(pokemon){
       pokemonBox.append(pokemonCard)
   }
 }
+
 function searchPokemon(){
-  pokemonBox.innerHTML = ""
-  let check = capitalize(searchBox.value)
-  if (allPokemon.includes(check)){
+  event.preventDefault()
+  let promises = []
+  // let check = capitalize(searchBox.value)
+  // if(check.includes(" ")){
+  //   check.replace(/\s+/g, '-');
+  // }
+  // if (allPokemon.includes(check))
+  {
+    pokemonBox.innerHTML = ""
     console.log("Pokemon Found")
-    viewPokemon = check.toLocaleLowerCase()
+    viewPokemon = searchBox.value.toLocaleLowerCase()
+    viewPokemon.replace(/\s+/g, '-')
     url = `https://pokeapi.co/api/v2/pokemon/${viewPokemon}`
     console.log(url)
-    displayPokemon(url)
-  }
-  else{
-    console.log("Pokemon Not Found")
-    let name = "MissingNo"
-    pictureBox.src = './assets/img/MissingNo.webp'
+    promises.push(fetch(url).then((res) => res.json()))
+    Promise.all(promises).then((results) => {
+      const pokemon = results.map((result) => ({
+          name: result.name,
+          image: result.sprites.other["official-artwork"].front_default,
+          type: result.types.map((type) => type.type.name).join(', '),
+          id: result.id,
+          HP: result.stats[0].base_stat,
+          attack: result.stats[1].base_stat,
+          defence: result.stats[2].base_stat,
+          spAttack: result.stats[3].base_stat,
+          spDefence: result.stats[4].base_stat,
+          speed: result.stats[5].base_stat
+      }))
+      displayPokemon(pokemon)
+    }) 
   }
 }
+
 $("#pokemonName").autocomplete({
   source: function(request, response) {
     let matches = $.map(allPokemon, function(sort) {
@@ -1137,6 +1161,7 @@ $("#pokemonName").autocomplete({
     response(matches)
   }
 })
+
 function capitalize(string) {
   let lower = string.toLowerCase()
   return string.charAt(0).toUpperCase() + lower.slice(1)
