@@ -1013,6 +1013,7 @@ const gen9 = ["Sprigatito",
   "Fezandipiti",
   "Ogerpon",
   "Terapagos"*/]
+
 // https://www.dragonflycave.com/resources/pokemon-list-generator 
 let allPokemon = gen1.concat(gen2, gen3, gen4, gen5, gen6, gen7, gen8, gen9)
 const searchBtn = document.getElementById("search")
@@ -1021,8 +1022,8 @@ const pokemonBox = document.getElementById("pokemonBox")
 searchBtn.addEventListener("click", searchPokemon)
 let viewPokemon;
 let startNum = 1
-let endNum = 12
-// console.log(randomPokemon)
+let endNum = 15
+
 function fetchPokemon(){
   const promises = []
   for (let i = startNum; i <= endNum; i++){
@@ -1046,6 +1047,7 @@ function fetchPokemon(){
   })
 }
 fetchPokemon()
+
 function displayPokemon(pokemon){
   console.log(pokemon)
   for(let i = 0; i < pokemon.length; i++){
@@ -1053,7 +1055,7 @@ function displayPokemon(pokemon){
         pokemonCard.innerHTML = `
         <div class="/*needs tailwind classes*/">
           <div class="card-body">
-            <h5 class="card-title">${pokemon[i].name}</h5>
+            <h5 class="card-title">${capitalize(pokemon[i].name)}</h5>
             <h6>Dex No: ${pokemon[i].id}</h6>
             <img id = "pictureBox" src = "${pokemon[i].image}">
             <ul id = "baseStats">
@@ -1089,6 +1091,7 @@ function displayPokemon(pokemon){
       pokemonBox.append(pokemonCard)
   }
 }
+
 function searchPokemon(){
   pokemonBox.innerHTML = ""
   let check = capitalize(searchBox.value)
@@ -1105,6 +1108,7 @@ function searchPokemon(){
     pictureBox.src = './assets/img/MissingNo.webp'
   }
 }
+
 $("#pokemonName").autocomplete({
   source: function(request, response) {
     let matches = $.map(allPokemon, function(sort) {
@@ -1115,6 +1119,7 @@ $("#pokemonName").autocomplete({
     response(matches)
   }
 })
+
 function capitalize(string) {
   let lower = string.toLowerCase()
   return string.charAt(0).toUpperCase() + lower.slice(1)
