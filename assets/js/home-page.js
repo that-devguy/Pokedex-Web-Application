@@ -1018,71 +1018,74 @@ let allPokemon = gen1.concat(gen2, gen3, gen4, gen5, gen6, gen7, gen8, gen9)
 
 const searchBtn = document.getElementById("search")
 const searchBox = document.getElementById("pokemonName") // names with spaces need a '-' between them
-const pictureBox = document.getElementById("pictureBox")
-const nameDiv = document.getElementById("name")
-const descriptionP = document.getElementById("desctiption")
-const hpStat = document.getElementById("HP")
-const attackStat = document.getElementById("attack")
-const defenceStat = document.getElementById("defence")
-const specialAttackStat = document.getElementById("specialAttack")
-const specialDefenceStat = document.getElementById("specialDefence")
-const speedStat = document.getElementById("speed")
+const pokemonBox = document.getElementById("pokemonBox")
 searchBtn.addEventListener("click", searchPokemon)
-let randomPokemon = allPokemon[Math.floor(Math.random() * allPokemon.length)]
-let viewPokemon = randomPokemon.toLocaleLowerCase() // api will not fetch a pokemon with a capital letter
-
+let viewPokemon;
+let startNum = 1
+let endNum = 12
 // console.log(randomPokemon)
 
-function getPokemon(){
-  let name
-  fetch('https://pokeapi.co/api/v2/pokemon/'+viewPokemon)
-  .then(function(response){
-    return response.json()
-  })
-  .then(function(data){
-    console.log(data)
-    name = data.name
-    name = capitalize(name)
-    nameDiv.innerText = name + ", Dex No: " + data.id
-    pictureBox.src = data.sprites.other["official-artwork"].front_default
-    hpStat.innerText = "HP: "+data.stats[0].base_stat
-    attackStat.innerText = "Attack: "+data.stats[1].base_stat
-    defenceStat.innerText = "Defence: "+data.stats[2].base_stat
-    specialAttackStat.innerText = "Special Attack: "+data.stats[3].base_stat
-    specialDefenceStat.innerText = "Special Defence: "+data.stats[4].base_stat
-    speedStat.innerText = "Speed: "+data.stats[5].base_stat
-    // descriptionP.innerText = getFlavorText(data.id)
-
-  })
-  .catch(function(err){
-    console.log("error "+err)
+function fetchPokemon(){
+  const promises = []
+  for (let i = startNum; i <= endNum; i++){
+      const url = `https://pokeapi.co/api/v2/pokemon/${i}`;
+      promises.push(fetch(url).then((res) => res.json()));
+  }
+  Promise.all(promises).then((results) => {
+      const pokemon = results.map((result) => ({
+          name: result.name,
+          image: result.sprites.other["official-artwork"].front_default,
+          type: result.types.map((type) => type.type.name).join(', '),
+          id: result.id,
+          HP: result.stats[0].base_stat,
+          attack: result.stats[1].base_stat,
+          defence: result.stats[2].base_stat,
+          spAttack: result.stats[3].base_stat,
+          spDefence: result.stats[4].base_stat,
+          speed: result.stats[5].base_stat
+      }))
+      displayPokemon(pokemon)
   })
 }
-getPokemon()
+fetchPokemon()
 
-// function getFlavorText(dexNum){
-//   fetch(('https://pokeapi.co/api/v2/pokemon-species/'+dexNum))
-//   .then(function(response){
-//     return response.json()
-//   })
-//   .then(function(data){
-//     console.log(data.flavor_text_entries)
-//     return (data.flavor_text_entries) // need a way to guarantee an english dex entry 
-//   })
-// }
+function displayPokemon(pokemon){
+  console.log(pokemon)
+  for(let i = 0; i < pokemon.length; i++){
+    let pokemonCard = document.createElement("div")
+        pokemonCard.innerHTML = `
+        <div class="/*needs tailwind classes*/">
+          <div class="card-body">
+            <h5 class="card-title">${pokemon[i].name}</h5>
+            <h6>Dex No: ${pokemon[i].id}</h6>
+            <img id = "pictureBox" src = "${pokemon[i].image}">
+            <ul id = "baseStats">
+              <li id = "HP">HP: ${pokemon[i].HP}</li>
+              <li id = "attack">Attack: ${pokemon[i].attack}</li>
+              <li id = "defence">Defence: ${pokemon[i].defence}</li>
+              <li id = "specialAttack">Special Attack: ${pokemon[i].spAttack}</li>
+              <li id = "specialDefence">Special Defence: ${pokemon[i].spDefence}</li>
+              <li id = "speed">Speed: ${pokemon[i].speed}</li>
+            </ul>
+          </div>
+        </div>`
+      pokemonBox.append(pokemonCard)
+  }
+}
 
 function searchPokemon(){
+  pokemonBox.innerHTML = ""
   let check = capitalize(searchBox.value)
   if (allPokemon.includes(check)){
     console.log("Pokemon Found")
     viewPokemon = check.toLocaleLowerCase()
-    getPokemon()
+    url = `https://pokeapi.co/api/v2/pokemon/${viewPokemon}`
+    console.log(url)
+    displayPokemon(url)
   }
   else{
     console.log("Pokemon Not Found")
     let name = "MissingNo"
-    nameDiv.innerText = name
-    descriptionP.innerText = "Pokemon Not Found"
     pictureBox.src = './assets/img/MissingNo.webp'
   }
 }
@@ -1098,10 +1101,7 @@ $("#pokemonName").autocomplete({
   }
 })
 
-function capitalize(s) {
-  let lower = s.toLowerCase()
-  return s.charAt(0).toUpperCase() + lower.slice(1)
+function capitalize(string) {
+  let lower = string.toLowerCase()
+  return string.charAt(0).toUpperCase() + lower.slice(1)
 }
-
-
-// https://pokeapi.co/api/v2/pokemon-species/{id or name}/ flavor_text for dex entrys 
