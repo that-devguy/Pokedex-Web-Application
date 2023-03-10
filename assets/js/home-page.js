@@ -1021,6 +1021,7 @@ const searchBox = document.getElementById("pokemonName") // names with spaces ne
 const pokemonBox = document.getElementById("pokemonBox")
 searchBtn.addEventListener("click", searchPokemon)
 let viewPokemon;
+let totalNum = 1008
 let startNum = 1
 let endNum = 15
 
@@ -1165,4 +1166,33 @@ $("#pokemonName").autocomplete({
 function capitalize(string) {
   let lower = string.toLowerCase()
   return string.charAt(0).toUpperCase() + lower.slice(1)
+}
+
+// load more button by 15 or remaining number of pokemon
+const loadMoreBtn = document.getElementById("load-more")
+loadMoreBtn.addEventListener("click", loadMore)
+function loadMore(){
+  const remaining = totalNum - endNum
+  startNum += 15
+  endNum += remaining > 15 ? 15 : remaining
+  fetchPokemon()
+}
+
+// when the user scrolls down 30px from the top of the document, show the button on screen. 
+let topbutton = document.getElementById("topBtn");
+
+window.onscroll = function() {scrollFunction()};
+
+function scrollFunction() {
+  if (document.body.scrollTop > 30 || document.documentElement.scrollTop > 30) {
+    topbutton.style.display = "block";
+  } else {
+    topbutton.style.display = "none";
+  }
+}
+
+// When the user clicks on the button, scroll to the top of the document
+function topFunction() {
+  document.body.scrollTop = 0;
+  document.documentElement.scrollTop = 0;
 }
