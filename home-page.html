@@ -22,7 +22,7 @@
   <body class="bg-gray-100">
 
     <!-- nav bar -->
-    <nav class="bg-white px-4 py-2.5 shadow-gray-700">
+    <nav class="bg-white px-4 py-2.5 shadow-md">
       <div
         class="container flex flex-wrap items-center justify-between mx-auto"
       >
@@ -33,7 +33,7 @@
             alt="Pokemon Portal Logo"
           />
           <span class="self-center text-xl whitespace-nowrap"
-            >Pokedex Portal</span
+            >Pokédex Portal</span
           >
         </a>
         <a href="./home-page.html" class="flex items-center">
@@ -44,16 +44,13 @@
     </nav>
 
     <!-- Main page container -->
-    <main >
+    <main>
     <!-- Page header/description -->
       <div class="flex justify-center my-5">
-        <div>
-            
-        </div>
         <div class="text-center">
           <img class="w-11/12 sm:w-3/4 sm m-auto my-10" src="./assets/img/pokedex-portal-header.png" alt="">
-          <h1 class="text-4xl">Pokedex</h1>
-          <p class="mx-5">Search for a Pokemon by name or using its National Pokedex number.</p>
+          <h1 class="text-4xl">Pokédex</h1>
+          <p class="mx-5">Search for a Pokémon by name or using its National Pokédex number.</p>
         </div>
       </div>
 
@@ -558,13 +555,13 @@
       </div>
 
       <!-- Pokedex grid container -->
-      <div id="pokemonBox" class="w-11/12 p-4 bg-white rounded-lg mx-auto gap-3 grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 lg:max-w-5xl">
+      <div id="pokemonBox" class="w-11/12 p-4 bg-white rounded-lg mx-auto gap-3 grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 lg:max-w-5xl shadow-md">
 
         <!-- HTML gets dynamically updated from home-page.js here -->
 
       </div>
 
-      <div class="flex justify-center">
+      <div class="flex justify-center mt-5">
         <!-- Loads 15 more pokemon -->
         <button type="button" id="load-more" class="load-more-btn text-white bg-red-700 focus:ring-0 active:ring-1 active:ring-gray-300 font-medium rounded-lg text-sm px-5 py-2.5 my-3 w-fit">Load more<i class="fa-solid fa-spinner ml-2"></i></button>
 
