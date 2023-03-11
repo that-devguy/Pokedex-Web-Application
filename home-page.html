@@ -193,7 +193,7 @@
                 />
                 <label
                   for="checkbox-rock"
-                  class="inline-block w-full mx-2 text-center ml-2 text-2xs font-medium px-1 bg-yellow-600 text-white rounded"
+                  class="inline-block w-full mx-2 text-center ml-2 text-2xs font-medium px-1 bg-yellow-700 text-white rounded"
                   >Rock</label
                 >
               </div>
@@ -298,7 +298,7 @@
                 />
                 <label
                   for="checkbox-electric"
-                  class="inline-block w-full mx-2 text-center ml-2 text-2xs font-medium px-1 bg-yellow-400 text-gray-900 rounded"
+                  class="inline-block w-full mx-2 text-center ml-2 text-2xs font-medium px-1 bg-yellow-300 text-gray-900 rounded"
                   >Electric</label
                 >
               </div>
@@ -314,7 +314,7 @@
                 <label
                   for="checkbox-pyschic"
                   class="inline-block w-full mx-2 text-center ml-2 text-2xs font-medium px-1 bg-pink-400 text-white rounded"
-                  >Pyschic</label
+                  >Psychic</label
                 >
               </div>
             </li>
@@ -559,11 +559,17 @@
 
       <!-- Pokedex grid container -->
       <div id="pokemonBox" class="w-11/12 p-4 bg-white rounded-lg mx-auto gap-3 grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 lg:max-w-5xl">
-        
+
+        <!-- HTML gets dynamically updated from home-page.js here -->
+
       </div>
 
       <div class="flex justify-center">
-        <button type="button" id="load-more" class="load-more-btn text-white bg-red-700 focus:ring-0 active:ring-1 active:ring-gray-300 font-medium rounded-lg text-sm px-5 py-2.5 my-3 w-fit">Load more<i class="fa-solid fa-spinner ml-2"></i></button><button onclick="topFunction()" id="topBtn" title="Go to top" class="text-white bg-red-700 font-medium rounded-lg text-sm px-5 py-2.5 my-3 w-fit ml-1"><i class="fa-solid fa-arrow-up"></i></button>
+        <!-- Loads 15 more pokemon -->
+        <button type="button" id="load-more" class="load-more-btn text-white bg-red-700 focus:ring-0 active:ring-1 active:ring-gray-300 font-medium rounded-lg text-sm px-5 py-2.5 my-3 w-fit">Load more<i class="fa-solid fa-spinner ml-2"></i></button>
+
+        <!-- Back to top button -->
+        <button onclick="topFunction()" id="topBtn" title="Go to top" class="text-white bg-red-700 font-medium rounded-lg text-sm px-4 py-2.5 my-3 w-fit ml-1"><i class="fa-solid fa-arrow-up"></i></button>
       </div>
 
       

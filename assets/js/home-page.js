@@ -1054,7 +1054,7 @@ function displayPokemon(pokemon){
   // console.log(pokemon)
   for(let i = 0; i < pokemon.length; i++){
     if(pokemon[i].name.includes(" ")){
-      pokemon[i].name.replace(/\s+/g, '-')
+      pokemon[i].name = pokemon[i].name.replace(/\s+/g, '-')
     }
     let type1 = pokemon[i].type[0];
     let type2 = pokemon[i].type[1] ? pokemon[i].type[1] : null;
@@ -1073,8 +1073,8 @@ function displayPokemon(pokemon){
                     <h4 class="pokedex-name text-xs sm:text-sm">${capitalize(pokemon[i].name)}</h4>
                 </div>
                 <div class="flex-col text-right w-12">
-                    <p class="pokemon-type2 text-2xs bg-yellow-400 rounded px-1 mb-1 text-center">${type2}</p>
-                    <p class="pokemon-type1 text-2xs bg-green-400 rounded px-1 sm:mb-1 text-center">${type1}</p>
+                    <p class="pokemon-type2 text-2xs rounded px-1 mb-1 text-center">${type2}</p>
+                    <p class="pokemon-type1 text-2xs rounded px-1 sm:mb-1 text-center">${type1}</p>
                 </div>
             </div>
         </button>`
@@ -1082,10 +1082,87 @@ function displayPokemon(pokemon){
         let type1El = pokemonCard.querySelector('.pokemon-type1');
         let type2El = pokemonCard.querySelector('.pokemon-type2');
         
+        
+        
+        // Applies the type styles
+        if (type1El.textContent === "normal") {
+          type1El.classList.add("bg-stone-200")
+        } else if (type1El.textContent === "fighting") {
+          type1El.classList.add("bg-red-600", "text-white")
+        } else if (type1El.textContent === "flying") {
+          type1El.classList.add("bg-indigo-400", "text-white")
+        } else if (type1El.textContent === "poison") {
+          type1El.classList.add("bg-purple-400", "text-white")
+        } else if (type1El.textContent === "ground") {
+          type1El.classList.add("bg-amber-400")
+        } else if (type1El.textContent === "rock") {
+          type1El.classList.add("bg-yellow-700", "text-white")
+        } else if (type1El.textContent === "bug") {
+          type1El.classList.add("bg-lime-400")
+        } else if (type1El.textContent === "ghost") {
+          type1El.classList.add("bg-purple-700", "text-white")
+        } else if (type1El.textContent === "steel") {
+          type1El.classList.add("bg-zinc-500", "text-white")
+        } else if (type1El.textContent === "fire") {
+          type1El.classList.add("bg-orange-500", "text-white")
+        } else if (type1El.textContent === "water") {
+          type1El.classList.add("bg-blue-500", "text-white")
+        } else if (type1El.textContent === "grass") {
+          type1El.classList.add("bg-green-400")
+        } else if (type1El.textContent === "electric") {
+          type1El.classList.add("bg-yellow-300")
+        } else if (type1El.textContent === "psychic") {
+          type1El.classList.add("bg-pink-400", "text-white")
+        } else if (type1El.textContent === "ice") {
+          type1El.classList.add("bg-cyan-200")
+        } else if (type1El.textContent === "dragon") {
+          type1El.classList.add("bg-indigo-600", "text-white")
+        } else if (type1El.textContent === "dark") {
+          type1El.classList.add("bg-slate-700", "text-white")
+        } else if (type1El.textContent === "fairy") {
+          type1El.classList.add("bg-pink-200")
+        };
+
         // Hides the second type element if the pokemon only has one type
         if (type2El.textContent === "null") {
-          type2El.classList.add("hidden");
-        }
+          type2El.classList.add("hidden")
+        } else if (type2El.textContent === "normal") {
+          type2El.classList.add("bg-stone-200");
+        } else if (type2El.textContent === "fighting") {
+          type2El.classList.add("bg-red-600", "text-white")
+        } else if (type2El.textContent === "flying") {
+          type2El.classList.add("bg-indigo-400", "text-white")
+        } else if (type2El.textContent === "poison") {
+          type2El.classList.add("bg-purple-400", "text-white")
+        } else if (type2El.textContent === "ground") {
+          type2El.classList.add("bg-amber-400")
+        } else if (type2El.textContent === "rock") {
+          type2El.classList.add("bg-yellow-700", "text-white")
+        } else if (type2El.textContent === "bug") {
+          type2El.classList.add("bg-lime-400")
+        } else if (type2El.textContent === "ghost") {
+          type2El.classList.add("bg-purple-700", "text-white")
+        } else if (type2El.textContent === "steel") {
+          type2El.classList.add("bg-zinc-500", "text-white")
+        } else if (type2El.textContent === "fire") {
+          type2El.classList.add("bg-orange-500", "text-white")
+        } else if (type2El.textContent === "water") {
+          type2El.classList.add("bg-blue-500", "text-white")
+        } else if (type2El.textContent === "grass") {
+          type2El.classList.add("bg-green-400")
+        } else if (type2El.textContent === "electric") {
+          type2El.classList.add("bg-yellow-300")
+        } else if (type2El.textContent === "psychic") {
+          type2El.classList.add("bg-pink-400", "text-white")
+        } else if (type2El.textContent === "ice") {
+          type2El.classList.add("bg-cyan-200")
+        } else if (type2El.textContent === "dragon") {
+          type2El.classList.add("bg-indigo-600", "text-white")
+        } else if (type2El.textContent === "dark") {
+          type2El.classList.add("bg-slate-700", "text-white")
+        } else if (type2El.textContent === "fairy") {
+          type2El.classList.add("bg-pink-200")
+        };
 
         // Applies the type styles
 
@@ -1137,8 +1214,9 @@ function searchPokemon(){
     Promise.all(promises).then((results) => {
       const pokemon = results.map((result) => ({
           name: result.name,
-          image: result.sprites.other["official-artwork"].front_default,
-          type: result.types.map((type) => type.type.name).join(', '),
+          image: result.sprites.front_default,
+          image2: result.sprites.other["official-artwork"].front_default,
+          type: result.types.map((type) => type.type.name),
           id: result.id,
           HP: result.stats[0].base_stat,
           attack: result.stats[1].base_stat,
@@ -1168,7 +1246,7 @@ function capitalize(string) {
   return string.charAt(0).toUpperCase() + lower.slice(1)
 }
 
-// load more button by 15 or remaining number of pokemon
+// Load more button by 15 or remaining number of pokemon
 const loadMoreBtn = document.getElementById("load-more")
 loadMoreBtn.addEventListener("click", loadMore)
 function loadMore(){
@@ -1178,7 +1256,7 @@ function loadMore(){
   fetchPokemon()
 }
 
-// when the user scrolls down 30px from the top of the document, show the button on screen. 
+// When the user scrolls down 30px from the top of the document, show the button on screen. 
 let topbutton = document.getElementById("topBtn");
 
 window.onscroll = function() {scrollFunction()};
