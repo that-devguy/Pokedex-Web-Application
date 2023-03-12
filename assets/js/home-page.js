@@ -1037,12 +1037,6 @@ let allPokemon = gen1.concat(gen2, gen3, gen4, gen5, gen6, gen7, gen8, gen9);
 const searchBtn = document.getElementById("search");
 const searchBox = document.getElementById("pokemonName"); // names with spaces need a '-' between them
 const pokemonBox = document.getElementById("pokemonBox");
-const pokemonNameEl = document.getElementById("pokemon-name");
-const pokemonIdEl = document.getElementById("pokemon-id");
-const pokemonDescEl = document.getElementById("pokemon-description");
-const pokemonHeightEl = document.getElementById("pokemon-height");
-const pokemonCategoryEl = document.getElementById("pokemon-category");
-const pokemonWeightEl = document.getElementById("pokemon-weight");
 searchBtn.addEventListener("click", searchPokemon);
 let viewPokemon;
 let totalNum = 1008;
@@ -1072,6 +1066,7 @@ function fetchPokemon() {
     displayPokemon(pokemon);
   });
 }
+
 fetchPokemon();
 
 function displayPokemon(pokemon) {
@@ -1084,7 +1079,7 @@ function displayPokemon(pokemon) {
     let type2 = pokemon[i].type[1] ? pokemon[i].type[1] : null;
     let pokemonCard = document.createElement("div");
     pokemonCard.innerHTML = `
-        <button onclick="location.href='pokemon-page.html'" class= "pokemon-button bg-gray-100 rounded-lg p-3 w-full">
+        <button onclick="location.href='pokemon-page.html?pokemon=${pokemon[i].name}'" class= "pokemon-button bg-gray-100 rounded-lg p-3 w-full">
             <div class="flex justify-end">
               <i class="fa-regular fa-star text-gray-300 hover:text-yellow-400"></i>
             </div>
@@ -1217,10 +1212,6 @@ function displayPokemon(pokemon) {
 
     pokemonBox.append(pokemonCard);
   }
-}
-
-function displayPokemonPage(pokemon);{
-
 }
 
 function searchPokemon() {

@@ -22,7 +22,7 @@
     <!-- <link rel="stylesheet" href="./assets/css/breakpoints.css"> -->
     <title>Pokémon Name - Pokédex Portal</title>
   </head>
-  <body class="bg-white md:bg-gray-100">
+  <body data-page="home" class="bg-white md:bg-gray-100">
     <!-- nav bar -->
     <nav class="bg-white px-4 py-2.5 shadow-md">
       <div
@@ -125,7 +125,7 @@
           <img
             id="pokemon-official-art"
             class="mx-auto md:w-3/4 lg:max-w-1/2"
-            src="./assets/img/pikachu-placeholder.png"
+            src=""
             alt=""
           />
         </div>
@@ -135,18 +135,26 @@
           class="flex w-11/12 md:w-10/12 lg:max-w-4xl mx-auto justify-between items-end mb-5"
         >
           <div class="flex flex-col">
-            <p class="pokedex-num text-xs md:text-sm mt-1 text-gray-500">
+            <p id="pokemon-id" class="pokedex-num text-xs md:text-sm mt-1 text-gray-500">
               #0025
             </p>
             <h1
-              class="pokemon-name text-3xl sm:text-4xl md:text-5xl leading-tight"
+            id="pokemon-name"  
+            class="text-3xl sm:text-4xl md:text-5xl leading-tight"
             >
               Pikachu
             </h1>
           </div>
-          <div class="pokemon-types flex-col text-right">
+          <div id="pokemon-types" class="flex-col text-right w-12 md:w-20">
             <p
-              class="text-xs md:text-sm lg:text-sm font-medium bg-yellow-400 rounded px-1 mb-1.5"
+              id="pokemon-type2"
+              class="text-xs md:text-sm lg:text-sm font-medium rounded px-1 mb-1.5 text-center"
+            >
+              Electric
+            </p>
+            <p
+              id="pokemon-type1"
+              class="text-xs md:text-sm lg:text-sm font-medium rounded px-1 mb-1.5 text-center"
             >
               Electric
             </p>
@@ -314,10 +322,21 @@
           >Back to Pokedex</a
         >
       </div>
+
+      <!-- Back to top button -->
+      <button
+      onclick="topFunction()"
+      id="topBtn"
+      title="Go to top"
+      class="text-white bg-red-700 font-medium hidden fixed bottom-5 right-6 z-99 rounded-lg text-sm px-4 py-2.5 my-3 w-fit ml-1"
+      >
+      <i class="fa-solid fa-arrow-up"></i>
+      </button>
+
     </main>
     <script src="https://code.jquery.com/jquery-3.6.0.js"></script>
     <script src="https://code.jquery.com/ui/1.13.2/jquery-ui.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/flowbite/1.6.3/flowbite.min.js"></script>
-    <script src="./assets/js/script.js"></script>
+    <script src="./assets/js/pokemon-page.js"></script>
   </body>
 </html>
