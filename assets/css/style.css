@@ -11,3 +11,25 @@ h1, h2, h3, h4, h5, h6 {
 nav span {
     font-family: 'Archivo Black', sans-serif;
 }
+
+.ui-autocomplete {
+    font-family: 'Roboto';
+    font-weight: 400;
+    background-color: #fff;
+    border-radius: 0.5rem;
+    font-size: 0.875rem;
+    line-height: 1.25rem;
+    padding: 0.75rem;
+    border: none;
+    outline: none;
+    --tw-shadow: 0 4px 6px -1px rgb(0 0 0 / 0.1), 0 2px 4px -2px rgb(0 0 0 / 0.1);
+    --tw-shadow-colored: 0 4px 6px -1px var(--tw-shadow-color), 0 2px 4px -2px var(--tw-shadow-color);
+    box-shadow: var(--tw-ring-offset-shadow, 0 0 #0000), var(--tw-ring-shadow, 0 0 #0000), var(--tw-shadow);
+}
+
+.ui-state-active, .ui-widget-content .ui-state-active, .ui-widget-header .ui-state-active, a.ui-button:active, .ui-button:active, .ui-state-active.ui-button:hover {
+    border: none;
+    font-weight: 500;
+    --tw-bg-opacity: 1;
+    color: rgb(185 28 28 / var(--tw-bg-opacity));
+}
