@@ -1079,9 +1079,9 @@ function displayPokemon(pokemon) {
     let type2 = pokemon[i].type[1] ? pokemon[i].type[1] : null;
     let pokemonCard = document.createElement("div");
     pokemonCard.innerHTML = `
-        <button onclick="location.href='pokemon-page.html?pokemon=${pokemon[i].name}'" class= "pokemon-button bg-gray-100 rounded-lg p-3 w-full">
+        <button onclick="location.href='pokemon-page.html?pokemon=${pokemon[i].name}&id=${pokemon[i].id}'" class= "pokemon-button bg-gray-100 rounded-lg p-3 w-full">
             <div class="flex justify-end">
-              <i class="fa-regular fa-star text-gray-300 hover:text-yellow-400"></i>
+              <i class="favorite-${pokemon[i].name} fa-regular fa-star text-gray-300 hover:text-yellow-400"></i>
             </div>
             <div class="pokemon-gif mb-3 h-30">
                 <img src="${pokemon[i].image}" alt="" class="mx-auto">
@@ -1193,23 +1193,6 @@ function displayPokemon(pokemon) {
       ? type2.charAt(0).toUpperCase() + type2.slice(1)
       : "";
 
-    // Reference to base states
-    // <div class="/*needs tailwind classes*/">
-    //   <div class="card-body">
-    //     <h5 class="card-title">${pokemon[i].name}</h5>
-    //     <h6>Dex No: ${pokemon[i].id}</h6>
-    //     <img id = "pictureBox" src = "${pokemon[i].image}">
-    //     <ul id = "baseStats">
-    //       <li id = "HP">HP: ${pokemon[i].HP}</li>
-    //       <li id = "attack">Attack: ${pokemon[i].attack}</li>
-    //       <li id = "defence">Defence: ${pokemon[i].defence}</li>
-    //       <li id = "specialAttack">Special Attack: ${pokemon[i].spAttack}</li>
-    //       <li id = "specialDefence">Special Defence: ${pokemon[i].spDefence}</li>
-    //       <li id = "speed">Speed: ${pokemon[i].speed}</li>
-    //     </ul>
-    //   </div>
-    // </div>
-
     pokemonBox.append(pokemonCard);
   }
 }
@@ -1282,10 +1265,7 @@ loadMoreBtn.addEventListener("click", () => {
 });
 
 window.addEventListener("scroll", () => {
-  const remaining = totalNum - endNum;
   if (hasLoadMoreClicked && !isLoadingMore && window.innerHeight + window.scrollY >= document.body.offsetHeight) {
-    startNum += 15;
-    endNum += remaining > 15 ? 15 : remaining;
     isLoadingMore = true;
     loadMore();
   }
