@@ -1062,6 +1062,8 @@ function fetchPokemon() {
 
 fetchPokemon();
 
+
+
 function displayPokemon(pokemon) {
   // console.log(pokemon)
   for (let i = 0; i < pokemon.length; i++) {
@@ -1233,6 +1235,33 @@ function capitalize(string) {
   return string.charAt(0).toUpperCase() + lower.slice(1);
 }
 
+async function filterPokemonByType(type) {
+  const response = await fetch(`https://pokeapi.co/api/v2/pokemon?limit=1000`);
+  const data = await response.json();
+  const pokemonList = data.results;
+  const filteredList = [];
+
+  for (const pokemon of pokemonList) {
+    const pokemonResponse = await fetch(pokemon.url);
+    const pokemonData = await pokemonResponse.json();
+    const pokemonTypes = pokemonData.types.map((type) => type.type.name);
+
+    if (pokemonTypes.includes(type)) {
+      filteredList.push(pokemonData);
+    }
+  }
+
+  return filteredList;
+}
+
+
+
+document.addEventListener("handleFavorite(event)", myFunction);
+
+function myFunction() {
+  document.getElementById("handleFavorite(event)").innerHTML = "Hello World";
+}
+
 
 
 // Load more button by 15 or remaining number of pokemon & triggers the loadMore on scroll & hides the load more button
@@ -1283,3 +1312,6 @@ function topFunction() {
   document.body.scrollTop = 0;
   document.documentElement.scrollTop = 0;
 }
+
+
+

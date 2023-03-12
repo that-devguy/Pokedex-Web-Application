@@ -1057,6 +1057,28 @@ let viewPokemon;
 let totalNum = 1008;
 let startNum = 1;
 let endNum = 15;
+document.addEventListener("click", myFunction);
+
+function myFunction() {
+  document.getElementById("favorite-btn");
+}
+
+let favorites = [];
+
+const starPokemon = () => {
+  if (localStorage['favouritePokemon']) 
+      // If a saved pokemon exists
+      savedPokemon = JSON.parse(localStorage['favouritePokeomon'])
+  else 
+      // No saved pokemon
+      savedPokemon = {}
+}
+
+const savedPokemon = () => {
+  localStorage['favouritePokemon'] = JSON.stringify(favouritePokemon)
+}
+
+
 
 function loadPokemon() {
   const promises = [];
@@ -1465,3 +1487,4 @@ function topFunction() {
   document.body.scrollTop = 0;
   document.documentElement.scrollTop = 0;
 }
+
