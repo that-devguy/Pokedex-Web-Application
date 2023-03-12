@@ -136,13 +136,11 @@
         >
           <div class="flex flex-col">
             <p id="pokemon-id" class="pokedex-num text-xs md:text-sm mt-1 text-gray-500">
-              #0025
             </p>
             <h1
             id="pokemon-name"  
             class="text-3xl sm:text-4xl md:text-5xl leading-tight"
             >
-              Pikachu
             </h1>
           </div>
           <div id="pokemon-types" class="flex-col text-right w-12 md:w-20">
@@ -150,13 +148,11 @@
               id="pokemon-type2"
               class="text-xs md:text-sm lg:text-sm font-medium rounded px-1 mb-1.5 text-center"
             >
-              Electric
             </p>
             <p
               id="pokemon-type1"
               class="text-xs md:text-sm lg:text-sm font-medium rounded px-1 mb-1.5 text-center"
             >
-              Electric
             </p>
           </div>
         </div>
@@ -165,7 +161,7 @@
         <div
           class="flex flex-col w-11/12 md:w-10/12 lg:max-w-4xl mx-auto bg-gray-100 rounded-lg mb-4"
         >
-          <div class="type-bar h-1 w-full bg-yellow-400 mb-3"></div>
+          <div id="type-bar-about" class="h-1 w-full mb-3"></div>
           <div class="pokemon-about px-5">
             <p class="text-lg text-gray-500">About</p>
             <hr class="w-1/2 mb-2" />
@@ -193,7 +189,7 @@
               <!-- Abilities -->
               <div class="mb-2">
                 <p class="text-md text-gray-500">Abilities</p>
-                <p class="text-sm">Static</p>
+                <p id="pokemon-abilities" class="text-sm">Static</p>
               </div>
               <!-- Gender -->
               <div class="mb-2">
@@ -240,27 +236,27 @@
           <div
             class="flex flex-col w-11/12 md:w-full lg:w-full mx-auto bg-gray-100 rounded-lg mb-4"
           >
-            <div class="type-bar h-1 w-full bg-yellow-400 mb-3"></div>
+            <div id="type-bar-stats" class="h-1 w-full mb-3"></div>
             <div class="pokemon-stats px-5">
               <p class="text-lg text-gray-500">Stats</p>
               <hr class="w-1/2 mb-2" />
               <!-- Stats -->
-              <div class="flex-col mb-2">
+              <div id="hp-stat" class="flex justify-between mb-2">
                 <p class="text-sm">HP</p>
               </div>
-              <div class="flex-col mb-2">
+              <div id="atk-stat" class="flex justify-between mb-2">
                 <p class="text-sm">Atk.</p>
               </div>
-              <div class="flex-col mb-2">
+              <div id="def-stat" class="flex justify-between mb-2">
                 <p class="text-sm">Def.</p>
               </div>
-              <div class="flex-col mb-2">
+              <div id="sp-atk-stat" class="flex justify-between mb-2">
                 <p class="text-sm">Sp. Atk.</p>
               </div>
-              <div class="flex-col mb-2">
+              <div id="sp-def-stat" class="flex justify-between mb-2">
                 <p class="text-sm">Sp. Def.</p>
               </div>
-              <div class="flex-col mb-2">
+              <div id="speed-stat" class="flex justify-between mb-2">
                 <p class="text-sm">Speed</p>
               </div>
             </div>
@@ -269,7 +265,7 @@
           <div
             class="flex flex-col w-11/12 md:w-full lg:w-full mx-auto bg-gray-100 rounded-lg mb-4"
           >
-            <div class="type-bar h-1 w-full bg-yellow-400 mb-3"></div>
+            <div id="type-bar-evolutions" class="h-1 w-full mb-3"></div>
             <div class="pokemon-evolutions px-5">
               <p class="text-lg text-gray-500">Evolutions</p>
               <hr class="w-1/2 mb-2" />
