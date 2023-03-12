@@ -4,7 +4,10 @@
     <meta charset="UTF-8" />
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <script src="https://kit.fontawesome.com/ced0ff2264.js" crossorigin="anonymous"></script>
+    <script
+      src="https://kit.fontawesome.com/ced0ff2264.js"
+      crossorigin="anonymous"
+    ></script>
     <link
       rel="stylesheet"
       href="https://code.jquery.com/ui/1.11.4/themes/smoothness/jquery-ui.css"
@@ -16,64 +19,103 @@
       rel="stylesheet"
     />
     <link rel="stylesheet" href="./assets/css/style.css" />
-    <!-- <link rel="stylesheet" href="./assets/css/breakpoints.css"> -->
+    <!-- <link rel="stylesheet" href="./assets/css/breakpoints.css" /> -->
     <title>Pokedex Portal - Search from Over 1,000 Pokemon</title>
   </head>
   <body class="bg-gray-100">
-
     <!-- nav bar -->
-    <nav class="bg-white px-2 sm:px-4 py-2.5">
+    <nav class="bg-white px-4 py-2.5 shadow-md">
       <div
         class="container flex flex-wrap items-center justify-between mx-auto"
       >
         <a href="./home-page.html" class="flex items-center">
           <img
             src="./assets/img/pokeball-logo.png"
-            class="h-9 mr-1 md:mr-3"
+            class="h-8 mr-1 md:mr-3"
             alt="Pokemon Portal Logo"
           />
           <span class="self-center text-xl whitespace-nowrap"
-            >Pokedex Portal</span
+            >Pokédex Portal</span
           >
         </a>
         <a href="./home-page.html" class="flex items-center">
-          <p class="self-center text-lg whitespace-nowrap hover:text-red-700 mr-4"
-            ><i class="fa-solid fa-house"></i></p>
+          <p
+            class="self-center text-lg whitespace-nowrap hover:text-red-700 mr-4"
+          >
+            <i class="fa-solid fa-house"></i>
+          </p>
         </a>
       </div>
     </nav>
 
     <!-- Main page container -->
     <main>
-    <!-- Page header/description -->
+      <!-- Page header/description -->
       <div class="flex justify-center my-5">
-        <div>
-            
-        </div>
         <div class="text-center">
-          <img class="w-11/12 sm:w-3/4 sm m-auto my-10" src="./assets/img/pokedex-portal-header.png" alt="">
-          <h1 class="text-4xl">Pokedex</h1>
-          <p class="mx-5">Search for a Pokemon by name or using its National Pokedex number.</p>
+          <img
+            class="w-11/12 sm:w-3/4 sm m-auto my-10"
+            src="./assets/img/pokedex-portal-header.png"
+            alt=""
+          />
+          <h1 class="text-4xl">Pokédex</h1>
+          <p class="mx-5">
+            Search for a Pokémon by name or using its National Pokédex number.
+          </p>
         </div>
       </div>
 
       <!-- Search bar -->
       <div class="mx-auto w-11/12 md:w-2/3 xl:max-w-4xl mb-3">
-        <form>    
-            <label for="default-search" class="mb-2 text-sm font-medium text-gray-900 sr-only">Search</label>
-            <div class="relative">
-                <div class="absolute inset-y-0 left-0 flex items-center pl-3 pointer-events-none">
-                    <svg aria-hidden="true" class="w-5 h-5 text-gray-500" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path></svg>
-                </div>
-                <input type="search" id="default-search" class="block w-full p-4 pl-10 text-sm text-gray-900 border-gray-300 rounded-lg bg-gray-50 focus:border-gray-300 focus:ring-0" placeholder="Search Pokemon" required>
-                <button type="submit" id="search" class="text-white absolute right-2.5 bottom-2.5 bg-red-700 focus:ring-1
-                focus:ring-gray-300 focus:outline-none font-medium rounded-lg text-sm px-4 py-2">Search</button>
+        <form>
+          <label
+            for="default-search"
+            class="mb-2 text-sm font-medium text-gray-900 sr-only"
+            >Search</label
+          >
+          <div class="relative">
+            <div
+              class="absolute inset-y-0 left-0 flex items-center pl-3 pointer-events-none"
+            >
+              <svg
+                aria-hidden="true"
+                class="w-5 h-5 text-gray-500"
+                fill="none"
+                stroke="currentColor"
+                viewBox="0 0 24 24"
+                xmlns="http://www.w3.org/2000/svg"
+              >
+                <path
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                  stroke-width="2"
+                  d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"
+                ></path>
+              </svg>
             </div>
+            <input
+              id="pokemonName"
+              type="search"
+              id="default-search"
+              class="block w-full p-4 pl-10 text-sm text-gray-900 border-gray-300 rounded-lg bg-gray-50 focus:border-gray-300 focus:ring-0"
+              placeholder="Search Pokemon"
+              required
+            />
+            <button
+              type="submit"
+              id="search"
+              class="text-white absolute right-2.5 bottom-2.5 bg-red-700 focus:ring-1 focus:ring-gray-300 focus:outline-none font-medium rounded-lg text-sm px-4 py-2"
+            >
+              Search
+            </button>
+          </div>
         </form>
       </div>
 
       <!-- Filter menu -->
-      <div class="w-11/12 md:w-2/3 xl:w-1/2 mx-auto mb-4 flex justify-center lg:max-w-3xl">
+      <div
+        class="w-11/12 md:w-2/3 xl:w-1/2 mx-auto mb-4 flex justify-center lg:max-w-3xl"
+      >
         <!-- Type dropdown button-->
         <button
           id="dropdownCheckboxButton"
@@ -193,7 +235,7 @@
                 />
                 <label
                   for="checkbox-rock"
-                  class="inline-block w-full mx-2 text-center ml-2 text-2xs font-medium px-1 bg-yellow-600 text-white rounded"
+                  class="inline-block w-full mx-2 text-center ml-2 text-2xs font-medium px-1 bg-yellow-700 text-white rounded"
                   >Rock</label
                 >
               </div>
@@ -298,7 +340,7 @@
                 />
                 <label
                   for="checkbox-electric"
-                  class="inline-block w-full mx-2 text-center ml-2 text-2xs font-medium px-1 bg-yellow-400 text-gray-900 rounded"
+                  class="inline-block w-full mx-2 text-center ml-2 text-2xs font-medium px-1 bg-yellow-300 text-gray-900 rounded"
                   >Electric</label
                 >
               </div>
@@ -314,7 +356,7 @@
                 <label
                   for="checkbox-pyschic"
                   class="inline-block w-full mx-2 text-center ml-2 text-2xs font-medium px-1 bg-pink-400 text-white rounded"
-                  >Pyschic</label
+                  >Psychic</label
                 >
               </div>
             </li>
@@ -553,19 +595,56 @@
           </ul>
         </div>
         <!-- Favorites only button -->
-        <button type="button" class="w-2/12 sm:w-1/12 text-white bg-yellow-400 focus:ring-0 active:ring-1 active:ring-gray-300 font-medium rounded-lg text-sm px-auto py-2.5 ml-1 mb-2"><i class="fa-solid fa-star"></i></button>
-
+        <button
+          type="button"
+          class="w-2/12 sm:w-1/12 text-white bg-yellow-400 focus:ring-0 active:ring-1 active:ring-gray-300 font-medium rounded-lg text-sm px-auto py-2.5 ml-1 mb-2"
+        >
+          <i class="fa-solid fa-star"></i>
+        </button>
       </div>
 
       <!-- Pokedex grid container -->
-      <div id="pokemonBox" class="w-11/12 p-4 bg-white rounded-lg mx-auto gap-3 grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 lg:max-w-5xl">
-        
+      <div
+        id="pokemonBox"
+        class="w-11/12 p-4 bg-white rounded-lg mx-auto gap-3 grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 lg:max-w-5xl shadow-md"
+      >
+        <!-- HTML gets dynamically updated from home-page.js here -->
       </div>
-      
-      <div class="flex justify-center">
-        <button type="button" class="load-more-btn text-white bg-red-700 focus:ring-0 active:ring-1 active:ring-gray-300 font-medium rounded-lg text-sm px-5 py-2.5 my-3 w-fit">Load more<i class="fa-solid fa-spinner ml-2"></i></button>
+
+      <div class="flex justify-center mt-5 mb-20">
+        <!-- Loads 15 more pokemon -->
+        <button
+          type="button"
+          id="load-more"
+          class="load-more-btn text-white bg-red-700 focus:ring-0 active:ring-1 active:ring-gray-300 font-medium rounded-lg text-sm px-5 py-2.5 my-3 w-fit"
+        >
+          Load more<i class="fa-solid fa-spinner ml-2"></i>
+        </button>
       </div>
-      
+
+      <!-- Back to top button -->
+      <button
+      onclick="topFunction()"
+      id="topBtn"
+      title="Go to top"
+      class="text-white bg-red-700 font-medium hidden fixed bottom-5 right-6 z-99 rounded-lg text-sm px-4 py-2.5 my-3 w-fit ml-1"
+      >
+      <i class="fa-solid fa-arrow-up"></i>
+      </button>
+
+      <div class="flex-col justify-center pb-10 mx-auto w-1/2 md:w-full">
+        <div class="text-center">
+          <img
+            src="./assets/img/pokeball-logo.png"
+            class="h-8 mx-auto mb-5 items-center"
+            alt="Pokemon Portal Logo"
+          />
+          <h2 class="self-center text-xl whitespace-nowrap"
+            >Pokédex Portal</h2
+          >
+          <p>Thank you for using Pokedéx Portal!</p>
+        </div>
+      </div>
 
       <!-- <div class = "searchbox ui-widget" aria-autocomplete="off">
             <input id = "pokemonName" onfocus = "this.value=''"  placeholder = "Pokemon Name" type = "text">
