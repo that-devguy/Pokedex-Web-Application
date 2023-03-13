@@ -1181,6 +1181,7 @@ function displayPokemonPage(pokemonData){
     promises.push(fetch(url).then((res) => res.json()));
     Promise.all(promises).then((results) => {
       const evolutions = results.map((result) => ({
+        name: result.name,
         image: result.sprites.front_default,
         id: result.id.toString().padStart(4, "0"),
       }));
