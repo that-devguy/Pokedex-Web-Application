@@ -1063,8 +1063,9 @@ const favoriteBtn = document.getElementById("favorite");
 favoriteBtn.addEventListener("click", addFavorite);
 let favorites = [];
 
-if(localStorage.getItem("favoritePokemon") !== null){
-  favorites = JSON.parse(localStorage.favoritePokemon);
+if(localforage.getItem("favoritePokemon") !== null){
+  favorites = localforage.getItem('favoritePokemon').then(function(value) { console.log(value); });
+  // favorites = JSON.parse(localStorage.favoritePokemon);
 }
 
 function addFavorite(){
@@ -1082,7 +1083,7 @@ function addFavorite(){
     // add favorite classes (yellow the star)
     favorites.push(pokemonId)
   }
-  localStorage.setItem("favoritePokemon", JSON.stringify(favorites))
+  localforage.setItem("favoritePokemon", JSON.stringify(favorites))
 }
 
 function loadPokemon() {
@@ -1373,14 +1374,3 @@ function topFunction() {
   document.body.scrollTop = 0;
   document.documentElement.scrollTop = 0;
 }
-
-let cardTCGurl = "https://api.pokemontcg.io/v2/cards/"
-
-fetch(cardTCGurl+`q?select=id,name:${name}`)
-  .then(function(response){
-    return response.json();
-  })
-  .then(function(card){
-    console.log(name)
-    console.log(card)
-  })
