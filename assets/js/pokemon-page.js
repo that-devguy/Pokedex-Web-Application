@@ -1164,7 +1164,7 @@ function displayPokemonPage(pokemonData){
   let tradingCardsEl = document.getElementById("pokemon-tcg");
   let cardSectionHeaderEl = document.getElementById("trading-card-header");
   let evolutionContainerEl = document.getElementById("evolution-chain-cols");
-}
+
 
   function convertWeight(weight) {
     const lbsPerHectogram = 0.22046226;
@@ -1409,7 +1409,7 @@ function displayPokemonPage(pokemonData){
     ? type2.charAt(0).toUpperCase() + type2.slice(1)
     : "";
 }
-
+}
 function searchPokemon() {
   event.preventDefault();
   let promises = [];
