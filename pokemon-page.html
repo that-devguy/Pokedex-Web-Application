@@ -28,7 +28,7 @@
       <div
         class="container flex flex-wrap items-center justify-between mx-auto"
       >
-        <a href="./home-page.html" class="flex items-center">
+        <a href="./index.html" class="flex items-center">
           <img
             src="./assets/img/pokeball-logo.png"
             class="xs:h-6 h-9 mr-1 md:mr-3"
@@ -38,7 +38,7 @@
             >Pokedéx Portal</span
           >
         </a>
-        <a href="./home-page.html" class="flex items-center">
+        <a href="./index.html" class="flex items-center">
           <p
             class="self-center text-lg whitespace-nowrap hover:text-red-700 mr-4"
           >
@@ -109,7 +109,7 @@
         <div
           class="flex justify-between w-11/12 md:w-10/12 lg:max-w-4xl mx-auto"
         >
-          <button onclick="location.href='home-page.html'">
+          <button onclick="location.href='index.html'">
             <i class="fa-solid fa-arrow-left text-2xl text-red-700"></i>
           </button>
           <button>
@@ -166,30 +166,28 @@
             <p class="text-lg text-gray-500">About</p>
             <hr class="w-1/2 mb-2" />
             <p id="pokemon-description" class="text-sm mb-2">
-              When it is angered, it immediately discharges the energy stored in
-              the pouches in its cheeks.
             </p>
 
             <div class="flex-col grid grid-cols-2 mb-2">
               <!-- Height -->
               <div class="mb-2">
                 <p class="text-md text-gray-500">Height</p>
-                <p id="pokemon-height" class="text-sm">1'04"</p>
+                <p id="pokemon-height" class="text-sm"></p>
               </div>
               <!-- Category -->
               <div class="mb-2">
                 <p class="text-md text-gray-500">Category</p>
-                <p id="pokemon-category" class="text-sm">Mouse</p>
+                <p id="pokemon-category" class="text-sm"></p>
               </div>
               <!-- Weight -->
               <div class="mb-2">
                 <p class="text-md text-gray-500">Weight</p>
-                <p id="pokemon-weight" class="text-sm">13.2 lbs</p>
+                <p id="pokemon-weight" class="text-sm"></p>
               </div>
               <!-- Abilities -->
               <div class="mb-2">
                 <p class="text-md text-gray-500">Abilities</p>
-                <p id="pokemon-abilities" class="text-sm">Static</p>
+                <p id="pokemon-abilities" class="text-sm"></p>
               </div>
               <!-- Gender -->
               <div class="mb-2">
@@ -270,50 +268,30 @@
               <p class="text-lg text-gray-500">Evolutions</p>
               <hr class="w-1/2 mb-2" />
               <!-- Evolution chain -->
-              <div id="evolution-chain-cols" class="flex items-end pt-2">
-                <div
-                  class="pokemon-gif w-1/3 mb-3 h-30 mx-auto flex flex-col items-center"
-                >
-                  <img
-                    src="./assets/img/pichu-placeholder-gif.gif"
-                    alt=""
-                    class=""
-                  />
-                  <h4 class="pokedex-num text-sm">Pichu</h4>
-                  <p class="pokedex-num text-2xs text-gray-500">#0176</p>
-                </div>
-                <div
-                  class="pokemon-gif w-1/3 mb-3 h-30 mx-auto flex flex-col items-center"
-                >
-                  <img
-                    src="./assets/img/pikachu-placeholder-gif.gif"
-                    alt=""
-                    class=""
-                  />
-                  <h4 class="pokedex-num text-sm">Pikachu</h4>
-                  <p class="pokedex-num text-2xs text-gray-500">#0025</p>
-                </div>
-                <div
-                  class="pokemon-gif w-1/3 mb-3 h-30 mx-auto flex flex-col items-center"
-                >
-                  <img
-                    src="./assets/img/raichu-placeholder-gif.gif"
-                    alt=""
-                    class=""
-                  />
-                  <h4 class="pokedex-num text-sm">Raichu</h4>
-                  <p class="pokedex-num text-2xs text-gray-500">#0026</p>
-                </div>
+              <div id="evolution-chain-cols" class="flex items-end justify-around pt-2">
+                <!-- Evolution chain dynamically generated here -->
               </div>
             </div>
           </div>
         </div>
+        
+        <!-- Trading card container -->
+        <div class="flex flex-col w-11/12 md:w-10/12 lg:max-w-4xl mx-auto bg-gray-100 rounded-lg pb-3 mb-4">
+            <div id="type-bar-cards" class="h-1 w-full mb-3"></div>
+            <div class="px-5">
+              <p id="trading-card-header" class="text-lg text-gray-500"></p>
+              <hr class="w-1/2 mb-3" />
+              <div id="pokemon-tcg" class="flex overflow-x-auto whitespace-nowrap gap-3">
+                <!-- Trading card imgs dynamically update here -->
+              </div>
+            </div>
+        </div>
       </div>
-
+      
       <!-- Back button -->
       <div class="flex justify-center mt-4">
         <a
-          href="./home-page.html"
+          href="./index.html"
           class="text-gray-500 hover:text-red-700 font-medium"
           >Back to Pokedex</a
         >
