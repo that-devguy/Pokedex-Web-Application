@@ -1087,8 +1087,8 @@ function displayPokemon(pokemon) {
     let pokemonCard = document.createElement("div");
     pokemonCard.innerHTML = `
         <button onclick="location.href='pokemon-page.html?pokemon=${pokemon[i].name}&id=${pokemon[i].id}'" class= "pokemon-button bg-gray-100 rounded-lg p-3 w-full">
-            <div class="flex justify-end">
-            <i class="favorite favorite-${pokemon[i].name} fa-regular fa-star text-gray-300 hover:text-yellow-400"></i>
+            <div class="flex justify-end invisible">
+              <i class="fa-solid fa-star text-yellow-400"></i>
             </div>
             <div class="pokemon-gif mb-3 h-30">
                 <img src="${pokemon[i].image}" alt="" class="mx-auto">
