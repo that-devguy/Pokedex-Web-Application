@@ -1052,6 +1052,7 @@ const pokemonSpAtkEl = document.getElementById("sp-atk-stat");
 const pokemonSpDefEl = document.getElementById("sp-def-stat");
 const pokemonSpeedEl = document.getElementById("speed-stat");
 searchBtn.addEventListener("click", searchPokemon);
+let pokemonEvolutionChain;
 let viewPokemon;
 let totalNum = 1008;
 let startNum = 1;
@@ -1063,69 +1064,166 @@ function loadPokemon() {
   const urlParams = new URLSearchParams(queryString);
   let pokemonName = urlParams.get('pokemon');
   let pokemonId = urlParams.get('id');
-  console.log(pokemonId);
-  url = `https://pokeapi.co/api/v2/pokemon/${pokemonName}`;
-  // Pulls the characteristics data
-  urlCharacteristics = `https://pokeapi.co/api/v2/characteristic/${pokemonId}/`
-  // Pulls the evolution chains data
-  urlEvolutionChains = `https://pokeapi.co/api/v2/evolution-chain/${pokemonId}/`
-  console.log(url);
-  console.log(urlCharacteristics);
-  console.log(urlEvolutionChains);
-    promises.push(fetch(url).then((res) => res.json()));
-    // promises.push(fetch(urlCharacteristics).then((res) => res.json()));
-    // promises.push(fetch(urlEvolutionChains).then((res) => res.json()));
+  url = `https://pokeapi.co/api/v2/pokemon/${pokemonId}`;
+  // Pulls the species data
+  urlSpecies = `https://pokeapi.co/api/v2/pokemon-species/${pokemonId}/`
+  // Pulls the trading card game images
+  urlPokemonTCG = `https://api.pokemontcg.io/v2/cards?q=name:${pokemonName}*`
+  promises.push(fetch(url).then((res) => res.json()));
+  promises.push(fetch(urlSpecies).then((res) => res.json()));
+  promises.push(fetch(urlPokemonTCG).then((res) => res.json()));
+  Promise.all(promises).then((results) => {
+    const pokemon = results[0];
+    const species = results[1];
+    const pokemonTCG = results[2];
+    const pokemonCards = pokemonTCG.data.filter((card) => card.name.toLowerCase().includes(pokemonName.toLowerCase().replace(/-.*$/, "").trim()));
+    const evolutionChainId = species.evolution_chain.url.split('/').slice(-2)[0];
+    const urlEvolutionChains = `https://pokeapi.co/api/v2/evolution-chain/${evolutionChainId}/`;
+    promises.push(fetch(urlEvolutionChains).then((res) => res.json()));
     Promise.all(promises).then((results) => {
-      const pokemon = results.map((result) => ({
-        name: result.name,
-        image: result.sprites.front_default,
-        image2: result.sprites.other["official-artwork"].front_default,
-        type: result.types.map((type) => type.type.name),
-        id: result.id,
-        height: result.height,
-        weight: result.weight,
-        abilities: result.abilities.map((ability) => ability.ability.name),
-        HP: result.stats[0].base_stat,
-        attack: result.stats[1].base_stat,
-        defence: result.stats[2].base_stat,
-        spAttack: result.stats[3].base_stat,
-        spDefence: result.stats[4].base_stat,
-        speed: result.stats[5].base_stat,
-    }));
-    console.log(pokemon);
+      const pokemonData = {
+        name: pokemon.name,
+        image: pokemon.sprites.front_default,
+        image2: pokemon.sprites.other["official-artwork"].front_default,
+        type: pokemon.types.map((type) => type.type.name),
+        id: pokemon.id,
+        height: pokemon.height,
+        weight: pokemon.weight,
+        abilities: pokemon.abilities.map((ability) => ability.ability.name),
+        HP: pokemon.stats[0].base_stat,
+        attack: pokemon.stats[1].base_stat,
+        defence: pokemon.stats[2].base_stat,
+        spAttack: pokemon.stats[3].base_stat,
+        spDefence: pokemon.stats[4].base_stat,
+        speed: pokemon.stats[5].base_stat,
+        evolution: results[3],
+        desc: species.flavor_text_entries[1],
+        category: species.genera[7].genus.replace(/Pokémon/g, "").trim(),
+        cards: pokemonCards
+      };
 
-    displayPokemonPage(pokemon);
+      function getEvolutionChain(chain) {
+        let evolutionChain = [];
+        const species = chain.species.name;
+        evolutionChain.push(species);
+        if (chain.evolves_to.length > 0) {
+          evolutionChain = evolutionChain.concat(getEvolutionChain(chain.evolves_to[0]));
+        }
+        return evolutionChain;
+      }
+      
+      pokemonEvolutionChain = getEvolutionChain(pokemonData.evolution.chain);
+
+    console.log(pokemonData, pokemonEvolutionChain, species);
+    displayPokemonPage(pokemonData);
+    });
   });
 }
 
 loadPokemon();
 
-function displayPokemonPage(pokemon){
-  let pokemonAbilties = capitalize(pokemon[0].abilities.join(", "));
-  let type1 = pokemon[0].type[0];
-  let type2 = pokemon[0].type[1] ? pokemon[0].type[1] : null;
+function displayPokemonPage(pokemonData){
+  let pokemonAbilties = pokemonData.abilities.map(ability => ability.charAt(0).toUpperCase() + ability.slice(1)).join(", ");
+  let type1 = pokemonData.type[0];
+  let type2 = pokemonData.type[1] ? pokemonData.type[1] : null;
   let typeBarAbout = document.getElementById("type-bar-about");
   let typeBarStats = document.getElementById("type-bar-stats");
   let typeBarEvolutions = document.getElementById("type-bar-evolutions");
+  let typeBarCards = document.getElementById("type-bar-cards");
   let type1El = document.getElementById("pokemon-type1");
   let type2El = document.getElementById("pokemon-type2");
+  let tradingCardsEl = document.getElementById("pokemon-tcg");
+  let cardSectionHeaderEl = document.getElementById("trading-card-header");
+  let evolutionContainerEl = document.getElementById("evolution-chain-cols");
 
-  pokemonNameEl.textContent = capitalize(pokemon[0].name);
-  pokemonImageEl.src = pokemon[0].image2;
-  pokemonIdEl.textContent = '#' + pokemon[0].id.toString().padStart(4, "0");
+  function convertWeight(weight) {
+    const lbsPerHectogram = 0.22046226;
+    return weight * lbsPerHectogram;
+  }
+
+  // Converts height to inches and then converts that to feet and inches 
+  function convertInches(height) {
+    const inchesPerDecimeter = 3.93701;
+    return height * inchesPerDecimeter;
+  }
+
+  function nearestDecimal(num) {
+    return Math.round(num *  10)/ 10;
+  }
+
+  function convertFeetInches(height) {
+    const inchesPerFoot = 12;
+    const totalFeet = Math.floor(height / inchesPerFoot);
+    const remainingInches = Math.round(height % inchesPerFoot);
+    return `${totalFeet}'${remainingInches}"`;
+  }
+  
+
+  let weightPounds = convertWeight(pokemonData.weight);
+  let roundedWeight = nearestDecimal(weightPounds);
+  let heightInches = convertInches(pokemonData.height)
+  let heightFeet = convertFeetInches(heightInches);
+
+
+
+  // For loop to run and append any cards that include the pokemon's name
+  for (let i = 0; i < pokemonData.cards.length; i++) {
+    let cardImage = pokemonData.cards[i].images.small;
+    let tradingCard = document.createElement("img");
+    tradingCard.src = cardImage
+    tradingCard.classList.add("rounded-lg");
+    tradingCardsEl.appendChild(tradingCard);
+  }
+
+  // For loop to pull pokemon evolutions data and forEach to display them
+  const promises = [];
+  for (let i = 0; i < pokemonEvolutionChain.length; i++) {
+    url = `https://pokeapi.co/api/v2/pokemon/${pokemonEvolutionChain[i]}`;
+    promises.push(fetch(url).then((res) => res.json()));
+  }
+
+  Promise.all(promises).then((results) => {
+    results.forEach((result, i) => {
+      const evolutions = {
+        name: result.name,
+        image: result.sprites.front_default,
+        id: result.id,
+      };
+      let evolutionChainCol = document.createElement('div');
+      evolutionChainCol.classList.add('pokemon-evolution', 'w-1/${pokemonEvolutionChain.length}', 'mb-3', 'h-fit', 'mx-auto', 'flex', 'flex-col', 'items-center', 'hover:cursor-pointer')
+      evolutionChainCol.onclick = function(){
+        window.location.href=`pokemon-page.html?pokemon=${evolutions.name}&id=${evolutions.id}`
+      }
+      evolutionChainCol.innerHTML = `
+          <img src="${evolutions.image}" alt="" class=""/>
+          <p class="pokedex-num text-md">${capitalize(pokemonEvolutionChain[i])}</p>
+          <p class="pokedex-num text-2xs text-gray-500">#${evolutions.id.toString().padStart(4, "0")}</p>
+          `
+      evolutionContainerEl.appendChild(evolutionChainCol);
+    });
+  });
+  
+  pokemonNameEl.textContent = capitalize(pokemonData.name);
+  pokemonImageEl.src = pokemonData.image2;
+  pokemonIdEl.textContent = '#' + pokemonData.id.toString().padStart(4, "0");
   type1El.textContent = type1;
   type2El.textContent = type2;
-  pokemonHeightEl.textContent = pokemon[0].height;
-  pokemonWeightEl.textContent = pokemon[0].weight;
+  pokemonDescEl.textContent = pokemonData.desc.flavor_text;
+  pokemonHeightEl.textContent = heightFeet;
+  pokemonWeightEl.textContent = roundedWeight + 'lbs';
+  pokemonCategoryEl.textContent = pokemonData.category;
   pokemonAbilitiesEl.textContent = pokemonAbilties;
-  pokemonHpEl.innerHTML = `<p class="text-sm">HP</p><p class="text-sm">${pokemon[0].HP}</p>`;
-  pokemonAtkEl.innerHTML = `<p class="text-sm">Atk.</p><p class="text-sm">${pokemon[0].attack}</p>`;
-  pokemonDefEl.innerHTML = `<p class="text-sm">Def.</p><p class="text-sm">${pokemon[0].defence}</p>`;
-  pokemonSpAtkEl.innerHTML = `<p class="text-sm">Sp. Atk.</p><p class="text-sm">${pokemon[0].spAttack}</p>`;
-  pokemonSpDefEl.innerHTML = `<p class="text-sm">Sp. Def.</p><p class="text-sm">${pokemon[0].spDefence}</p>`;
-  pokemonSpeedEl.innerHTML = `<p class="text-sm">Speed</p><p class="text-sm">${pokemon[0].speed}</p>`;
+  pokemonHpEl.innerHTML = `<p class="text-sm">HP</p><p class="text-sm">${pokemonData.HP}</p>`;
+  pokemonAtkEl.innerHTML = `<p class="text-sm">Atk.</p><p class="text-sm">${pokemonData.attack}</p>`;
+  pokemonDefEl.innerHTML = `<p class="text-sm">Def.</p><p class="text-sm">${pokemonData.defence}</p>`;
+  pokemonSpAtkEl.innerHTML = `<p class="text-sm">Sp. Atk.</p><p class="text-sm">${pokemonData.spAttack}</p>`;
+  pokemonSpDefEl.innerHTML = `<p class="text-sm">Sp. Def.</p><p class="text-sm">${pokemonData.spDefence}</p>`;
+  pokemonSpeedEl.innerHTML = `<p class="text-sm">Speed</p><p class="text-sm">${pokemonData.speed}</p>`;
+  cardSectionHeaderEl.textContent = capitalize(pokemonData.name) + ' Trading Cards';
 
 
+  
+  
 
   
 
@@ -1135,91 +1233,109 @@ function displayPokemonPage(pokemon){
     typeBarAbout.classList.add("bg-stone-200");
     typeBarStats.classList.add("bg-stone-200");
     typeBarEvolutions.classList.add("bg-stone-200");
+    typeBarCards.classList.add("bg-stone-200");
   } else if (type1El.textContent === "fighting") {
     type1El.classList.add("bg-red-600", "text-white");
     typeBarAbout.classList.add("bg-red-600");
     typeBarStats.classList.add("bg-red-600");
     typeBarEvolutions.classList.add("bg-red-600");
+    typeBarCards.classList.add("bg-red-600");
   } else if (type1El.textContent === "flying") {
     type1El.classList.add("bg-indigo-400", "text-white");
     typeBarAbout.classList.add("bg-indigo-400");
     typeBarStats.classList.add("bg-indigo-400");
     typeBarEvolutions.classList.add("bg-indigo-400");
+    typeBarCards.classList.add("bg-indigo-400");
   } else if (type1El.textContent === "poison") {
     type1El.classList.add("bg-purple-400", "text-white");
     typeBarAbout.classList.add("bg-purple-400");
     typeBarStats.classList.add("bg-purple-400");
     typeBarEvolutions.classList.add("bg-purple-400");
+    typeBarCards.classList.add("bg-purple-400");
   } else if (type1El.textContent === "ground") {
     type1El.classList.add("bg-amber-400");
     typeBarAbout.classList.add("bg-amber-400");
     typeBarStats.classList.add("bg-amber-400");
     typeBarEvolutions.classList.add("bg-amber-400");
+    typeBarCards.classList.add("bg-amber-400");
   } else if (type1El.textContent === "rock") {
     type1El.classList.add("bg-yellow-700", "text-white");
     typeBarAbout.classList.add("bg-yellow-700");
     typeBarStats.classList.add("bg-yellow-700");
     typeBarEvolutions.classList.add("bg-yellow-700");
+    typeBarCards.classList.add("bg-yellow-700");
   } else if (type1El.textContent === "bug") {
     type1El.classList.add("bg-lime-400");
     typeBarAbout.classList.add("bg-lime-400");
     typeBarStats.classList.add("bg-lime-400");
     typeBarEvolutions.classList.add("bg-lime-400");
+    typeBarCards.classList.add("bg-lime-400");
   } else if (type1El.textContent === "ghost") {
     type1El.classList.add("bg-purple-700", "text-white");
     typeBarAbout.classList.add("bg-purple-700");
     typeBarStats.classList.add("bg-purple-700");
     typeBarEvolutions.classList.add("bg-purple-700");
+    typeBarCards.classList.add("bg-purple-700");
   } else if (type1El.textContent === "steel") {
     type1El.classList.add("bg-zinc-500", "text-white");
     typeBarAbout.classList.add("bg-zinc-500");
     typeBarStats.classList.add("bg-zinc-500");
     typeBarEvolutions.classList.add("bg-zinc-500");
+    typeBarCards.classList.add("bg-zinc-500");
   } else if (type1El.textContent === "fire") {
     type1El.classList.add("bg-orange-500", "text-white");
     typeBarAbout.classList.add("bg-orange-500");
     typeBarStats.classList.add("bg-orange-500");
     typeBarEvolutions.classList.add("bg-orange-500");
+    typeBarCards.classList.add("bg-orange-500");
   } else if (type1El.textContent === "water") {
     type1El.classList.add("bg-blue-500", "text-white");
     typeBarAbout.classList.add("bg-blue-500");
     typeBarStats.classList.add("bg-blue-500");
     typeBarEvolutions.classList.add("bg-blue-500");
+    typeBarCards.classList.add("bg-blue-500");
   } else if (type1El.textContent === "grass") {
     type1El.classList.add("bg-green-400");
     typeBarAbout.classList.add("bg-green-400");
     typeBarStats.classList.add("bg-green-400");
     typeBarEvolutions.classList.add("bg-green-400");
+    typeBarCards.classList.add("bg-green-400");
   } else if (type1El.textContent === "electric") {
     type1El.classList.add("bg-yellow-300");
     typeBarAbout.classList.add("bg-yellow-300");
     typeBarStats.classList.add("bg-yellow-300");
     typeBarEvolutions.classList.add("bg-yellow-300");
+    typeBarCards.classList.add("bg-yellow-300");
   } else if (type1El.textContent === "psychic") {
     type1El.classList.add("bg-pink-400", "text-white");
     typeBarAbout.classList.add("bg-pink-400");
     typeBarStats.classList.add("bg-pink-400");
     typeBarEvolutions.classList.add("bg-pink-400");
+    typeBarCards.classList.add("bg-pink-400");
   } else if (type1El.textContent === "ice") {
     type1El.classList.add("bg-cyan-200");
     typeBarAbout.classList.add("bg-cyan-200");
     typeBarStats.classList.add("bg-cyan-200");
     typeBarEvolutions.classList.add("bg-cyan-200");
+    typeBarCards.classList.add("bg-cyan-200");
   } else if (type1El.textContent === "dragon") {
     type1El.classList.add("bg-indigo-600", "text-white");
     typeBarAbout.classList.add("bg-indigo-600");
     typeBarStats.classList.add("bg-indigo-600");
     typeBarEvolutions.classList.add("bg-indigo-600");
+    typeBarCards.classList.add("bg-indigo-600");
   } else if (type1El.textContent === "dark") {
     type1El.classList.add("bg-slate-700", "text-white");
     typeBarAbout.classList.add("bg-slate-700");
     typeBarStats.classList.add("bg-slate-700");
     typeBarEvolutions.classList.add("bg-slate-700");
+    typeBarCards.classList.add("bg-slate-700");
   } else if (type1El.textContent === "fairy") {
     type1El.classList.add("bg-pink-200");
     typeBarAbout.classList.add("bg-pink-200");
     typeBarStats.classList.add("bg-pink-200");
     typeBarEvolutions.classList.add("bg-pink-200");
+    typeBarCards.classList.add("bg-pink-200");
   }
 
   // Hides the second type element if the pokemon only has one type
