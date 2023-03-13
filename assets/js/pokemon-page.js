@@ -1064,7 +1064,7 @@ function loadPokemon() {
   const urlParams = new URLSearchParams(queryString);
   let pokemonName = urlParams.get('pokemon');
   let pokemonId = urlParams.get('id');
-  url = `https://pokeapi.co/api/v2/pokemon/${pokemonName}`;
+  url = `https://pokeapi.co/api/v2/pokemon/${pokemonId}`;
   // Pulls the species data
   urlSpecies = `https://pokeapi.co/api/v2/pokemon-species/${pokemonId}/`
   // Pulls the trading card game images
@@ -1076,7 +1076,7 @@ function loadPokemon() {
     const pokemon = results[0];
     const species = results[1];
     const pokemonTCG = results[2];
-    const pokemonCards = pokemonTCG.data.filter((card) => card.name.toLowerCase().includes(pokemonName.toLowerCase()));
+    const pokemonCards = pokemonTCG.data.filter((card) => card.name.toLowerCase().includes(pokemonName.toLowerCase().replace(/-.*$/, "").trim()));
     const evolutionChainId = species.evolution_chain.url.split('/').slice(-2)[0];
     const urlEvolutionChains = `https://pokeapi.co/api/v2/evolution-chain/${evolutionChainId}/`;
     promises.push(fetch(urlEvolutionChains).then((res) => res.json()));
@@ -1097,7 +1097,8 @@ function loadPokemon() {
         spDefence: pokemon.stats[4].base_stat,
         speed: pokemon.stats[5].base_stat,
         evolution: results[3],
-        desc: species.flavor_text_entries[9],
+        desc: species.flavor_text_entries[1],
+        category: species.genera[7].genus.replace(/Pokémon/g, "").trim(),
         cards: pokemonCards
       };
 
@@ -1113,7 +1114,7 @@ function loadPokemon() {
       
       pokemonEvolutionChain = getEvolutionChain(pokemonData.evolution.chain);
 
-    console.log(pokemonData, pokemonEvolutionChain);
+    console.log(pokemonData, pokemonEvolutionChain, species);
     displayPokemonPage(pokemonData);
     });
   });
@@ -1174,6 +1175,7 @@ function displayPokemonPage(pokemonData){
     tradingCardsEl.appendChild(tradingCard);
   }
 
+  // For loop to pull pokemon evolutions data and forEach to display them
   const promises = [];
   for (let i = 0; i < pokemonEvolutionChain.length; i++) {
     url = `https://pokeapi.co/api/v2/pokemon/${pokemonEvolutionChain[i]}`;
@@ -1183,16 +1185,20 @@ function displayPokemonPage(pokemonData){
   Promise.all(promises).then((results) => {
     results.forEach((result, i) => {
       const evolutions = {
+        name: result.name,
         image: result.sprites.front_default,
-        id: result.id.toString().padStart(4, "0"),
+        id: result.id,
       };
       let evolutionChainCol = document.createElement('div');
+      evolutionChainCol.classList.add('pokemon-evolution', 'w-1/${pokemonEvolutionChain.length}', 'mb-3', 'h-fit', 'mx-auto', 'flex', 'flex-col', 'items-center', 'hover:cursor-pointer')
+      evolutionChainCol.onclick = function(){
+        window.location.href=`pokemon-page.html?pokemon=${evolutions.name}&id=${evolutions.id}`
+      }
       evolutionChainCol.innerHTML = `
-        <div class="pokemon-evolution w-1/${pokemonEvolutionChain.length} mb-3 h-fit mx-auto flex flex-col items-center">
           <img src="${evolutions.image}" alt="" class=""/>
-          <h4 class="pokedex-num text-sm">${capitalize(pokemonEvolutionChain[i])}</h4>
-          <p class="pokedex-num text-2xs text-gray-500"># ${evolutions.id}</p>
-        </div>`
+          <p class="pokedex-num text-md">${capitalize(pokemonEvolutionChain[i])}</p>
+          <p class="pokedex-num text-2xs text-gray-500">#${evolutions.id.toString().padStart(4, "0")}</p>
+          `
       evolutionContainerEl.appendChild(evolutionChainCol);
     });
   });
@@ -1205,6 +1211,7 @@ function displayPokemonPage(pokemonData){
   pokemonDescEl.textContent = pokemonData.desc.flavor_text;
   pokemonHeightEl.textContent = heightFeet;
   pokemonWeightEl.textContent = roundedWeight + 'lbs';
+  pokemonCategoryEl.textContent = pokemonData.category;
   pokemonAbilitiesEl.textContent = pokemonAbilties;
   pokemonHpEl.innerHTML = `<p class="text-sm">HP</p><p class="text-sm">${pokemonData.HP}</p>`;
   pokemonAtkEl.innerHTML = `<p class="text-sm">Atk.</p><p class="text-sm">${pokemonData.attack}</p>`;
