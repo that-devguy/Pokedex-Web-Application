@@ -1163,6 +1163,7 @@ function displayPokemonPage(pokemonData){
   let tradingCardsEl = document.getElementById("pokemon-tcg");
   let cardSectionHeaderEl = document.getElementById("trading-card-header");
   let evolutionContainerEl = document.getElementById("evolution-chain-cols");
+}
 
   function convertWeight(weight) {
     const lbsPerHectogram = 0.22046226;
@@ -1241,12 +1242,6 @@ function displayPokemonPage(pokemonData){
   pokemonSpDefEl.innerHTML = `<p class="text-sm">Sp. Def.</p><p class="text-sm">${pokemonData.spDefence}</p>`;
   pokemonSpeedEl.innerHTML = `<p class="text-sm">Speed</p><p class="text-sm">${pokemonData.speed}</p>`;
   cardSectionHeaderEl.textContent = capitalize(pokemonData.name) + ' Trading Cards';
-
-
-  
-  
-
-  
 
   // Applies the type styles
   {if (type1El.textContent === "normal") {
@@ -1484,4 +1479,4 @@ function scrollFunction() {
 function topFunction() {
   document.body.scrollTop = 0;
   document.documentElement.scrollTop = 0;
-}
+};
