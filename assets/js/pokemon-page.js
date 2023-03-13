@@ -1204,27 +1204,28 @@ function displayPokemonPage(pokemonData){
     tradingCardsEl.appendChild(tradingCard);
   }
 
-  // For loop to run through the evolutions array and display each evolution
+  const promises = [];
   for (let i = 0; i < pokemonEvolutionChain.length; i++) {
-    const promises = [];
     url = `https://pokeapi.co/api/v2/pokemon/${pokemonEvolutionChain[i]}`;
     promises.push(fetch(url).then((res) => res.json()));
-    Promise.all(promises).then((results) => {
-      const evolutions = results.map((result) => ({
+  }
+
+  Promise.all(promises).then((results) => {
+    results.forEach((result, i) => {
+      const evolutions = {
         image: result.sprites.front_default,
         id: result.id.toString().padStart(4, "0"),
-      }));
-      console.log(evolutions)
+      };
       let evolutionChainCol = document.createElement('div');
       evolutionChainCol.innerHTML = `
-      <div class="pokemon-evolution w-1/${pokemonEvolutionChain.length} mb-3 h-30 mx-auto flex flex-col items-center">
-        <img src="${evolutions.image}" alt="" class=""/>
-        <h4 class="pokedex-num text-sm">${capitalize(pokemonEvolutionChain[i])}</h4>
-        <p class="pokedex-num text-2xs text-gray-500"># ${evolutions.id}</p>
-      </div>`
+        <div class="pokemon-evolution w-1/${pokemonEvolutionChain.length} mb-3 h-fit mx-auto flex flex-col items-center">
+          <img src="${evolutions.image}" alt="" class=""/>
+          <h4 class="pokedex-num text-sm">${capitalize(pokemonEvolutionChain[i])}</h4>
+          <p class="pokedex-num text-2xs text-gray-500"># ${evolutions.id}</p>
+        </div>`
       evolutionContainerEl.appendChild(evolutionChainCol);
     });
-  }
+  });
   
   pokemonNameEl.textContent = capitalize(pokemonData.name);
   pokemonImageEl.src = pokemonData.image2;
