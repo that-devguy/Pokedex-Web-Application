@@ -1068,7 +1068,7 @@ function loadPokemon() {
   urlSpecies = `https://pokeapi.co/api/v2/pokemon-species/${pokemonId}/`
   // Pulls the evolution chains data
   urlEvolutionChains = `https://pokeapi.co/api/v2/evolution-chain/${pokemonId}/`
-
+  // Pulls the trading card game images
   urlPokemonTCG = `https://api.pokemontcg.io/v2/cards?q=name:${pokemonName}*`
   promises.push(fetch(url).then((res) => res.json()));
   promises.push(fetch(urlEvolutionChains).then((res) => res.json())); 
@@ -1099,7 +1099,7 @@ function loadPokemon() {
       desc: species.flavor_text_entries[9],
       cards: pokemonCards
     };
-    console.log(pokemonData);
+    console.log(pokemonData, species);
     displayPokemonPage(pokemonData);
   });
 }
@@ -1107,7 +1107,7 @@ function loadPokemon() {
 loadPokemon();
 
 function displayPokemonPage(pokemonData){
-  let pokemonAbilties = capitalize(pokemonData.abilities.join(", "));
+  let pokemonAbilties = pokemonData.abilities.map(ability => ability.charAt(0).toUpperCase() + ability.slice(1)).join(", ");
   let type1 = pokemonData.type[0];
   let type2 = pokemonData.type[1] ? pokemonData.type[1] : null;
   let typeBarAbout = document.getElementById("type-bar-about");
@@ -1117,13 +1117,45 @@ function displayPokemonPage(pokemonData){
   let type1El = document.getElementById("pokemon-type1");
   let type2El = document.getElementById("pokemon-type2");
   let tradingCardsEl = document.getElementById("pokemon-tcg");
+  let cardSectionHeaderEl = document.getElementById("trading-card-header");
 
+  function convertWeight(weight) {
+    const lbsPerHectogram = 0.22046226;
+    return weight * lbsPerHectogram;
+  }
+
+  // Converts height to inches and then converts that to feet and inches 
+  function convertInches(height) {
+    const inchesPerDecimeter = 3.93701;
+    return height * inchesPerDecimeter;
+  }
+
+  function nearestDecimal(num) {
+    return Math.round(num *  10)/ 10;
+  }
+
+  function convertFeetInches(height) {
+    const inchesPerFoot = 12;
+    const totalFeet = Math.floor(height / inchesPerFoot);
+    const remainingInches = Math.round(height % inchesPerFoot);
+    return `${totalFeet}'${remainingInches}"`;
+  }
+  
+
+  let weightPounds = convertWeight(pokemonData.weight);
+  let roundedWeight = nearestDecimal(weightPounds);
+  let heightInches = convertInches(pokemonData.height)
+  let heightFeet = convertFeetInches(heightInches);
+
+
+
+  // For loop to run and append any cards that include the pokemon's name
   for (let i = 0; i < pokemonData.cards.length; i++) {
     let cardImage = pokemonData.cards[i].images.small;
     let tradingCard = document.createElement("img");
     tradingCard.src = cardImage
+    tradingCard.classList.add("rounded-lg");
     tradingCardsEl.appendChild(tradingCard);
-    console.log(tradingCard);
   }
 
   pokemonNameEl.textContent = capitalize(pokemonData.name);
@@ -1132,8 +1164,8 @@ function displayPokemonPage(pokemonData){
   type1El.textContent = type1;
   type2El.textContent = type2;
   pokemonDescEl.textContent = pokemonData.desc.flavor_text;
-  pokemonHeightEl.textContent = pokemonData.height;
-  pokemonWeightEl.textContent = pokemonData.weight;
+  pokemonHeightEl.textContent = heightFeet;
+  pokemonWeightEl.textContent = roundedWeight + 'lbs';
   pokemonAbilitiesEl.textContent = pokemonAbilties;
   pokemonHpEl.innerHTML = `<p class="text-sm">HP</p><p class="text-sm">${pokemonData.HP}</p>`;
   pokemonAtkEl.innerHTML = `<p class="text-sm">Atk.</p><p class="text-sm">${pokemonData.attack}</p>`;
@@ -1141,7 +1173,7 @@ function displayPokemonPage(pokemonData){
   pokemonSpAtkEl.innerHTML = `<p class="text-sm">Sp. Atk.</p><p class="text-sm">${pokemonData.spAttack}</p>`;
   pokemonSpDefEl.innerHTML = `<p class="text-sm">Sp. Def.</p><p class="text-sm">${pokemonData.spDefence}</p>`;
   pokemonSpeedEl.innerHTML = `<p class="text-sm">Speed</p><p class="text-sm">${pokemonData.speed}</p>`;
-
+  cardSectionHeaderEl.textContent = capitalize(pokemonData.name) + ' Trading Cards';
 
   
 

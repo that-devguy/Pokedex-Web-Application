@@ -166,30 +166,28 @@
             <p class="text-lg text-gray-500">About</p>
             <hr class="w-1/2 mb-2" />
             <p id="pokemon-description" class="text-sm mb-2">
-              When it is angered, it immediately discharges the energy stored in
-              the pouches in its cheeks.
             </p>
 
             <div class="flex-col grid grid-cols-2 mb-2">
               <!-- Height -->
               <div class="mb-2">
                 <p class="text-md text-gray-500">Height</p>
-                <p id="pokemon-height" class="text-sm">1'04"</p>
+                <p id="pokemon-height" class="text-sm"></p>
               </div>
               <!-- Category -->
               <div class="mb-2">
                 <p class="text-md text-gray-500">Category</p>
-                <p id="pokemon-category" class="text-sm">Mouse</p>
+                <p id="pokemon-category" class="text-sm"></p>
               </div>
               <!-- Weight -->
               <div class="mb-2">
                 <p class="text-md text-gray-500">Weight</p>
-                <p id="pokemon-weight" class="text-sm">13.2 lbs</p>
+                <p id="pokemon-weight" class="text-sm"></p>
               </div>
               <!-- Abilities -->
               <div class="mb-2">
                 <p class="text-md text-gray-500">Abilities</p>
-                <p id="pokemon-abilities" class="text-sm">Static</p>
+                <p id="pokemon-abilities" class="text-sm"></p>
               </div>
               <!-- Gender -->
               <div class="mb-2">
@@ -309,12 +307,13 @@
           </div>
         </div>
         
-        <div class="flex flex-col w-11/12 md:w-10/12 lg:max-w-4xl mx-auto bg-gray-100 rounded-lg mb-4">
+        <!-- Trading card container -->
+        <div class="flex flex-col w-11/12 md:w-10/12 lg:max-w-4xl mx-auto bg-gray-100 rounded-lg pb-3 mb-4">
             <div id="type-bar-cards" class="h-1 w-full mb-3"></div>
             <div class="px-5">
-              <p class="text-lg text-gray-500">Pokémon TCG</p>
-              <hr class="w-1/2 mb-2" />
-              <div id="pokemon-tcg" class="flex overflow-x-auto whitespace-nowrap">
+              <p id="trading-card-header" class="text-lg text-gray-500"></p>
+              <hr class="w-1/2 mb-3" />
+              <div id="pokemon-tcg" class="flex overflow-x-auto whitespace-nowrap gap-3">
                 <!-- Trading card imgs dynamically update here -->
               </div>
             </div>
