@@ -1015,51 +1015,94 @@ const gen9 = ["Sprigatito",
   "Terapagos"*/]
 // https://www.dragonflycave.com/resources/pokemon-list-generator 
 let allPokemon = gen1.concat(gen2, gen3, gen4, gen5, gen6, gen7, gen8, gen9)
-
 const searchBtn = document.getElementById("search")
 const searchBox = document.getElementById("pokemonName") // names with spaces need a '-' between them
-const pictureBox = document.getElementById("pictureBox")
-const nameDiv = document.getElementById("name")
-const descriptionP = document.getElementById("desctiption")
-const hpStat = document.getElementById("HP")
-const attackStat = document.getElementById("attack")
-const defenceStat = document.getElementById("defence")
-const specialAttackStat = document.getElementById("specialAttack")
-const specialDefenceStat = document.getElementById("specialDefence")
-const speedStat = document.getElementById("speed")
+const pokemonBox = document.getElementById("pokemonBox")
 const flavorTextStat = document.getElementById('flavor-text')
 searchBtn.addEventListener("click", searchPokemon)
-let randomPokemon = allPokemon[Math.floor(Math.random() * allPokemon.length)]
-let viewPokemon = randomPokemon.toLocaleLowerCase() // api will not fetch a pokemon with a capital letter
-
+let viewPokemon;
+let startNum = 1
+let endNum = 12
+let test = []
 // console.log(randomPokemon)
-
-function getPokemon(){
-  let name
-  fetch('https://pokeapi.co/api/v2/pokemon/'+viewPokemon)
-  .then(function(response){
-    return response.json()
-  })
-  .then(function(data){
-    console.log(data)
-    name = data.name
-    name = capitalize(name)
-    nameDiv.innerText = name + ", Dex No: " + data.id
-    pictureBox.src = data.sprites.other["official-artwork"].front_default
-    hpStat.innerText = "HP: "+data.stats[0].base_stat
-    attackStat.innerText = "Attack: "+data.stats[1].base_stat
-    defenceStat.innerText = "Defence: "+data.stats[2].base_stat
-    specialAttackStat.innerText = "Special Attack: "+data.stats[3].base_stat
-    specialDefenceStat.innerText = "Special Defence: "+data.stats[4].base_stat
-    speedStat.innerText = "Speed: "+data.stats[5].base_stat
-    descriptionP.innerText = getFlavorText(data.id)
-
-  })
-  .catch(function(err){
-    console.log("error "+err)
+function fetchPokemon(){
+  const promises = []
+  for (let i = startNum; i <= endNum; i++){
+      const url = `https://pokeapi.co/api/v2/pokemon/${i}`;
+      promises.push(fetch(url).then((res) => res.json()));
+  }
+  
+  Promise.all(promises).then((results) => {
+      const pokemon = results.map((result) => ({
+          name: result.name,
+          image: result.sprites.other["official-artwork"].front_default,
+          type: result.types.map((type) => type.type.name).join(', '),
+          id: result.id,
+          HP: result.stats[0].base_stat,
+          attack: result.stats[1].base_stat,
+          defence: result.stats[2].base_stat,
+          spAttack: result.stats[3].base_stat,
+          spDefence: result.stats[4].base_stat,
+          speed: result.stats[5].base_stat
+      }))
+      displayPokemon(pokemon)
   })
 }
-getPokemon()
+fetchPokemon()
+function displayPokemon(pokemon){
+  console.log(pokemon)
+  for(let i = 0; i < pokemon.length; i++){
+    let pokemonCard = document.createElement("div")
+        pokemonCard.innerHTML = `
+        <div class="/*needs tailwind classes*/">
+          <div class="card-body">
+            <h5 class="card-title">${pokemon[i].name}</h5>
+            <h6>Dex No: ${pokemon[i].id}</h6>
+            <img id = "pictureBox" src = "${pokemon[i].image}">
+            <ul id = "baseStats">
+              <li id = "HP">HP: ${pokemon[i].HP}</li>
+              <li id = "attack">Attack: ${pokemon[i].attack}</li>
+              <li id = "defence">Defence: ${pokemon[i].defence}</li>
+              <li id = "specialAttack">Special Attack: ${pokemon[i].spAttack}</li>
+              <li id = "specialDefence">Special Defence: ${pokemon[i].spDefence}</li>
+              <li id = "speed">Speed: ${pokemon[i].speed}</li>
+            </ul>
+            <div>${getFlavorText(pokemon[i].id)}</div>
+          </div>
+        </div>`
+      pokemonBox.append(pokemonCard)
+  }
+}
+function searchPokemon(){
+  pokemonBox.innerHTML = ""
+  let check = capitalize(searchBox.value)
+  if (allPokemon.includes(check)){
+    console.log("Pokemon Found")
+    viewPokemon = check.toLocaleLowerCase()
+    url = `https://pokeapi.co/api/v2/pokemon/${viewPokemon}`
+    console.log(url)
+    displayPokemon(url)
+  }
+  else{
+    console.log("Pokemon Not Found")
+    let name = "MissingNo"
+    pictureBox.src = './assets/img/MissingNo.webp'
+  }
+}
+$("#pokemonName").autocomplete({
+  source: function(request, response) {
+    let matches = $.map(allPokemon, function(sort) {
+      if ( sort.toUpperCase().indexOf(request.term.toUpperCase()) === 0 ) {
+        return sort
+      }
+    })
+    response(matches)
+  }
+})
+function capitalize(string) {
+  let lower = string.toLowerCase()
+  return string.charAt(0).toUpperCase() + lower.slice(1)
+}
 
 function getFlavorText(dexNum){
   fetch(('https://pokeapi.co/api/v2/pokemon-species/'+dexNum))
@@ -1073,54 +1116,38 @@ function getFlavorText(dexNum){
     return (item.language.name === 'en');
     });
     console.log(filteredResult);
-    function getRandomFlavorText(max) {
+    function getRandomFlavorText() {
       let flavorText = Math.floor(Math.random() * filteredResult.length);
       console.log(flavorText)
-      console.log(filteredResult[flavorText])
-      let flavorTextCard  = document.createElement('div')
-      flavorTextCard.innerHTML = `
-        <p>${filteredResult[flavorText].flavor_text}<p>
-        <p>Pokedex Entry Generation: Pokemon ${filteredResult[flavorText].version.name.charAt(0).toUpperCase() + filteredResult[flavorText].version.name.slice(1)}<p>
-        `
-      flavorTextStat.appendChild(flavorTextCard)
+      console.log(filteredResult[flavorText]) 
+      // let flavorTextCard  = document.createElement('div')
+      // flavorTextCard.innerHTML = `
+      //   <p>${filteredResult[flavorText].flavor_text}<p>
+      //   <p>Pokedex Entry Generation: Pokemon ${filteredResult[flavorText].version.name.charAt(0).toUpperCase() + filteredResult[flavorText].version.name.slice(1)}<p>
+      //   `
+      test.push(filteredResult[flavorText])
       return flavorText
     }
     getRandomFlavorText()
   })
 }
-getFlavorText()
+console.log(test)
 
-function searchPokemon(){
-  let check = capitalize(searchBox.value)
-  if (allPokemon.includes(check)){
-    console.log("Pokemon Found")
-    viewPokemon = check.toLocaleLowerCase()
-    getPokemon()
-  }
-  else{
-    console.log("Pokemon Not Found")
-    let name = "MissingNo"
-    nameDiv.innerText = name
-    descriptionP.innerText = "Pokemon Not Found"
-    pictureBox.src = './assets/img/MissingNo.webp'
-  }
-}
-
-$("#pokemonName").autocomplete({
-  source: function(request, response) {
-    let matches = $.map(allPokemon, function(sort) {
-      if ( sort.toUpperCase().indexOf(request.term.toUpperCase()) === 0 ) {
-        return sort
-      }
-    })
-    response(matches)
-  }
-})
-
-function capitalize(s) {
-  let lower = s.toLowerCase()
-  return s.charAt(0).toUpperCase() + lower.slice(1)
-}
-
-
-// https://pokeapi.co/api/v2/pokemon-species/{id or name}/ flavor_text for dex entrys 
+/* <button onclick="location.href='pokemon-page.html'" class= "pokemon-button bg-gray-100 rounded-lg p-3 aspect-w-1 aspect-h-1">
+            <div class="flex justify-end">
+              <i class="fa-regular fa-star text-gray-300 hover:text-yellow-400"></i>
+            </div>
+            <div class="pokemon-gif mb-3 h-30">
+                <img src="./assets/img/pikachu-placeholder-gif.gif" alt="" class="mx-auto">
+            </div>
+            <div class="flex justify-between items-end h-30">
+                <div class="flex-col text-left">
+                    <p class="pokedex-num text-xs mt-1 text-gray-500">#0025</p>
+                    <h4 class="pokedex-num text-md">Pikachu</h4>
+                </div>
+                <div class="flex-col text-right">
+                    <p class="text-2xs bg-yellow-400 rounded px-1 mb-1">Electric</p>
+                    <p class="text-2xs bg-green-400 rounded px-1 mb-1 text-center text-gray-900">Grass</p>
+                </div>
+            </div>
+        </button> */

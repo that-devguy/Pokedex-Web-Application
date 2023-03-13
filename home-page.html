@@ -1,17 +1,575 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="https://code.jquery.com/ui/1.11.4/themes/smoothness/jquery-ui.css">
-    <link rel="stylesheet" href="./assets/css/reset.css">
-    <link rel="stylesheet" href="./assets/css/style.css">
-    <title>Pokedex</title>
-</head>
-<body>
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <script src="https://kit.fontawesome.com/ced0ff2264.js" crossorigin="anonymous"></script>
+    <link
+      rel="stylesheet"
+      href="https://code.jquery.com/ui/1.11.4/themes/smoothness/jquery-ui.css"
+    />
+    <link rel="stylesheet" href="./assets/css/reset.css" />
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link
+      href="https://cdnjs.cloudflare.com/ajax/libs/flowbite/1.6.3/flowbite.min.css"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" href="./assets/css/style.css" />
+    <!-- <link rel="stylesheet" href="./assets/css/breakpoints.css"> -->
+    <title>Pokedex Portal - Search from Over 1,000 Pokemon</title>
+  </head>
+  <body class="bg-gray-100">
+
+    <!-- nav bar -->
+    <nav class="bg-white px-2 sm:px-4 py-2.5">
+      <div
+        class="container flex flex-wrap items-center justify-between mx-auto"
+      >
+        <a href="./home-page.html" class="flex items-center">
+          <img
+            src="./assets/img/pokeball-logo.png"
+            class="h-9 mr-1 md:mr-3"
+            alt="Pokemon Portal Logo"
+          />
+          <span class="self-center text-xl whitespace-nowrap"
+            >Pokedex Portal</span
+          >
+        </a>
+        <a href="./home-page.html" class="flex items-center">
+          <p class="self-center text-lg whitespace-nowrap hover:text-red-700 mr-4"
+            ><i class="fa-solid fa-house"></i></p>
+        </a>
+      </div>
+    </nav>
+
+    <!-- Main page container -->
     <main>
-        <div class = "searchbox ui-widget" aria-autocomplete="off">
+    <!-- Page header/description -->
+      <div class="flex justify-center my-5">
+        <div>
+            
+        </div>
+        <div class="text-center">
+          <img class="w-11/12 sm:w-3/4 sm m-auto my-10" src="./assets/img/pokedex-portal-header.png" alt="">
+          <h1 class="text-4xl">Pokedex</h1>
+          <p class="mx-5">Search for a Pokemon by name or using its National Pokedex number.</p>
+        </div>
+      </div>
+
+      <!-- Search bar -->
+      <div class="mx-auto w-11/12 md:w-2/3 xl:max-w-4xl mb-3">
+        <form>    
+            <label for="default-search" class="mb-2 text-sm font-medium text-gray-900 sr-only">Search</label>
+            <div class="relative">
+                <div class="absolute inset-y-0 left-0 flex items-center pl-3 pointer-events-none">
+                    <svg aria-hidden="true" class="w-5 h-5 text-gray-500" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path></svg>
+                </div>
+                <input type="search" id="default-search" class="block w-full p-4 pl-10 text-sm text-gray-900 border-gray-300 rounded-lg bg-gray-50 focus:border-gray-300 focus:ring-0" placeholder="Search Pokemon" required>
+                <button type="submit" id="search" class="text-white absolute right-2.5 bottom-2.5 bg-red-700 focus:ring-1
+                focus:ring-gray-300 focus:outline-none font-medium rounded-lg text-sm px-4 py-2">Search</button>
+            </div>
+        </form>
+      </div>
+
+      <!-- Filter menu -->
+      <div class="w-11/12 md:w-2/3 xl:w-1/2 mx-auto mb-4 flex justify-center lg:max-w-3xl">
+        <!-- Type dropdown button-->
+        <button
+          id="dropdownCheckboxButton"
+          data-dropdown-toggle="dropdownDefaultCheckbox"
+          class="h-full w-4/12 text-white bg-red-700 focus:ring-1 focus:ring-gray-300 focus:outline-none font-medium rounded-lg text-sm px-4 py-2.5 text-center inline-flex justify-between items-center"
+          type="button"
+        >
+          Type
+          <svg
+            class="w-4 h-4 ml-2"
+            aria-hidden="true"
+            fill="none"
+            stroke="currentColor"
+            viewBox="0 0 24 24"
+            xmlns="http://www.w3.org/2000/svg"
+          >
+            <path
+              stroke-linecap="round"
+              stroke-linejoin="round"
+              stroke-width="2"
+              d="M19 9l-7 7-7-7"
+            ></path>
+          </svg>
+        </button>
+        <!-- Type dropdown menu -->
+        <div
+          id="dropdownDefaultCheckbox"
+          class="z-10 hidden w-48 bg-white rounded-lg shadow"
+        >
+          <ul
+            class="p-3 grid grid-cols-2 space-y-2 text-sm text-gray-700"
+            aria-labelledby="dropdownCheckboxButton"
+          >
+            <li>
+              <div class="flex items-center mt-2">
+                <input
+                  id="checkbox-normal"
+                  type="checkbox"
+                  value=""
+                  class="w-4 h-4 text-red-600 bg-gray-200 border-0 rounded focus:ring-0"
+                />
+                <label
+                  for="checkbox-normal"
+                  class="inline-block w-full mx-2 text-center text-2xs font-medium px-1 text-gray-900 bg-stone-200 rounded"
+                  >Normal</label
+                >
+              </div>
+            </li>
+            <li>
+              <div class="flex items-center">
+                <input
+                  checked
+                  id="checkbox-fighting"
+                  type="checkbox"
+                  value=""
+                  class="w-4 h-4 text-red-600 bg-gray-200 border-0 rounded focus:ring-0"
+                />
+                <label
+                  for="checkbox-fighting"
+                  class="inline-block w-full mx-2 text-center ml-2 text-2xs font-medium px-1 text-white bg-red-600 rounded"
+                  >Fighting</label
+                >
+              </div>
+            </li>
+            <li>
+              <div class="flex items-center">
+                <input
+                  id="checkbox-flying"
+                  type="checkbox"
+                  value=""
+                  class="w-4 h-4 text-red-600 bg-gray-200 border-0 rounded focus:ring-0"
+                />
+                <label
+                  for="checkbox-flying"
+                  class="inline-block w-full mx-2 text-center ml-2 text-2xs font-medium px-1 bg-indigo-400 text-white rounded"
+                  >Flying</label
+                >
+              </div>
+            </li>
+            <li>
+              <div class="flex items-center">
+                <input
+                  id="checkbox-poison"
+                  type="checkbox"
+                  value=""
+                  class="w-4 h-4 text-red-600 bg-gray-200 border-0 rounded focus:ring-0"
+                />
+                <label
+                  for="checkbox-poison"
+                  class="inline-block w-full mx-2 text-center ml-2 text-2xs font-medium px-1 bg-purple-400 text-white rounded"
+                  >Poison</label
+                >
+              </div>
+            </li>
+            <li>
+              <div class="flex items-center">
+                <input
+                  id="checkbox-ground"
+                  type="checkbox"
+                  value=""
+                  class="w-4 h-4 text-red-600 bg-gray-200 border-0 rounded focus:ring-0"
+                />
+                <label
+                  for="checkbox-ground"
+                  class="inline-block w-full mx-2 text-center ml-2 text-2xs font-medium px-1 bg-amber-400 text-gray-900 rounded"
+                  >Ground</label
+                >
+              </div>
+            </li>
+            <li>
+              <div class="flex items-center">
+                <input
+                  id="checkbox-rock"
+                  type="checkbox"
+                  value=""
+                  class="w-4 h-4 text-red-600 bg-gray-200 border-0 rounded focus:ring-0"
+                />
+                <label
+                  for="checkbox-rock"
+                  class="inline-block w-full mx-2 text-center ml-2 text-2xs font-medium px-1 bg-yellow-600 text-white rounded"
+                  >Rock</label
+                >
+              </div>
+            </li>
+            <li>
+              <div class="flex items-center">
+                <input
+                  id="checkbox-bug"
+                  type="checkbox"
+                  value=""
+                  class="w-4 h-4 text-red-600 bg-gray-200 border-0 rounded focus:ring-0"
+                />
+                <label
+                  for="checkbox-bug"
+                  class="inline-block w-full mx-2 text-center ml-2 text-2xs font-medium px-1 bg-lime-400 text-gray-900 rounded"
+                  >Bug</label
+                >
+              </div>
+            </li>
+            <li>
+              <div class="flex items-center">
+                <input
+                  id="checkbox-ghost"
+                  type="checkbox"
+                  value=""
+                  class="w-4 h-4 text-red-600 bg-gray-200 border-0 rounded focus:ring-0"
+                />
+                <label
+                  for="checkbox-ghost"
+                  class="inline-block w-full mx-2 text-center ml-2 text-2xs font-medium px-1 bg-purple-700 text-white rounded"
+                  >Ghost</label
+                >
+              </div>
+            </li>
+            <li>
+              <div class="flex items-center">
+                <input
+                  id="checkbox-steel"
+                  type="checkbox"
+                  value=""
+                  class="w-4 h-4 text-red-600 bg-gray-200 border-0 rounded focus:ring-0"
+                />
+                <label
+                  for="checkbox-steel"
+                  class="inline-block w-full mx-2 text-center ml-2 text-2xs font-medium px-1 bg-zinc-500 text-white rounded"
+                  >Steel</label
+                >
+              </div>
+            </li>
+            <li>
+              <div class="flex items-center">
+                <input
+                  id="checkbox-fire"
+                  type="checkbox"
+                  value=""
+                  class="w-4 h-4 text-red-600 bg-gray-200 border-0 rounded focus:ring-0"
+                />
+                <label
+                  for="checkbox-fire"
+                  class="inline-block w-full mx-2 text-center ml-2 text-2xs font-medium px-1 bg-orange-500 text-white rounded"
+                  >Fire</label
+                >
+              </div>
+            </li>
+            <li>
+              <div class="flex items-center">
+                <input
+                  id="checkbox-water"
+                  type="checkbox"
+                  value=""
+                  class="w-4 h-4 text-red-600 bg-gray-200 border-0 rounded focus:ring-0"
+                />
+                <label
+                  for="checkbox-water"
+                  class="inline-block w-full mx-2 text-center ml-2 text-2xs font-medium px-1 bg-blue-500 text-white rounded"
+                  >Water</label
+                >
+              </div>
+            </li>
+            <li>
+              <div class="flex items-center">
+                <input
+                  id="checkbox-grass"
+                  type="checkbox"
+                  value=""
+                  class="w-4 h-4 text-red-600 bg-gray-200 border-0 rounded focus:ring-0"
+                />
+                <label
+                  for="checkbox-grass"
+                  class="inline-block w-full mx-2 text-center ml-2 text-2xs font-medium px-1 bg-green-400 text-gray-900 rounded"
+                  >Grass</label
+                >
+              </div>
+            </li>
+            <li>
+              <div class="flex items-center">
+                <input
+                  id="checkbox-electric"
+                  type="checkbox"
+                  value=""
+                  class="w-4 h-4 text-red-600 bg-gray-200 border-0 rounded focus:ring-0"
+                />
+                <label
+                  for="checkbox-electric"
+                  class="inline-block w-full mx-2 text-center ml-2 text-2xs font-medium px-1 bg-yellow-400 text-gray-900 rounded"
+                  >Electric</label
+                >
+              </div>
+            </li>
+            <li>
+              <div class="flex items-center">
+                <input
+                  id="checkbox-pyschic"
+                  type="checkbox"
+                  value=""
+                  class="w-4 h-4 text-red-600 bg-gray-200 border-0 rounded focus:ring-0"
+                />
+                <label
+                  for="checkbox-pyschic"
+                  class="inline-block w-full mx-2 text-center ml-2 text-2xs font-medium px-1 bg-pink-400 text-white rounded"
+                  >Pyschic</label
+                >
+              </div>
+            </li>
+            <li>
+              <div class="flex items-center">
+                <input
+                  id="checkbox-ice"
+                  type="checkbox"
+                  value=""
+                  class="w-4 h-4 text-red-600 bg-gray-200 border-0 rounded focus:ring-0"
+                />
+                <label
+                  for="checkbox-ice"
+                  class="inline-block w-full mx-2 text-center ml-2 text-2xs font-medium px-1 bg-cyan-200 text-gray-900 rounded"
+                  >Ice</label
+                >
+              </div>
+            </li>
+            <li>
+              <div class="flex items-center">
+                <input
+                  id="checkbox-dragon"
+                  type="checkbox"
+                  value=""
+                  class="w-4 h-4 text-red-600 bg-gray-200 border-0 rounded focus:ring-0"
+                />
+                <label
+                  for="checkbox-dragon"
+                  class="inline-block w-full mx-2 text-center ml-2 text-2xs font-medium px-1 bg-indigo-600 text-white rounded"
+                  >Dragon</label
+                >
+              </div>
+            </li>
+            <li>
+              <div class="flex items-center">
+                <input
+                  id="checkbox-dark"
+                  type="checkbox"
+                  value=""
+                  class="w-4 h-4 text-red-600 bg-gray-200 border-0 rounded focus:ring-0"
+                />
+                <label
+                  for="checkbox-dark"
+                  class="w-full h-5 mx-2 text-center ml-2 text-2xs font-medium px-1 bg-slate-700 text-white rounded"
+                  >Dark</label
+                >
+              </div>
+            </li>
+            <li>
+              <div class="flex items-center">
+                <input
+                  id="checkbox-fairy"
+                  type="checkbox"
+                  value=""
+                  class="w-4 h-4 text-red-600 bg-gray-200 border-0 rounded focus:ring-0"
+                />
+                <label
+                  for="checkbox-fairy"
+                  class="inline-block w-full mx-2 text-center ml-2 text-2xs font-medium px-1 bg-pink-200 text-gray-900 rounded"
+                  >Fairy</label
+                >
+              </div>
+            </li>
+          </ul>
+        </div>
+
+        <!-- Generation dropdown button -->
+        <button
+          id="generationCheckboxButton"
+          data-dropdown-toggle="dropdownGenerationCheckbox"
+          class="h-full w-4/12 text-white bg-red-700 focus:ring-1 focus:ring-gray-300 focus:outline-none font-medium rounded-lg text-sm px-4 py-2.5 text-center inline-flex justify-between items-center ml-1"
+          type="button"
+        >
+          Gen
+          <svg
+            class="w-4 h-4 ml-2"
+            aria-hidden="true"
+            fill="none"
+            stroke="currentColor"
+            viewBox="0 0 24 24"
+            xmlns="http://www.w3.org/2000/svg"
+          >
+            <path
+              stroke-linecap="round"
+              stroke-linejoin="round"
+              stroke-width="2"
+              d="M19 9l-7 7-7-7"
+            ></path>
+          </svg>
+        </button>
+        <!-- Generation dropdown menu -->
+        <div
+          id="dropdownGenerationCheckbox"
+          class="z-10 hidden w-48 bg-white divide-y divide-gray-100 rounded-lg shadow"
+        >
+          <ul
+            class="p-3 text-sm text-gray-700 space-y-2"
+            aria-labelledby="dropdownCheckboxButton"
+          >
+            <li>
+              <div class="flex items-center">
+                <input
+                  id="checkbox-gen1"
+                  type="checkbox"
+                  value=""
+                  class="w-4 h-4 text-red-600 bg-gray-200 border-0 rounded focus:ring-0"
+                />
+                <label
+                  for="checkbox-gen1"
+                  class="ml-2 text-sm font-medium text-gray-900"
+                  >Generation I</label
+                >
+              </div>
+            </li>
+            <li>
+              <div class="flex items-center">
+                <input
+                  checked
+                  id="checkbox-gen2"
+                  type="checkbox"
+                  value=""
+                  class="w-4 h-4 text-red-600 bg-gray-200 border-0 rounded focus:ring-0"
+                />
+                <label
+                  for="checkbox-gen2"
+                  class="ml-2 text-sm font-medium text-gray-900"
+                  >Generation II</label
+                >
+              </div>
+            </li>
+            <li>
+              <div class="flex items-center">
+                <input
+                  id="checkbox-gen3"
+                  type="checkbox"
+                  value=""
+                  class="w-4 h-4 text-red-600 bg-gray-200 border-0 rounded focus:ring-0"
+                />
+                <label
+                  for="checkbox-gen3"
+                  class="ml-2 text-sm font-medium text-gray-900"
+                  >Generation III</label
+                >
+              </div>
+            </li>
+            <li>
+              <div class="flex items-center">
+                <input
+                  id="checkbox-gen4"
+                  type="checkbox"
+                  value=""
+                  class="w-4 h-4 text-red-600 bg-gray-200 border-0 rounded focus:ring-0"
+                />
+                <label
+                  for="checkbox-gen4"
+                  class="ml-2 text-sm font-medium text-gray-900"
+                  >Generation IV</label
+                >
+              </div>
+            </li>
+            <li>
+              <div class="flex items-center">
+                <input
+                  id="checkbox-gen5"
+                  type="checkbox"
+                  value=""
+                  class="w-4 h-4 text-red-600 bg-gray-200 border-0 rounded focus:ring-0"
+                />
+                <label
+                  for="checkbox-gen5"
+                  class="ml-2 text-sm font-medium text-gray-900"
+                  >Generation V</label
+                >
+              </div>
+            </li>
+            <li>
+              <div class="flex items-center">
+                <input
+                  id="checkbox-gen6"
+                  type="checkbox"
+                  value=""
+                  class="w-4 h-4 text-red-600 bg-gray-200 border-0 rounded focus:ring-0"
+                />
+                <label
+                  for="checkbox-gen6"
+                  class="ml-2 text-sm font-medium text-gray-900"
+                  >Generation VI</label
+                >
+              </div>
+            </li>
+            <li>
+              <div class="flex items-center">
+                <input
+                  id="checkbox-gen7"
+                  type="checkbox"
+                  value=""
+                  class="w-4 h-4 text-red-600 bg-gray-200 border-0 rounded focus:ring-0"
+                />
+                <label
+                  for="checkbox-gen7"
+                  class="ml-2 text-sm font-medium text-gray-900"
+                  >Generation VII</label
+                >
+              </div>
+            </li>
+            <li>
+              <div class="flex items-center">
+                <input
+                  id="checkbox-gen8"
+                  type="checkbox"
+                  value=""
+                  class="w-4 h-4 text-red-600 bg-gray-200 border-0 rounded focus:ring-0"
+                />
+                <label
+                  for="checkbox-gen8"
+                  class="ml-2 text-sm font-medium text-gray-900"
+                  >Generation VIII</label
+                >
+              </div>
+            </li>
+            <li>
+              <div class="flex items-center">
+                <input
+                  id="checkbox-gen9"
+                  type="checkbox"
+                  value=""
+                  class="w-4 h-4 text-red-600 bg-gray-200 border-0 rounded focus:ring-0"
+                />
+                <label
+                  for="checkbox-gen9"
+                  class="ml-2 text-sm font-medium text-gray-900"
+                  >Generation IX</label
+                >
+              </div>
+            </li>
+          </ul>
+        </div>
+        <!-- Favorites only button -->
+        <button type="button" class="w-2/12 sm:w-1/12 text-white bg-yellow-400 focus:ring-0 active:ring-1 active:ring-gray-300 font-medium rounded-lg text-sm px-auto py-2.5 ml-1 mb-2"><i class="fa-solid fa-star"></i></button>
+
+      </div>
+
+      <!-- Pokedex grid container -->
+      <div id="pokemonBox" class="w-11/12 p-4 bg-white rounded-lg mx-auto gap-3 grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 lg:max-w-5xl">
+        
+      </div>
+
+      <div id="flavor-text"></div>
+      
+      <div class="flex justify-center">
+        <button type="button" class="load-more-btn text-white bg-red-700 focus:ring-0 active:ring-1 active:ring-gray-300 font-medium rounded-lg text-sm px-5 py-2.5 my-3 w-fit">Load more<i class="fa-solid fa-spinner ml-2"></i></button>
+      </div>
+      
+
+      <!-- <div class = "searchbox ui-widget" aria-autocomplete="off">
             <input id = "pokemonName" onfocus = "this.value=''"  placeholder = "Pokemon Name" type = "text">
             <button id = "search">Search</button>
         </div>
@@ -31,12 +589,13 @@
                     <li id = "specialDefence">Special Defence: </li>
                     <li id = "speed">Speed: </li>
                 </ul>
+                <div id = 'flavor-text'></div>
             </div>
-            <div id = 'flavor-text'></div>
-        </div>
+        </div> -->
     </main>
     <script src="https://code.jquery.com/jquery-3.6.0.js"></script>
     <script src="https://code.jquery.com/ui/1.13.2/jquery-ui.js"></script>
-    <script src = "./assets/js/home-page.js"></script>
-</body>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/flowbite/1.6.3/flowbite.min.js"></script>
+    <script src="./assets/js/home-page.js"></script>
+  </body>
 </html>
