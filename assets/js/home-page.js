@@ -1038,10 +1038,13 @@ const searchBtn = document.getElementById("search");
 const searchBox = document.getElementById("pokemonName"); // names with spaces need a '-' between them
 const pokemonBox = document.getElementById("pokemonBox");
 searchBtn.addEventListener("click", searchPokemon);
+let type1 
+let type2 
 let viewPokemon;
 let totalNum = 1008;
 let startNum = 1;
 let endNum = 15;
+
 
 function fetchPokemon() {
   const promises = [];
@@ -1066,27 +1069,6 @@ function fetchPokemon() {
     displayPokemon(pokemon);
   });
 }
-fetchPokemon()
-function displayPokemon(pokemon){
-  console.log(pokemon)
-  for(let i = 0; i < pokemon.length; i++){
-    let pokemonCard = document.createElement("div")
-        pokemonCard.innerHTML = `
-        <div class="/*needs tailwind classes*/">
-          <div class="card-body">
-            <h5 class="card-title">${pokemon[i].name}</h5>
-            <h6 id="dexNo">Dex No: ${pokemon[i].id}</h6>
-            <img id = "pictureBox" src = "${pokemon[i].image}">
-            <ul id = "baseStats">
-              <li id = "HP">HP: ${pokemon[i].HP}</li>
-              <li id = "attack">Attack: ${pokemon[i].attack}</li>
-              <li id = "defence">Defence: ${pokemon[i].defence}</li>
-              <li id = "specialAttack">Special Attack: ${pokemon[i].spAttack}</li>
-              <li id = "specialDefence">Special Defence: ${pokemon[i].spDefence}</li>
-              <li id = "speed">Speed: ${pokemon[i].speed}</li>
-            </ul>
-          </div>
-        </div>`
 
 fetchPokemon();
 
@@ -1096,8 +1078,8 @@ function displayPokemon(pokemon) {
     if (pokemon[i].name.includes(" ")) {
       pokemon[i].name = pokemon[i].name.replace(/\s+/g, "-");
     }
-    let type1 = pokemon[i].type[0];
-    let type2 = pokemon[i].type[1] ? pokemon[i].type[1] : null;
+    type1 = pokemon[i].type[0];
+    type2 = pokemon[i].type[1] ? pokemon[i].type[1] : null;
     let pokemonCard = document.createElement("div");
     pokemonCard.innerHTML = `
         <button onclick="location.href='pokemon-page.html?pokemon=${pokemon[i].name}'" class= "pokemon-button bg-gray-100 rounded-lg p-3 w-full">
@@ -1240,9 +1222,10 @@ function displayPokemon(pokemon) {
           pokemonLink.setAttribute("href", "pokemon-page.html");
           pokemonLink.appendChild(pokemonCard) 
           pokemonBox.appendChild(pokemonLink);
+  
   }
-
-}
+  
+};
 
 function searchPokemon(){
   pokemonBox.innerHTML = ""
@@ -1364,3 +1347,94 @@ function topFunction() {
   document.body.scrollTop = 0;
   document.documentElement.scrollTop = 0;
 }
+
+// const typeFilter = document.querySelectorAll("#dropdownDefaultCheckbox input[type='checkbox']");
+
+//   typeFilter.addEventListener('change', () => {
+//     const selectedType = typeFilter.value;
+//     updateDisplay(selectedType);
+//   });
+  
+//   function updateDisplay(selectedType) {
+//     const pokemonCards = document.querySelectorAll('.pokemon-button');
+    
+//     pokemonCards.forEach(card => {
+//       const type1 = card.querySelector('.pokemon-type1').textContent;
+//       const type2 = card.querySelector('.pokemon-type2').textContent;
+  
+//       if (selectedType === '' || type1 === selectedType || type2 === selectedType) {
+//         card.style.display = 'block';
+//       } else {
+//         card.style.display = 'none';
+//       }
+//     });
+//   }
+
+  
+
+
+
+const typeFilterBox = document.querySelectorAll("#dropdownDefaultCheckbox input[type='checkbox']");
+let typeFilters = [];
+
+typeFilterBox.forEach(checkbox => {
+  checkbox.addEventListener("change", ()=> {
+  if (checkbox.checked) {
+    typeFilters.push(checkbox.value)
+  } else {
+    typeFilters = typeFilters.filter(filter => filter !== checkbox.value)
+
+  }
+  filterTypes()
+});
+});
+
+typeFilterBox.forEach(checkbox => {
+  checkbox.addEventListener("change", ()=> {
+    if (checkbox.checked) {
+      typeFilters.push(checkbox.value)
+    } else {
+      typeFilters = typeFilters.filter(filter => filter !== checkbox.value)
+    }
+    filterTypes()
+  });
+});
+
+function filterTypes() {
+  const promises = [];
+  for (let i = startNum; i <= endNum; i++) {
+    const url = `https://pokeapi.co/api/v2/pokemon/${i}`;
+    promises.push(fetch(url).then((res) => res.json()));
+  }
+  Promise.all(promises).then((results) => {
+    const pokemon = results.map((result) => ({
+      type: result.types.map((type) => type.type.name),
+    }));
+
+    const typeInputs = document.querySelectorAll(".pokemon-type1");
+
+    typeInputs.forEach(item => {
+      const pokemonTypes = item.dataset.pokemonTypes;
+
+      if (pokemonTypes) {
+        const types = pokemonTypes.split(",");
+        let showPokemon = false;
+
+        for (let i = 0; i < types.length; i++) {
+          if (typeFilters.includes(types[i])) {
+            showPokemon = true;
+            break;
+          }
+        }
+
+        console.log(pokemonTypes);
+
+        if (showPokemon) {
+          item.style.display = "block";
+        } else {
+          item.style.display = "none";
+        }
+      }
+    });
+  });
+};
