@@ -1037,11 +1037,18 @@ let allPokemon = gen1.concat(gen2, gen3, gen4, gen5, gen6, gen7, gen8, gen9);
 const searchBtn = document.getElementById("search");
 const searchBox = document.getElementById("pokemonName"); // names with spaces need a '-' between them
 const pokemonBox = document.getElementById("pokemonBox");
+const topButtonEl = document.getElementById("topBtn");
 searchBtn.addEventListener("click", searchPokemon);
+// favoriteBtn.addEventListener("click", displayFavorites);
 let viewPokemon;
 let totalNum = 1008;
 let startNum = 1;
 let endNum = 15;
+let favorites = [];
+
+if(localStorage.getItem("favoritePokemon") !== null){
+  favorites = JSON.parse(localStorage.favoritePokemon)
+}
 
 function fetchPokemon() {
   const promises = [];
@@ -1081,7 +1088,7 @@ function displayPokemon(pokemon) {
     pokemonCard.innerHTML = `
         <button onclick="location.href='pokemon-page.html?pokemon=${pokemon[i].name}&id=${pokemon[i].id}'" class= "pokemon-button bg-gray-100 rounded-lg p-3 w-full">
             <div class="flex justify-end">
-              <i class="favorite-${pokemon[i].name} fa-regular fa-star text-gray-300 hover:text-yellow-400"></i>
+            <i class="favorite favorite-${pokemon[i].name} fa-regular fa-star text-gray-300 hover:text-yellow-400"></i>
             </div>
             <div class="pokemon-gif mb-3 h-30">
                 <img src="${pokemon[i].image}" alt="" class="mx-auto">
@@ -1252,8 +1259,6 @@ function capitalize(string) {
   return string.charAt(0).toUpperCase() + lower.slice(1);
 }
 
-
-
 // Load more button by 15 or remaining number of pokemon & triggers the loadMore on scroll & hides the load more button
 const loadMoreBtn = document.getElementById("load-more");
 let isLoadingMore = false;
@@ -1280,7 +1285,6 @@ function loadMore() {
 }
 
 // When the user scrolls down 30px from the top of the document, show the button on screen.
-let topButtonEl = document.getElementById("topBtn");
 
 window.onscroll = function () {
   scrollFunction();

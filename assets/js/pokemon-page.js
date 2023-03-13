@@ -1034,6 +1034,7 @@ const gen9 = [
 
 // https://www.dragonflycave.com/resources/pokemon-list-generator
 let allPokemon = gen1.concat(gen2, gen3, gen4, gen5, gen6, gen7, gen8, gen9);
+const key = "50bb85d7-28cb-4e4c-ab4c-536f3e747dee"
 const searchBtn = document.getElementById("search");
 const searchBox = document.getElementById("pokemonName"); // names with spaces need a '-' between them
 const pokemonBox = document.getElementById("pokemonBox");
@@ -1056,22 +1057,49 @@ let viewPokemon;
 let totalNum = 1008;
 let startNum = 1;
 let endNum = 15;
+let pokemonId;
+let name;
+const favoriteBtn = document.getElementById("favorite");
+favoriteBtn.addEventListener("click", addFavorite);
+let favorites = [];
+
+if(localStorage.getItem("favoritePokemon") !== null){
+  favorites = JSON.parse(localStorage.favoritePokemon);
+}
+
+function addFavorite(){
+  if(favorites.includes(pokemonId)){
+    console.log("removing favorite")
+    for(let i = 0; i < favorites.length; i++){
+      if(favorites[i] == pokemonId){
+        favorites.splice(i)
+      }
+    }
+    // remove classes for favorite (grey out star)
+  }
+  else{
+    console.log("adding favoite")
+    // add favorite classes (yellow the star)
+    favorites.push(pokemonId)
+  }
+  localStorage.setItem("favoritePokemon", JSON.stringify(favorites))
+}
 
 function loadPokemon() {
   const promises = [];
   const queryString = window.location.search;
   const urlParams = new URLSearchParams(queryString);
   let pokemonName = urlParams.get('pokemon');
-  let pokemonId = urlParams.get('id');
-  console.log(pokemonId);
+  pokemonId = urlParams.get('id');
+  // console.log(pokemonId);
   url = `https://pokeapi.co/api/v2/pokemon/${pokemonName}`;
   // Pulls the characteristics data
   urlCharacteristics = `https://pokeapi.co/api/v2/characteristic/${pokemonId}/`
   // Pulls the evolution chains data
   urlEvolutionChains = `https://pokeapi.co/api/v2/evolution-chain/${pokemonId}/`
-  console.log(url);
-  console.log(urlCharacteristics);
-  console.log(urlEvolutionChains);
+  // console.log(url);
+  // console.log(urlCharacteristics);
+  // console.log(urlEvolutionChains);
     promises.push(fetch(url).then((res) => res.json()));
     // promises.push(fetch(urlCharacteristics).then((res) => res.json()));
     // promises.push(fetch(urlEvolutionChains).then((res) => res.json()));
@@ -1092,7 +1120,7 @@ function loadPokemon() {
         spDefence: result.stats[4].base_stat,
         speed: result.stats[5].base_stat,
     }));
-    console.log(pokemon);
+    // console.log(pokemon);
 
     displayPokemonPage(pokemon);
   });
@@ -1111,6 +1139,7 @@ function displayPokemonPage(pokemon){
   let type2El = document.getElementById("pokemon-type2");
 
   pokemonNameEl.textContent = capitalize(pokemon[0].name);
+  name = pokemon[0].name
   pokemonImageEl.src = pokemon[0].image2;
   pokemonIdEl.textContent = '#' + pokemon[0].id.toString().padStart(4, "0");
   type1El.textContent = type1;
@@ -1125,12 +1154,8 @@ function displayPokemonPage(pokemon){
   pokemonSpDefEl.innerHTML = `<p class="text-sm">Sp. Def.</p><p class="text-sm">${pokemon[0].spDefence}</p>`;
   pokemonSpeedEl.innerHTML = `<p class="text-sm">Speed</p><p class="text-sm">${pokemon[0].speed}</p>`;
 
-
-
-  
-
   // Applies the type styles
-  if (type1El.textContent === "normal") {
+  {if (type1El.textContent === "normal") {
     type1El.classList.add("bg-stone-200");
     typeBarAbout.classList.add("bg-stone-200");
     typeBarStats.classList.add("bg-stone-200");
@@ -1220,10 +1245,10 @@ function displayPokemonPage(pokemon){
     typeBarAbout.classList.add("bg-pink-200");
     typeBarStats.classList.add("bg-pink-200");
     typeBarEvolutions.classList.add("bg-pink-200");
-  }
+  }}
 
   // Hides the second type element if the pokemon only has one type
-  if (type2El.textContent === "null") {
+  {if (type2El.textContent === "null") {
     type2El.classList.add("hidden");
   } else if (type2El.textContent === "normal") {
     type2El.classList.add("bg-stone-200");
@@ -1261,7 +1286,7 @@ function displayPokemonPage(pokemon){
     type2El.classList.add("bg-slate-700", "text-white");
   } else if (type2El.textContent === "fairy") {
     type2El.classList.add("bg-pink-200");
-  }
+  }}
 
   // Capitalizes the first letter of the type names
   type1El.innerText = type1.charAt(0).toUpperCase() + type1.slice(1);
@@ -1283,11 +1308,11 @@ function searchPokemon() {
     loadPokemon();
   } else {
     pokemonBox.innerHTML = "";
-    console.log("Pokemon Found");
+    // console.log("Pokemon Found");
     viewPokemon = searchBox.value.toLocaleLowerCase();
     viewPokemon.replace(/\s+/g, "-");
     url = `https://pokeapi.co/api/v2/pokemon/${viewPokemon}`;
-    console.log(url);
+    // console.log(url);
     promises.push(fetch(url).then((res) => res.json()));
     Promise.all(promises).then((results) => {
       const pokemon = results.map((result) => ({
@@ -1348,3 +1373,14 @@ function topFunction() {
   document.body.scrollTop = 0;
   document.documentElement.scrollTop = 0;
 }
+
+let cardTCGurl = "https://api.pokemontcg.io/v2/cards/"
+
+fetch(cardTCGurl+`q?select=id,name:${name}`)
+  .then(function(response){
+    return response.json();
+  })
+  .then(function(card){
+    console.log(name)
+    console.log(card)
+  })
