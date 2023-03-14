@@ -1387,43 +1387,45 @@ function displayPokemonPage(pokemonData){
     : "";
 }
 
-function searchPokemon() {
-  event.preventDefault();
-  let promises = [];
-  // let check = capitalize(searchBox.value)
-  // if(check.includes(" ")){
-  //   check.replace(/\s+/g, '-');
-  // }
-  // if (allPokemon.includes(check))
-  if (searchBox.value.trim() === '') {
-    pokemonBox.innerHTML = "";
-    loadPokemon();
-  } else {
-    pokemonBox.innerHTML = "";
-    console.log("Pokemon Found");
-    viewPokemon = searchBox.value.toLocaleLowerCase();
-    viewPokemon.replace(/\s+/g, "-");
-    url = `https://pokeapi.co/api/v2/pokemon/${viewPokemon}`;
-    console.log(url);
-    promises.push(fetch(url).then((res) => res.json()));
-    Promise.all(promises).then((results) => {
-      const pokemon = results.map((result) => ({
-        name: result.name,
-        image: result.sprites.front_default,
-        image2: result.sprites.other["official-artwork"].front_default,
-        type: result.types.map((type) => type.type.name),
-        id: result.id,
-        HP: result.stats[0].base_stat,
-        attack: result.stats[1].base_stat,
-        defence: result.stats[2].base_stat,
-        spAttack: result.stats[3].base_stat,
-        spDefence: result.stats[4].base_stat,
-        speed: result.stats[5].base_stat,
-      }));
-      displayPokemonPage(pokemon);
-    });
-  }
-}
+
+// Pokemon search - needs fixing 
+// function searchPokemon() {
+//   event.preventDefault();
+//   let promises = [];
+//   // let check = capitalize(searchBox.value)
+//   // if(check.includes(" ")){
+//   //   check.replace(/\s+/g, '-');
+//   // }
+//   // if (allPokemon.includes(check))
+//   if (searchBox.value.trim() === '') {
+//     pokemonBox.innerHTML = "";
+//     loadPokemon();
+//   } else {
+//     pokemonBox.innerHTML = "";
+//     console.log("Pokemon Found");
+//     viewPokemon = searchBox.value.toLocaleLowerCase();
+//     viewPokemon.replace(/\s+/g, "-");
+//     url = `https://pokeapi.co/api/v2/pokemon/${viewPokemon}`;
+//     console.log(url);
+//     promises.push(fetch(url).then((res) => res.json()));
+//     Promise.all(promises).then((results) => {
+//       const pokemon = results.map((result) => ({
+//         name: result.name,
+//         image: result.sprites.front_default,
+//         image2: result.sprites.other["official-artwork"].front_default,
+//         type: result.types.map((type) => type.type.name),
+//         id: result.id,
+//         HP: result.stats[0].base_stat,
+//         attack: result.stats[1].base_stat,
+//         defence: result.stats[2].base_stat,
+//         spAttack: result.stats[3].base_stat,
+//         spDefence: result.stats[4].base_stat,
+//         speed: result.stats[5].base_stat,
+//       }));
+//       displayPokemonPage(pokemon);
+//     });
+//   }
+// }
 
 $("#pokemonName").autocomplete({
   source: function (request, response) {
