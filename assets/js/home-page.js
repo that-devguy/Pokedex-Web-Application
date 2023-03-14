@@ -1043,6 +1043,8 @@ let totalNum = 1008;
 let startNum = 1;
 let endNum = 15;
 
+let isFavoritesDisplayed = false;
+
 function fetchPokemon() {
   const promises = [];
   for (let i = startNum; i <= endNum; i++) {
@@ -1063,7 +1065,21 @@ function fetchPokemon() {
 fetchPokemon();
 
 function displayPokemon(pokemon) {
-  // console.log(pokemon)
+  // If there is no pokemon to show, show blank
+  if (!pokemon || pokemon.length === 0) {
+    if (document.getElementById("pokemonBox")) {
+      document.getElementById("pokemonBox").innerHTML = ``;
+    }
+    return;
+  }
+
+  // If we are trying to show favorites, we have to clear the current list
+  if (isFavoritesDisplayed) {
+    if (document.getElementById("pokemonBox")) {
+      document.getElementById("pokemonBox").innerHTML = ``;
+    }
+  }
+
   for (let i = 0; i < pokemon.length; i++) {
     if (pokemon[i].name.includes(" ")) {
       pokemon[i].name = pokemon[i].name.replace(/\s+/g, "-");
@@ -1072,7 +1088,11 @@ function displayPokemon(pokemon) {
     let type2 = pokemon[i].type[1] ? pokemon[i].type[1] : null;
     let pokemonCard = document.createElement("div");
     pokemonCard.innerHTML = `
-        <button onclick="location.href='pokemon-page.html?pokemon=${pokemon[i].name}&id=${pokemon[i].id}'" class= "pokemon-button bg-gray-100 rounded-lg p-3 w-full">
+        <button onclick="location.href='pokemon-page.html?pokemon=${
+          pokemon[i].name
+        }&id=${
+      pokemon[i].id
+    }'" class= "pokemon-button bg-gray-100 rounded-lg p-3 w-full">
             <div class="flex justify-end invisible">
               <i class="fa-solid fa-star text-yellow-400"></i>
             </div>
@@ -1190,6 +1210,33 @@ function displayPokemon(pokemon) {
   }
 }
 
+/**
+ * Displays the favorited pokemon
+ * @returns void
+ */
+function toggleDisplayFavorites() {
+  if (document.getElementById("pokemonBox")) {
+    document.getElementById("pokemonBox").innerHTML = ``;
+  }
+  isFavoritesDisplayed = !isFavoritesDisplayed;
+
+  if (!isFavoritesDisplayed) {
+    document.getElementById("load-more-wrapper").style.display = "flex";
+    fetchPokemon();
+    return;
+  } else {
+    if (isFavoritesDisplayed || !document.getElementById("pokemonBox").firstChild) {
+      document.getElementById("load-more-wrapper").style.display = "none";
+    }
+
+    // Filter down the pokemon data so it contains just the favorites
+    const favorites = JSON.parse(localStorage.getItem("favoritePokemon"));
+
+    // Display the filtered down pokemon
+    displayPokemon(favorites);
+  }
+}
+
 function searchPokemon() {
   event.preventDefault();
   let promises = [];
@@ -1198,11 +1245,11 @@ function searchPokemon() {
     fetchPokemon();
   } else {
     pokemonBox.innerHTML = "";
-    console.log("Pokemon Found");
+    // console.log("Pokemon Found");
     viewPokemon = searchBox.value.toLocaleLowerCase();
     viewPokemon.replace(/\s+/g, "-");
     url = `https://pokeapi.co/api/v2/pokemon/${viewPokemon}`;
-    console.log(url);
+    // console.log(url);
     promises.push(fetch(url).then((res) => res.json()));
     Promise.all(promises).then((results) => {
       const pokemon = results.map((result) => ({
@@ -1233,7 +1280,30 @@ function capitalize(string) {
   return string.charAt(0).toUpperCase() + lower.slice(1);
 }
 
+async function filterPokemonByType(type) {
+  const response = await fetch(`https://pokeapi.co/api/v2/pokemon?limit=1000`);
+  const data = await response.json();
+  const pokemonList = data.results;
+  const filteredList = [];
 
+  for (const pokemon of pokemonList) {
+    const pokemonResponse = await fetch(pokemon.url);
+    const pokemonData = await pokemonResponse.json();
+    const pokemonTypes = pokemonData.types.map((type) => type.type.name);
+
+    if (pokemonTypes.includes(type)) {
+      filteredList.push(pokemonData);
+    }
+  }
+
+  return filteredList;
+}
+
+document.addEventListener("handleFavorite(event)", myFunction);
+
+function myFunction() {
+  document.getElementById("handleFavorite(event)").innerHTML = "Hello World";
+}
 
 // Load more button by 15 or remaining number of pokemon & triggers the loadMore on scroll & hides the load more button
 const loadMoreBtn = document.getElementById("load-more");
@@ -1246,7 +1316,11 @@ loadMoreBtn.addEventListener("click", () => {
 });
 
 window.addEventListener("scroll", () => {
-  if (hasLoadMoreClicked && !isLoadingMore && window.innerHeight + window.scrollY >= document.body.offsetHeight) {
+  if (
+    hasLoadMoreClicked &&
+    !isLoadingMore &&
+    window.innerHeight + window.scrollY >= document.body.offsetHeight
+  ) {
     isLoadingMore = true;
     loadMore();
   }
@@ -1268,10 +1342,7 @@ window.onscroll = function () {
 };
 
 function scrollFunction() {
-  if (
-    document.body.scrollTop > 30 ||
-    document.documentElement.scrollTop > 30
-  ) {
+  if (document.body.scrollTop > 30 || document.documentElement.scrollTop > 30) {
     topButtonEl.style.display = "block";
   } else {
     topButtonEl.style.display = "none";
