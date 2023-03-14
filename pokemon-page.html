@@ -112,10 +112,9 @@
           <button onclick="location.href='index.html'">
             <i class="fa-solid fa-arrow-left text-2xl text-red-700"></i>
           </button>
-          <button onclick= toggleFavorite()>
-            <i
-              class="favorite-btn fa-regular fa-star text-2xl text-gray-300 hover:text-yellow-400"
-            ></i>
+          <button class="favorite-btn" onclick= toggleFavorite()>
+            <i class="not-favorite fa-regular fa-star text-2xl text-gray-300 hover:text-yellow-400 hidden"></i>
+            <i class="favorited fa-solid fa-star text-2xl text-yellow-400 hidden"></i>
           </button>
         </div>
         <!-- Pokemon header container -->
@@ -293,7 +292,7 @@
         <a
           href="./index.html"
           class="text-gray-500 hover:text-red-700 font-medium"
-          >Back to Pokedex</a
+          >Back to Pokédex</a
         >
       </div>
 

@@ -1042,6 +1042,12 @@ let viewPokemon;
 let totalNum = 1008;
 let startNum = 1;
 let endNum = 15;
+let favoritePokemon = JSON.parse(localStorage.getItem('favoritePokemon'));
+if (!favoritePokemon) {
+  favoritePokemon = [];
+}
+
+console.log(favoritePokemon)
 
 let isFavoritesDisplayed = false;
 
@@ -1085,16 +1091,13 @@ function displayPokemon(pokemon) {
     if (pokemon[i].name.includes(" ")) {
       pokemon[i].name = pokemon[i].name.replace(/\s+/g, "-");
     }
+    let favoriteClass = favoritePokemon.some((p) => p.id === pokemon[i].id) ? '' : 'invisible';
     let type1 = pokemon[i].type[0];
     let type2 = pokemon[i].type[1] ? pokemon[i].type[1] : null;
     let pokemonCard = document.createElement("div");
     pokemonCard.innerHTML = `
-        <button onclick="location.href='pokemon-page.html?pokemon=${
-          pokemon[i].name
-        }&id=${
-      pokemon[i].id
-    }'" class= "pokemon-button bg-gray-100 rounded-lg p-3 w-full">
-            <div class="flex justify-end invisible">
+        <button onclick="location.href='pokemon-page.html?pokemon=${pokemon[i].name}&id=${pokemon[i].id}'" class= "pokemon-button bg-gray-100 rounded-lg p-3 w-full">
+            <div class="favorite-icon flex justify-end ${favoriteClass}">
               <i class="fa-solid fa-star text-yellow-400"></i>
             </div>
             <div class="pokemon-gif mb-3 h-30">
@@ -1102,14 +1105,8 @@ function displayPokemon(pokemon) {
             </div>
             <div class="flex justify-between items-end h-30">
                 <div class="flex-col text-left">
-                    <p class="pokedex-num text-xs mt-1 text-gray-500">#${pokemon[
-                      i
-                    ].id
-                      .toString()
-                      .padStart(4, "0")}</p>
-                    <h4 class="pokedex-name text-xs sm:text-sm">${capitalize(
-                      pokemon[i].name
-                    )}</h4>
+                    <p class="pokedex-num text-xs mt-1 text-gray-500">#${pokemon[i].id.toString().padStart(4, "0")}</p>
+                    <h4 class="pokedex-name text-xs sm:text-sm">${capitalize(pokemon[i].name)}</h4>
                 </div>
                 <div class="flex-col text-right w-12">
                     <p class="pokemon-type2 text-2xs rounded px-1 mb-1 text-center">${type2}</p>
@@ -1222,12 +1219,12 @@ function toggleDisplayFavorites() {
   isFavoritesDisplayed = !isFavoritesDisplayed;
 
   if (!isFavoritesDisplayed) {
-    document.getElementById("load-more-wrapper").style.display = "flex";
+    loadMoreBtn.classList.remove('invisible');
     fetchPokemon();
     return;
   } else {
     if (isFavoritesDisplayed || !document.getElementById("pokemonBox").firstChild) {
-      document.getElementById("load-more-wrapper").style.display = "none";
+      loadMoreBtn.classList.add('invisible');
     }
 
     // Filter down the pokemon data so it contains just the favorites
@@ -1300,11 +1297,6 @@ async function filterPokemonByType(type) {
   return filteredList;
 }
 
-document.addEventListener("handleFavorite(event)", myFunction);
-
-function myFunction() {
-  document.getElementById("handleFavorite(event)").innerHTML = "Hello World";
-}
 
 // Load more button by 15 or remaining number of pokemon & triggers the loadMore on scroll & hides the load more button
 const loadMoreBtn = document.getElementById("load-more");
