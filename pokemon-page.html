@@ -56,7 +56,7 @@
         <div class="md:flex flex-col-reverse">
           <h2 class="text-2xl">National Pokédex Info.</h2>
         </div>
-        <form class="w-1/2">
+        <form class="w-1/2 hidden">
           <label
             for="default-search"
             class="mb-2 text-sm font-medium text-gray-900 sr-only"
@@ -112,10 +112,9 @@
           <button onclick="location.href='index.html'">
             <i class="fa-solid fa-arrow-left text-2xl text-red-700"></i>
           </button>
-          <button>
-            <i
-              class="fa-regular fa-star text-2xl text-gray-300 hover:text-yellow-400"
-            ></i>
+          <button class="favorite-btn" onclick= toggleFavorite()>
+            <i class="not-favorite fa-regular fa-star text-2xl text-gray-300 hover:text-yellow-400 hidden"></i>
+            <i class="favorited fa-solid fa-star text-2xl text-yellow-400 hidden"></i>
           </button>
         </div>
         <!-- Pokemon header container -->
@@ -190,15 +189,15 @@
                 <p id="pokemon-abilities" class="text-sm"></p>
               </div>
               <!-- Gender -->
-              <div class="mb-2">
+              <!-- <div class="mb-2">
                 <p class="text-md text-gray-500">Gender</p>
                 <p class="text-sm">
                   <i class="fa-solid fa-mars"></i>
                   <i class="fa-solid fa-venus"></i>
                 </p>
-              </div>
+              </div> -->
               <!-- Weakness -->
-              <div class="mb-2">
+              <!-- <div class="mb-2">
                 <p class="text-md text-gray-500">Weakness</p>
                 <div class="pokemon-types flex text-center flex-wrap">
                   <p
@@ -222,7 +221,7 @@
                     Electric
                   </p>
                 </div>
-              </div>
+              </div> -->
             </div>
           </div>
         </div>
@@ -293,7 +292,7 @@
         <a
           href="./index.html"
           class="text-gray-500 hover:text-red-700 font-medium"
-          >Back to Pokedex</a
+          >Back to Pokédex</a
         >
       </div>
 

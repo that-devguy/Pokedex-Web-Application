@@ -1044,7 +1044,14 @@ let viewPokemon;
 let totalNum = 1008;
 let startNum = 1;
 let endNum = 15;
+let favoritePokemon = JSON.parse(localStorage.getItem('favoritePokemon'));
+if (!favoritePokemon) {
+  favoritePokemon = [];
+}
 
+console.log(favoritePokemon)
+
+let isFavoritesDisplayed = false;
 
 function fetchPokemon() {
   const promises = [];
@@ -1056,15 +1063,8 @@ function fetchPokemon() {
     const pokemon = results.map((result) => ({
       name: result.name,
       image: result.sprites.front_default,
-      image2: result.sprites.other["official-artwork"].front_default,
       type: result.types.map((type) => type.type.name),
       id: result.id,
-      HP: result.stats[0].base_stat,
-      attack: result.stats[1].base_stat,
-      defence: result.stats[2].base_stat,
-      spAttack: result.stats[3].base_stat,
-      spDefence: result.stats[4].base_stat,
-      speed: result.stats[5].base_stat,
     }));
     displayPokemon(pokemon);
   });
@@ -1073,17 +1073,32 @@ function fetchPokemon() {
 fetchPokemon();
 
 function displayPokemon(pokemon) {
-  // console.log(pokemon)
+  // If there is no pokemon to show, show blank
+  if (!pokemon || pokemon.length === 0) {
+    if (document.getElementById("pokemonBox")) {
+      document.getElementById("pokemonBox").innerHTML = ``;
+    }
+    return;
+  }
+
+  // If we are trying to show favorites, we have to clear the current list
+  if (isFavoritesDisplayed) {
+    if (document.getElementById("pokemonBox")) {
+      document.getElementById("pokemonBox").innerHTML = ``;
+    }
+  }
+
   for (let i = 0; i < pokemon.length; i++) {
     if (pokemon[i].name.includes(" ")) {
       pokemon[i].name = pokemon[i].name.replace(/\s+/g, "-");
     }
-    type1 = pokemon[i].type[0];
-    type2 = pokemon[i].type[1] ? pokemon[i].type[1] : null;
+    let favoriteClass = favoritePokemon.some((p) => p.id === pokemon[i].id) ? '' : 'invisible';
+    let type1 = pokemon[i].type[0];
+    let type2 = pokemon[i].type[1] ? pokemon[i].type[1] : null;
     let pokemonCard = document.createElement("div");
     pokemonCard.innerHTML = `
         <button onclick="location.href='pokemon-page.html?pokemon=${pokemon[i].name}&id=${pokemon[i].id}'" class= "pokemon-button bg-gray-100 rounded-lg p-3 w-full">
-            <div class="flex justify-end invisible">
+            <div class="favorite-icon flex justify-end ${favoriteClass}">
               <i class="fa-solid fa-star text-yellow-400"></i>
             </div>
             <div class="pokemon-gif mb-3 h-30">
@@ -1091,14 +1106,8 @@ function displayPokemon(pokemon) {
             </div>
             <div class="flex justify-between items-end h-30">
                 <div class="flex-col text-left">
-                    <p class="pokedex-num text-xs mt-1 text-gray-500">#${pokemon[
-                      i
-                    ].id
-                      .toString()
-                      .padStart(4, "0")}</p>
-                    <h4 class="pokedex-name text-xs sm:text-sm">${capitalize(
-                      pokemon[i].name
-                    )}</h4>
+                    <p class="pokedex-num text-xs mt-1 text-gray-500">#${pokemon[i].id.toString().padStart(4, "0")}</p>
+                    <h4 class="pokedex-name text-xs sm:text-sm">${capitalize(pokemon[i].name)}</h4>
                 </div>
                 <div class="flex-col text-right w-12">
                     <p class="pokemon-type2 text-2xs rounded px-1 mb-1 text-center">${type2}</p>
@@ -1210,79 +1219,55 @@ function displayPokemon(pokemon) {
 
           
   }
-  
-};
-
-
-
-function filterGenerations() {
-  var checkBoxes = document.querySelectorAll("#dropdownGenerationCheckbox input[type='checkbox']");
-  checkBoxes.forEach(function(checkbox) {
-    checkbox.addEventListener("change", function() {
-      const filteredPokemon = []
-      allPokemon.filter(function(pokemon) {
-        if (checkbox.checked && pokemon.gen === checkbox.value) {
-          filteredPokemon.push(pokemon);
-        } else if (!checkbox.checked) {
-          filteredPokemon.push(pokemon);
-        }
-      });
-      
-      document.getElementById("pokemon-container").innerHTML = "";
-      displayPokemon(filteredPokemon);
-    });
-  });
 }
 
-filterGenerations();
-displayPokemon(pokemon);
+/**
+ * Displays the favorited pokemon
+ * @returns void
+ */
+function toggleDisplayFavorites() {
+  if (document.getElementById("pokemonBox")) {
+    document.getElementById("pokemonBox").innerHTML = ``;
+  }
+  isFavoritesDisplayed = !isFavoritesDisplayed;
 
+  if (!isFavoritesDisplayed) {
+    loadMoreBtn.classList.remove('invisible');
+    fetchPokemon();
+    return;
+  } else {
+    if (isFavoritesDisplayed || !document.getElementById("pokemonBox").firstChild) {
+      loadMoreBtn.classList.add('invisible');
+    }
 
+    // Filter down the pokemon data so it contains just the favorites
+    const favorites = JSON.parse(localStorage.getItem("favoritePokemon"));
 
-function searchPokemon(){
-  pokemonBox.innerHTML = ""
-  let check = capitalize(searchBox.value)
-  if (allPokemon.includes(check)){
-    console.log("Pokemon Found")
-    viewPokemon = check.toLocaleLowerCase()
-    url = `https://pokeapi.co/api/v2/pokemon/${viewPokemon}`
-    console.log(url)
-    displayPokemon(url)
+    // Display the filtered down pokemon
+    displayPokemon(favorites);
   }
 }
 
 function searchPokemon() {
   event.preventDefault();
   let promises = [];
-  // let check = capitalize(searchBox.value)
-  // if(check.includes(" ")){
-  //   check.replace(/\s+/g, '-');
-  // }
-  // if (allPokemon.includes(check))
   if (searchBox.value.trim() === '') {
     pokemonBox.innerHTML = "";
     fetchPokemon();
   } else {
     pokemonBox.innerHTML = "";
-    console.log("Pokemon Found");
+    // console.log("Pokemon Found");
     viewPokemon = searchBox.value.toLocaleLowerCase();
     viewPokemon.replace(/\s+/g, "-");
     url = `https://pokeapi.co/api/v2/pokemon/${viewPokemon}`;
-    console.log(url);
+    // console.log(url);
     promises.push(fetch(url).then((res) => res.json()));
     Promise.all(promises).then((results) => {
       const pokemon = results.map((result) => ({
         name: result.name,
         image: result.sprites.front_default,
-        image2: result.sprites.other["official-artwork"].front_default,
         type: result.types.map((type) => type.type.name),
         id: result.id,
-        HP: result.stats[0].base_stat,
-        attack: result.stats[1].base_stat,
-        defence: result.stats[2].base_stat,
-        spAttack: result.stats[3].base_stat,
-        spDefence: result.stats[4].base_stat,
-        speed: result.stats[5].base_stat,
       }));
       displayPokemon(pokemon);
     });
@@ -1306,6 +1291,24 @@ function capitalize(string) {
   return string.charAt(0).toUpperCase() + lower.slice(1);
 }
 
+async function filterPokemonByType(type) {
+  const response = await fetch(`https://pokeapi.co/api/v2/pokemon?limit=1000`);
+  const data = await response.json();
+  const pokemonList = data.results;
+  const filteredList = [];
+
+  for (const pokemon of pokemonList) {
+    const pokemonResponse = await fetch(pokemon.url);
+    const pokemonData = await pokemonResponse.json();
+    const pokemonTypes = pokemonData.types.map((type) => type.type.name);
+
+    if (pokemonTypes.includes(type)) {
+      filteredList.push(pokemonData);
+    }
+  }
+
+  return filteredList;
+}
 
 
 // Load more button by 15 or remaining number of pokemon & triggers the loadMore on scroll & hides the load more button
@@ -1319,7 +1322,11 @@ loadMoreBtn.addEventListener("click", () => {
 });
 
 window.addEventListener("scroll", () => {
-  if (hasLoadMoreClicked && !isLoadingMore && window.innerHeight + window.scrollY >= document.body.offsetHeight) {
+  if (
+    hasLoadMoreClicked &&
+    !isLoadingMore &&
+    window.innerHeight + window.scrollY >= document.body.offsetHeight
+  ) {
     isLoadingMore = true;
     loadMore();
   }
@@ -1341,10 +1348,7 @@ window.onscroll = function () {
 };
 
 function scrollFunction() {
-  if (
-    document.body.scrollTop > 30 ||
-    document.documentElement.scrollTop > 30
-  ) {
+  if (document.body.scrollTop > 30 || document.documentElement.scrollTop > 30) {
     topButtonEl.style.display = "block";
   } else {
     topButtonEl.style.display = "none";
