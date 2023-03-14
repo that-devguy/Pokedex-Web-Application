@@ -1031,7 +1031,26 @@ const gen9 = [
   "Ogerpon",
   "Terapagos"*/,
 ];
-
+const types = [
+  "normal",
+  "fighting",
+  "flying",
+  "poison",
+  "ground",
+  "rock",
+  "bug",
+  "ghost",
+  "steel",
+  "fire",
+  "water",
+  "grass",
+  "electric",
+  "psychic",
+  "ice",
+  "dragon",
+  "dark",
+  "fairy"
+]
 // https://www.dragonflycave.com/resources/pokemon-list-generator
 let allPokemon = gen1.concat(gen2, gen3, gen4, gen5, gen6, gen7, gen8, gen9);
 const searchBtn = document.getElementById("search");
@@ -1040,12 +1059,15 @@ const pokemonBox = document.getElementById("pokemonBox");
 const topButtonEl = document.getElementById("topBtn");
 searchBtn.addEventListener("click", searchPokemon);
 // favoriteBtn.addEventListener("click", displayFavorites);
+const checkBoxes = Array.from(document.querySelectorAll('input[type="checkbox"]'));
+//const checkedBoxes = checkBoxes.map(checkbox => ({ [checkbox.id]: checkbox.checked }));
+const checkedBoxes = checkBoxes.map(checkbox => (checkbox.checked));
 let viewPokemon;
 let totalNum = 1008;
 let startNum = 1;
-let endNum = 15;
+let endNum = 50;
 let favorites = [];
-
+console.log(checkedBoxes)
 if(localStorage.getItem("favoritePokemon") !== null){
   favorites = JSON.parse(localStorage.favoritePokemon)
 }
@@ -1087,8 +1109,8 @@ function displayPokemon(pokemon) {
     let pokemonCard = document.createElement("div");
     pokemonCard.innerHTML = `
         <button onclick="location.href='pokemon-page.html?pokemon=${pokemon[i].name}&id=${pokemon[i].id}'" class= "pokemon-button bg-gray-100 rounded-lg p-3 w-full">
-            <div class="flex justify-end invisible">
-              <i class="fa-solid fa-star text-yellow-400"></i>
+            <div class="flex justify-end">
+            <i class="favorite favorite-${pokemon[i].name} fa-regular fa-star text-gray-300 hover:text-yellow-400"></i>
             </div>
             <div class="pokemon-gif mb-3 h-30">
                 <img src="${pokemon[i].image}" alt="" class="mx-auto">
@@ -1115,7 +1137,7 @@ function displayPokemon(pokemon) {
     let type2El = pokemonCard.querySelector(".pokemon-type2");
 
     // Applies the type styles
-    if (type1El.textContent === "normal") {
+    {if (type1El.textContent === "normal") {
       type1El.classList.add("bg-stone-200");
     } else if (type1El.textContent === "fighting") {
       type1El.classList.add("bg-red-600", "text-white");
@@ -1193,18 +1215,131 @@ function displayPokemon(pokemon) {
     } else if (type2El.textContent === "fairy") {
       type2El.classList.add("bg-pink-200");
     }
-
+  }
     // Capitalizes the first letter of the type names
     type1El.innerText = type1.charAt(0).toUpperCase() + type1.slice(1);
     type2El.innerText = type2
       ? type2.charAt(0).toUpperCase() + type2.slice(1)
       : "";
 
-    pokemonBox.append(pokemonCard);
+      //probably best if we run the filter function here, if pokemon passes, append card, if not, don't. filter(type1, type2, global-gen)
+      console.log("filter results: "+filter(pokemon[i].name, type1, type2))
+      if(filter(pokemon[i].name, type1, type2)){
+        pokemonBox.append(pokemonCard);
+      }
+  }
+};
+
+function filter(name, type1, type2) {
+  console.log("filter("+ name +" "+ type1 + " " + type2 + ")")
+  
+  let typeFilterCheck = false;
+  for(let i = 0; i < 17; i++){ // checks if we are sorting by type or not
+    if(checkedBoxes[i]){
+      typeFilterCheck = true;
+    }
+  }
+
+  let genFilterCheck = false;
+  for(let i = 18; i < checkedBoxes.length; i++){ // checks if we are sorting by gen or not
+    if(checkedBoxes[i]){
+      genFilterCheck = true;
+    }
+  }
+
+  if(checkedBoxes.every(element => element === false)){ // defaults returns true if no filter is applied
+    return true;
+  }
+
+  if(genFilterCheck){
+    if(isNotInGen(name)){
+      // console.log(name + " is not in the selected gen(s)")
+      return false;
+    }
+  }
+
+  if(typeFilterCheck){
+    if(isNotInType(type1, type2, name)){ // name is just for console logging testing, remove when finished
+      return false;
+    }
+  }
+
+  return true;
+}
+
+function isNotInGen(name){
+  let genGap = []; // creates an array of all pokemon whos gen filter was checked 
+  if(checkedBoxes[18]){
+    // console.log("Gen1 on filter")
+    genGap = genGap.concat(gen1);
+  }
+  if(checkedBoxes[19]){
+    // console.log("Gen2 on filter")
+    genGap = genGap.concat(gen2);
+  }
+  if(checkedBoxes[20]){
+    // console.log("Gen3 on filter")
+    genGap = genGap.concat(gen3);
+  }
+  if(checkedBoxes[21]){
+    // console.log("Gen4 on filter")
+    genGap = genGap.concat(gen4);
+  }
+  if(checkedBoxes[22]){
+    // console.log("Gen5 on filter")
+    genGap = genGap.concat(gen5);
+  }
+  if(checkedBoxes[23]){
+    // console.log("Gen6 on filter")
+    genGap = genGap.concat(gen6);
+  }
+  if(checkedBoxes[24]){
+    // console.log("Gen7 on filter")
+    genGap = genGap.concat(gen7);
+  }
+  if(checkedBoxes[25]){
+    // console.log("Gen8 on filter")
+    genGap = genGap.concat(gen8);
+  }
+  if(checkedBoxes[26]){
+    // console.log("Gen9 on filter")
+    genGap = genGap.concat(gen9);
+  }
+  
+  if(genGap.includes(capitalize(name))){ // this function returns false if the pokemon is found
+    console.log(name + " is in gen filter")
+    return false;
+  }
+  else{
+    console.log(name + " is not in gen filter")
+    return true;
   }
 }
 
-function searchPokemon() {
+function isNotInType(type1, type2, name){ // remove name when finished
+  let type;
+  for(let i = 0; i < 17; i++){
+    type = types[i]
+    if(checkedBoxes[i]){
+      if(type2 != null){
+        if(type1 == types[i] || type2 == types[i]){
+          console.log(name + " is " + types[i] + " type: " + type1 +" "+ type2)
+          return false;
+        }
+      }
+      else{
+        if(type1 == types[i]){
+          console.log(name + " is " + types[i] + " type: " + type1)
+          return false;
+        }
+      }
+    }
+  }
+  console.log(name + " is not " + type)
+  return true;
+}
+
+function searchPokemon() { // 1242 - 1252 in github home-page js looks odd
   event.preventDefault();
   let promises = [];
   // let check = capitalize(searchBox.value)
@@ -1219,7 +1354,7 @@ function searchPokemon() {
     pokemonBox.innerHTML = "";
     console.log("Pokemon Found");
     viewPokemon = searchBox.value.toLocaleLowerCase();
-    viewPokemon.replace(/\s+/g, "-");
+    // viewPokemon.replace(/\s+/g, "-");
     url = `https://pokeapi.co/api/v2/pokemon/${viewPokemon}`;
     console.log(url);
     promises.push(fetch(url).then((res) => res.json()));
@@ -1270,16 +1405,19 @@ loadMoreBtn.addEventListener("click", () => {
 });
 
 window.addEventListener("scroll", () => {
+  let y = window.scrollY;
   if (hasLoadMoreClicked && !isLoadingMore && window.innerHeight + window.scrollY >= document.body.offsetHeight) {
-    isLoadingMore = true;
+    if(y != window.scrollY){
+      isLoadingMore = true;
+    }
     loadMore();
   }
 });
 
 function loadMore() {
   const remaining = totalNum - endNum;
-  startNum += 15;
-  endNum += remaining > 15 ? 15 : remaining;
+  startNum += 50;
+  endNum += remaining > 50 ? 50 : remaining;
   fetchPokemon();
   isLoadingMore = false;
 }

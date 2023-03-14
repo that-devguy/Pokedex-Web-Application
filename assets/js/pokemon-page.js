@@ -1037,7 +1037,7 @@ let allPokemon = gen1.concat(gen2, gen3, gen4, gen5, gen6, gen7, gen8, gen9);
 const key = "50bb85d7-28cb-4e4c-ab4c-536f3e747dee"
 const searchBtn = document.getElementById("search");
 const searchBox = document.getElementById("pokemonName"); // names with spaces need a '-' between them
-const pokemonBox = document.getElementById("pokemonBox");
+// const pokemonBox = document.getElementById("pokemonBox");
 const pokemonNameEl = document.getElementById("pokemon-name");
 const pokemonImageEl = document.getElementById("pokemon-official-art");
 const pokemonIdEl = document.getElementById("pokemon-id");
@@ -1059,7 +1059,7 @@ let totalNum = 1008;
 let startNum = 1;
 let endNum = 15;
 let pokemonId;
-let name;
+let pokemonName;
 const favoriteBtn = document.getElementById("favorite");
 favoriteBtn.addEventListener("click", addFavorite);
 let favorites = [];
@@ -1091,8 +1091,8 @@ function loadPokemon() {
   const promises = [];
   const queryString = window.location.search;
   const urlParams = new URLSearchParams(queryString);
-  let pokemonName = urlParams.get('pokemon');
-  let pokemonId = urlParams.get('id');
+  pokemonName = urlParams.get('pokemon');
+  pokemonId = urlParams.get('id');
   url = `https://pokeapi.co/api/v2/pokemon/${pokemonId}`;
   // Pulls the species data
   urlSpecies = `https://pokeapi.co/api/v2/pokemon-species/${pokemonId}/`
@@ -1410,8 +1410,15 @@ function displayPokemonPage(pokemonData){
     : "";
 }
 }
+
+function reloadPokemon(pokemonName){
+
+}
+
 function searchPokemon() {
   event.preventDefault();
+  pokemonName = searchBox.value;
+  // pokemonId = 
   let promises = [];
   // let check = capitalize(searchBox.value)
   // if(check.includes(" ")){
@@ -1419,32 +1426,71 @@ function searchPokemon() {
   // }
   // if (allPokemon.includes(check))
   if (searchBox.value.trim() === '') {
-    pokemonBox.innerHTML = "";
-    loadPokemon();
+    // pokemonBox.innerHTML = "";
+    reloadPokemon(pokemonName);
   } else {
-    pokemonBox.innerHTML = "";
+    // pokemonBox.innerHTML = "";
     // console.log("Pokemon Found");
     viewPokemon = searchBox.value.toLocaleLowerCase();
     viewPokemon.replace(/\s+/g, "-");
-    url = `https://pokeapi.co/api/v2/pokemon/${viewPokemon}`;
-    // console.log(url);
-    promises.push(fetch(url).then((res) => res.json()));
+    const queryString = window.location.search;
+  const urlParams = new URLSearchParams(queryString);
+  pokemonName = urlParams.get('pokemon');
+  pokemonId = urlParams.get('id');
+  url = `https://pokeapi.co/api/v2/pokemon/${pokemonId}`;
+  // Pulls the species data
+  urlSpecies = `https://pokeapi.co/api/v2/pokemon-species/${pokemonId}/`
+  // Pulls the trading card game images
+  urlPokemonTCG = `https://api.pokemontcg.io/v2/cards?q=name:${pokemonName}*`
+  promises.push(fetch(url).then((res) => res.json()));
+  promises.push(fetch(urlSpecies).then((res) => res.json()));
+  promises.push(fetch(urlPokemonTCG).then((res) => res.json()));
+  Promise.all(promises).then((results) => {
+    const pokemon = results[0];
+    const species = results[1];
+    const pokemonTCG = results[2];
+    const pokemonCards = pokemonTCG.data.filter((card) => card.name.toLowerCase().includes(pokemonName.toLowerCase().replace(/-.*$/, "").trim()));
+    const evolutionChainId = species.evolution_chain.url.split('/').slice(-2)[0];
+    const urlEvolutionChains = `https://pokeapi.co/api/v2/evolution-chain/${evolutionChainId}/`;
+    promises.push(fetch(urlEvolutionChains).then((res) => res.json()));
     Promise.all(promises).then((results) => {
-      const pokemon = results.map((result) => ({
-        name: result.name,
-        image: result.sprites.front_default,
-        image2: result.sprites.other["official-artwork"].front_default,
-        type: result.types.map((type) => type.type.name),
-        id: result.id,
-        HP: result.stats[0].base_stat,
-        attack: result.stats[1].base_stat,
-        defence: result.stats[2].base_stat,
-        spAttack: result.stats[3].base_stat,
-        spDefence: result.stats[4].base_stat,
-        speed: result.stats[5].base_stat,
-      }));
-      displayPokemonPage(pokemon);
+      const pokemonData = {
+        name: pokemon.name,
+        image: pokemon.sprites.front_default,
+        image2: pokemon.sprites.other["official-artwork"].front_default,
+        type: pokemon.types.map((type) => type.type.name),
+        id: pokemon.id,
+        height: pokemon.height,
+        weight: pokemon.weight,
+        abilities: pokemon.abilities.map((ability) => ability.ability.name),
+        HP: pokemon.stats[0].base_stat,
+        attack: pokemon.stats[1].base_stat,
+        defence: pokemon.stats[2].base_stat,
+        spAttack: pokemon.stats[3].base_stat,
+        spDefence: pokemon.stats[4].base_stat,
+        speed: pokemon.stats[5].base_stat,
+        evolution: results[3],
+        desc: species.flavor_text_entries[1],
+        category: species.genera[7].genus.replace(/Pokémon/g, "").trim(),
+        cards: pokemonCards
+      };
+
+      function getEvolutionChain(chain) {
+        let evolutionChain = [];
+        const species = chain.species.name;
+        evolutionChain.push(species);
+        if (chain.evolves_to.length > 0) {
+          evolutionChain = evolutionChain.concat(getEvolutionChain(chain.evolves_to[0]));
+        }
+        return evolutionChain;
+      }
+      
+      pokemonEvolutionChain = getEvolutionChain(pokemonData.evolution.chain);
+
+    console.log(pokemonData, pokemonEvolutionChain, species);
+    displayPokemonPage(pokemonData);
     });
+  });
   }
 }
 
