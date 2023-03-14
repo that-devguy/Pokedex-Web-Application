@@ -1034,8 +1034,8 @@ const gen9 = [
 
 // https://www.dragonflycave.com/resources/pokemon-list-generator
 let allPokemon = gen1.concat(gen2, gen3, gen4, gen5, gen6, gen7, gen8, gen9);
-const searchBtn = document.getElementById("search");
-const searchBox = document.getElementById("pokemonName"); // names with spaces need a '-' between them
+// const searchBtn = document.getElementById("search");
+// const searchBox = document.getElementById("pokemonName"); // names with spaces need a '-' between them
 const pokemonBox = document.getElementById("pokemonBox");
 const pokemonNameEl = document.getElementById("pokemon-name");
 const pokemonImageEl = document.getElementById("pokemon-official-art");
@@ -1051,7 +1051,7 @@ const pokemonDefEl = document.getElementById("def-stat");
 const pokemonSpAtkEl = document.getElementById("sp-atk-stat");
 const pokemonSpDefEl = document.getElementById("sp-def-stat");
 const pokemonSpeedEl = document.getElementById("speed-stat");
-searchBtn.addEventListener("click", searchPokemon);
+// searchBtn.addEventListener("click", searchPokemon);
 let pokemonEvolutionChain;
 let viewPokemon;
 let totalNum = 1008;
