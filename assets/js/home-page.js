@@ -1107,6 +1107,7 @@ function displayPokemon(pokemon) {
             </div>
         </button>`;
 
+        
     let type1El = pokemonCard.querySelector(".pokemon-type1");
     let type2El = pokemonCard.querySelector(".pokemon-type2");
 
@@ -1206,9 +1207,37 @@ function displayPokemon(pokemon) {
           pokemonLink.appendChild(pokemonCard) 
           pokemonBox.appendChild(pokemonLink);
   
+
+          
   }
   
 };
+
+
+
+function filterGenerations() {
+  var checkBoxes = document.querySelectorAll("#dropdownGenerationCheckbox input[type='checkbox']");
+  checkBoxes.forEach(function(checkbox) {
+    checkbox.addEventListener("change", function() {
+      const filteredPokemon = []
+      allPokemon.filter(function(pokemon) {
+        if (checkbox.checked && pokemon.gen === checkbox.value) {
+          filteredPokemon.push(pokemon);
+        } else if (!checkbox.checked) {
+          filteredPokemon.push(pokemon);
+        }
+      });
+      
+      document.getElementById("pokemon-container").innerHTML = "";
+      displayPokemon(filteredPokemon);
+    });
+  });
+}
+
+filterGenerations();
+displayPokemon(pokemon);
+
+
 
 function searchPokemon(){
   pokemonBox.innerHTML = ""
@@ -1418,3 +1447,28 @@ function filterTypes() {
     });
   });
 };
+// var checkBoxes = []
+// const genCheckBox = document.getElementById("dropdownGenerationCheckbox");
+//   checkBoxes.forEach(function(checkbox){
+//     checkbox.addEventListener("change", function(){
+//       const filteredGen = []
+
+//       items.filter(function(allPokemon) {
+//         if (checkbox.checked && allPokemon.gen === checkbox.value){
+//           filteredGen.push(allPokemon);
+//         } else if (!checkbox.checked){
+//           filteredGen.push(allPokemon)
+//         }
+//       });
+      
+  
+//       filteredGen.forEach(function(filteredGen) {
+//         filteredGen.appendChild(pokemonBox);
+//         console.log()
+//       });
+//     });
+//   });
+      
+
+  
+
