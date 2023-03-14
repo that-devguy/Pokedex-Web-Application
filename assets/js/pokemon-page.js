@@ -1051,14 +1051,32 @@ const pokemonDefEl = document.getElementById("def-stat");
 const pokemonSpAtkEl = document.getElementById("sp-atk-stat");
 const pokemonSpDefEl = document.getElementById("sp-def-stat");
 const pokemonSpeedEl = document.getElementById("speed-stat");
+const favButton = document.querySelector(".favorite-btn")
+const notFavorite = document.querySelector(".not-favorite");
+const favorited = document.querySelector(".favorited")
 // searchBtn.addEventListener("click", searchPokemon);
 let pokemonEvolutionChain;
 let viewPokemon;
 let totalNum = 1008;
 let startNum = 1;
 let endNum = 15;
-
 let pokemonDataGlobal = null;
+let favoritePokemon = JSON.parse(localStorage.getItem('favoritePokemon'));
+if (!favoritePokemon) {
+  favoritePokemon = [];
+}
+
+// Changes the favorite button from a star outline to a solid star if the Pokemon is in the favorites array
+function setFavButtonStyle() {
+  let isFavorite = favoritePokemon.some((p) => p.id === pokemonDataGlobal.id);
+  if (isFavorite) {
+    notFavorite.classList.add("hidden");
+    favorited.classList.remove("hidden");
+  } else {
+    notFavorite.classList.remove("hidden");
+    favorited.classList.add("hidden");
+  }
+}
 
 /**
  * Saves the favorite pokemon to localStorage
@@ -1199,6 +1217,12 @@ function displayPokemonPage(pokemonData) {
   let tradingCardsEl = document.getElementById("pokemon-tcg");
   let cardSectionHeaderEl = document.getElementById("trading-card-header");
   let evolutionContainerEl = document.getElementById("evolution-chain-cols");
+  setFavButtonStyle();
+
+  favButton.addEventListener("click", function() {
+    notFavorite.classList.toggle("hidden");
+    favorited.classList.toggle("hidden");
+  })
 
   function convertWeight(weight) {
     const lbsPerHectogram = 0.22046226;
