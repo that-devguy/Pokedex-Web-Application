@@ -1054,15 +1054,8 @@ function fetchPokemon() {
     const pokemon = results.map((result) => ({
       name: result.name,
       image: result.sprites.front_default,
-      image2: result.sprites.other["official-artwork"].front_default,
       type: result.types.map((type) => type.type.name),
       id: result.id,
-      HP: result.stats[0].base_stat,
-      attack: result.stats[1].base_stat,
-      defence: result.stats[2].base_stat,
-      spAttack: result.stats[3].base_stat,
-      spDefence: result.stats[4].base_stat,
-      speed: result.stats[5].base_stat,
     }));
     displayPokemon(pokemon);
   });
@@ -1201,11 +1194,6 @@ function displayPokemon(pokemon) {
 function searchPokemon() {
   event.preventDefault();
   let promises = [];
-  // let check = capitalize(searchBox.value)
-  // if(check.includes(" ")){
-  //   check.replace(/\s+/g, '-');
-  // }
-  // if (allPokemon.includes(check))
   if (searchBox.value.trim() === '') {
     pokemonBox.innerHTML = "";
     fetchPokemon();
@@ -1221,15 +1209,8 @@ function searchPokemon() {
       const pokemon = results.map((result) => ({
         name: result.name,
         image: result.sprites.front_default,
-        image2: result.sprites.other["official-artwork"].front_default,
         type: result.types.map((type) => type.type.name),
         id: result.id,
-        HP: result.stats[0].base_stat,
-        attack: result.stats[1].base_stat,
-        defence: result.stats[2].base_stat,
-        spAttack: result.stats[3].base_stat,
-        spDefence: result.stats[4].base_stat,
-        speed: result.stats[5].base_stat,
       }));
       displayPokemon(pokemon);
     });

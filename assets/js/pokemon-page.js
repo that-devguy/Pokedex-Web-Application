@@ -1097,8 +1097,9 @@ function loadPokemon() {
         spDefence: pokemon.stats[4].base_stat,
         speed: pokemon.stats[5].base_stat,
         evolution: results[3],
-        desc: species.flavor_text_entries[1],
-        category: species.genera[7].genus.replace(/Pokémon/g, "").trim(),
+        desc: species.flavor_text_entries.find(item => item.language.name === 'en')?.flavor_text || null,
+        category: species.genera[7] || null,
+        categoryName: species.genera[7] ? species.genera[7].genus.replace("Pokémon", "") : null,
         cards: pokemonCards
       };
 
@@ -1114,7 +1115,7 @@ function loadPokemon() {
       
       pokemonEvolutionChain = getEvolutionChain(pokemonData.evolution.chain);
 
-    console.log(pokemonData, pokemonEvolutionChain, species);
+    console.log(pokemonData, pokemonEvolutionChain, );
     displayPokemonPage(pokemonData);
     });
   });
@@ -1171,7 +1172,7 @@ function displayPokemonPage(pokemonData){
     let cardImage = pokemonData.cards[i].images.small;
     let tradingCard = document.createElement("img");
     tradingCard.src = cardImage
-    tradingCard.classList.add("rounded-lg");
+    tradingCard.classList.add("rounded-lg", "h-80", "w-auto");
     tradingCardsEl.appendChild(tradingCard);
   }
 
@@ -1208,10 +1209,10 @@ function displayPokemonPage(pokemonData){
   pokemonIdEl.textContent = '#' + pokemonData.id.toString().padStart(4, "0");
   type1El.textContent = type1;
   type2El.textContent = type2;
-  pokemonDescEl.textContent = pokemonData.desc.flavor_text;
+  pokemonDescEl.textContent = pokemonData.desc;
   pokemonHeightEl.textContent = heightFeet;
   pokemonWeightEl.textContent = roundedWeight + 'lbs';
-  pokemonCategoryEl.textContent = pokemonData.category;
+  pokemonCategoryEl.textContent = pokemonData.categoryName;
   pokemonAbilitiesEl.textContent = pokemonAbilties;
   pokemonHpEl.innerHTML = `<p class="text-sm">HP</p><p class="text-sm">${pokemonData.HP}</p>`;
   pokemonAtkEl.innerHTML = `<p class="text-sm">Atk.</p><p class="text-sm">${pokemonData.attack}</p>`;
