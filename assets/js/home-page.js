@@ -1065,12 +1065,9 @@ const checkedBoxes = checkBoxes.map(checkbox => (checkbox.checked));
 let viewPokemon;
 let totalNum = 1008;
 let startNum = 1;
-let endNum = 50;
-let favorites = [];
-console.log(checkedBoxes)
-if(localStorage.getItem("favoritePokemon") !== null){
-  favorites = JSON.parse(localStorage.favoritePokemon)
-}
+let endNum = 15;
+
+let isFavoritesDisplayed = false;
 
 function fetchPokemon() {
   const promises = [];
@@ -1082,15 +1079,8 @@ function fetchPokemon() {
     const pokemon = results.map((result) => ({
       name: result.name,
       image: result.sprites.front_default,
-      image2: result.sprites.other["official-artwork"].front_default,
       type: result.types.map((type) => type.type.name),
       id: result.id,
-      HP: result.stats[0].base_stat,
-      attack: result.stats[1].base_stat,
-      defence: result.stats[2].base_stat,
-      spAttack: result.stats[3].base_stat,
-      spDefence: result.stats[4].base_stat,
-      speed: result.stats[5].base_stat,
     }));
     displayPokemon(pokemon);
   });
@@ -1099,7 +1089,21 @@ function fetchPokemon() {
 fetchPokemon();
 
 function displayPokemon(pokemon) {
-  // console.log(pokemon)
+  // If there is no pokemon to show, show blank
+  if (!pokemon || pokemon.length === 0) {
+    if (document.getElementById("pokemonBox")) {
+      document.getElementById("pokemonBox").innerHTML = ``;
+    }
+    return;
+  }
+
+  // If we are trying to show favorites, we have to clear the current list
+  if (isFavoritesDisplayed) {
+    if (document.getElementById("pokemonBox")) {
+      document.getElementById("pokemonBox").innerHTML = ``;
+    }
+  }
+
   for (let i = 0; i < pokemon.length; i++) {
     if (pokemon[i].name.includes(" ")) {
       pokemon[i].name = pokemon[i].name.replace(/\s+/g, "-");
@@ -1108,9 +1112,13 @@ function displayPokemon(pokemon) {
     let type2 = pokemon[i].type[1] ? pokemon[i].type[1] : null;
     let pokemonCard = document.createElement("div");
     pokemonCard.innerHTML = `
-        <button onclick="location.href='pokemon-page.html?pokemon=${pokemon[i].name}&id=${pokemon[i].id}'" class= "pokemon-button bg-gray-100 rounded-lg p-3 w-full">
-            <div class="flex justify-end">
-            <i class="favorite favorite-${pokemon[i].name} fa-regular fa-star text-gray-300 hover:text-yellow-400"></i>
+        <button onclick="location.href='pokemon-page.html?pokemon=${
+          pokemon[i].name
+        }&id=${
+      pokemon[i].id
+    }'" class= "pokemon-button bg-gray-100 rounded-lg p-3 w-full">
+            <div class="flex justify-end invisible">
+              <i class="fa-solid fa-star text-yellow-400"></i>
             </div>
             <div class="pokemon-gif mb-3 h-30">
                 <img src="${pokemon[i].image}" alt="" class="mx-auto">
@@ -1228,6 +1236,33 @@ function displayPokemon(pokemon) {
         pokemonBox.append(pokemonCard);
       }
   }
+
+/**
+ * Displays the favorited pokemon
+ * @returns void
+ */
+function toggleDisplayFavorites() {
+  if (document.getElementById("pokemonBox")) {
+    document.getElementById("pokemonBox").innerHTML = ``;
+  }
+  isFavoritesDisplayed = !isFavoritesDisplayed;
+
+  if (!isFavoritesDisplayed) {
+    document.getElementById("load-more-wrapper").style.display = "flex";
+    fetchPokemon();
+    return;
+  } else {
+    if (isFavoritesDisplayed || !document.getElementById("pokemonBox").firstChild) {
+      document.getElementById("load-more-wrapper").style.display = "none";
+    }
+
+    // Filter down the pokemon data so it contains just the favorites
+    const favorites = JSON.parse(localStorage.getItem("favoritePokemon"));
+
+    // Display the filtered down pokemon
+    displayPokemon(favorites);
+  }
+}
 };
 
 function filter(name, type1, type2) {
@@ -1342,35 +1377,23 @@ function isNotInType(type1, type2, name){ // remove name when finished
 function searchPokemon() { // 1242 - 1252 in github home-page js looks odd
   event.preventDefault();
   let promises = [];
-  // let check = capitalize(searchBox.value)
-  // if(check.includes(" ")){
-  //   check.replace(/\s+/g, '-');
-  // }
-  // if (allPokemon.includes(check))
   if (searchBox.value.trim() === '') {
     pokemonBox.innerHTML = "";
     fetchPokemon();
   } else {
     pokemonBox.innerHTML = "";
-    console.log("Pokemon Found");
+    // console.log("Pokemon Found");
     viewPokemon = searchBox.value.toLocaleLowerCase();
     // viewPokemon.replace(/\s+/g, "-");
     url = `https://pokeapi.co/api/v2/pokemon/${viewPokemon}`;
-    console.log(url);
+    // console.log(url);
     promises.push(fetch(url).then((res) => res.json()));
     Promise.all(promises).then((results) => {
       const pokemon = results.map((result) => ({
         name: result.name,
         image: result.sprites.front_default,
-        image2: result.sprites.other["official-artwork"].front_default,
         type: result.types.map((type) => type.type.name),
         id: result.id,
-        HP: result.stats[0].base_stat,
-        attack: result.stats[1].base_stat,
-        defence: result.stats[2].base_stat,
-        spAttack: result.stats[3].base_stat,
-        spDefence: result.stats[4].base_stat,
-        speed: result.stats[5].base_stat,
       }));
       displayPokemon(pokemon);
     });
@@ -1406,7 +1429,11 @@ loadMoreBtn.addEventListener("click", () => {
 
 window.addEventListener("scroll", () => {
   let y = window.scrollY;
-  if (hasLoadMoreClicked && !isLoadingMore && window.innerHeight + window.scrollY >= document.body.offsetHeight) {
+  if (
+    hasLoadMoreClicked &&
+    !isLoadingMore &&
+    window.innerHeight + window.scrollY >= document.body.offsetHeight
+  ) {
     if(y != window.scrollY){
       isLoadingMore = true;
     }
@@ -1429,10 +1456,7 @@ window.onscroll = function () {
 };
 
 function scrollFunction() {
-  if (
-    document.body.scrollTop > 30 ||
-    document.documentElement.scrollTop > 30
-  ) {
+  if (document.body.scrollTop > 30 || document.documentElement.scrollTop > 30) {
     topButtonEl.style.display = "block";
   } else {
     topButtonEl.style.display = "none";
