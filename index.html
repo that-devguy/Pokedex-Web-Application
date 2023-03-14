@@ -596,6 +596,7 @@
         </div>
         <!-- Favorites only button -->
         <button
+          onclick="toggleDisplayFavorites()"
           type="button"
           class="w-2/12 sm:w-1/12 text-white bg-yellow-400 focus:ring-0 active:ring-1 active:ring-gray-300 font-medium rounded-lg text-sm px-auto py-2.5 ml-1 mb-2"
         >
@@ -611,7 +612,7 @@
         <!-- HTML gets dynamically updated from home-page.js here -->
       </div>
 
-      <div class="flex justify-center mt-5 mb-20">
+      <div id="load-more-wrapper" class="flex justify-center mt-5 mb-20">
         <!-- Loads 15 more pokemon -->
         <button
           type="button"
@@ -624,12 +625,12 @@
 
       <!-- Back to top button -->
       <button
-      onclick="topFunction()"
-      id="topBtn"
-      title="Go to top"
-      class="text-white bg-red-700 font-medium hidden fixed bottom-5 right-6 z-99 rounded-lg text-sm px-4 py-2.5 my-3 w-fit ml-1"
+        onclick="topFunction()"
+        id="topBtn"
+        title="Go to top"
+        class="text-white bg-red-700 font-medium hidden fixed bottom-5 right-6 z-99 rounded-lg text-sm px-4 py-2.5 my-3 w-fit ml-1"
       >
-      <i class="fa-solid fa-arrow-up"></i>
+        <i class="fa-solid fa-arrow-up"></i>
       </button>
 
       <div class="flex-col justify-center pb-10 mx-auto w-1/2 md:w-full">
@@ -639,9 +640,7 @@
             class="h-8 mx-auto mb-5 items-center"
             alt="Pokemon Portal Logo"
           />
-          <h2 class="self-center text-xl whitespace-nowrap"
-            >Pokédex Portal</h2
-          >
+          <h2 class="self-center text-xl whitespace-nowrap">Pokédex Portal</h2>
           <p>Thank you for using Pokedéx Portal!</p>
         </div>
       </div>
