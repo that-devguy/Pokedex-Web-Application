@@ -66,8 +66,8 @@
       </div>
 
       <!-- Search bar -->
-      <div class="mx-auto w-11/12 md:w-2/3 xl:max-w-4xl mb-3">
-        <form>
+      <div class="mx-auto w-11/12 md:w-2/3 xl:max-w-4xl mb-3 flex justify-between">
+        <form class="w-full">
           <label
             for="default-search"
             class="mb-2 text-sm font-medium text-gray-900 sr-only"
@@ -110,14 +110,22 @@
             </button>
           </div>
         </form>
-      </div>
+        <!-- Favorite button -->
+        <button
+        onclick="toggleDisplayFavorites()"
+        type="button"
+        class="w-2/12 sm:w-1/12 text-white bg-yellow-400 focus:ring-0 active:ring-1 active:ring-gray-300 font-medium rounded-lg text-sm px-auto py-2.5 ml-1"
+      >
+        <i class="fa-solid fa-star"></i>
+      </button>
+    </div>
 
-      <!-- Filter menu -->
+      <!-- Filter menu
       <div
         class="w-11/12 md:w-2/3 xl:w-1/2 mx-auto mb-4 flex justify-center lg:max-w-3xl"
       >
         <!-- Type dropdown button-->
-        <button
+        <!-- <button
           id="dropdownCheckboxButton"
           data-dropdown-toggle="dropdownDefaultCheckbox"
           class="h-full w-4/12 text-white bg-red-700 focus:ring-1 focus:ring-gray-300 focus:outline-none font-medium rounded-lg text-sm px-4 py-2.5 text-center inline-flex justify-between items-center"
@@ -139,9 +147,9 @@
               d="M19 9l-7 7-7-7"
             ></path>
           </svg>
-        </button>
+        </button> -->
         <!-- Type dropdown menu -->
-        <div
+        <!-- <div
           id="dropdownDefaultCheckbox"
           class="z-10 hidden w-48 bg-white rounded-lg shadow"
         >
@@ -421,10 +429,10 @@
               </div>
             </li>
           </ul>
-        </div>
+        </div> -->
 
         <!-- Generation dropdown button -->
-        <button
+        <!-- <button
           id="generationCheckboxButton"
           data-dropdown-toggle="dropdownGenerationCheckbox"
           class="h-full w-4/12 text-white bg-red-700 focus:ring-1 focus:ring-gray-300 focus:outline-none font-medium rounded-lg text-sm px-4 py-2.5 text-center inline-flex justify-between items-center ml-1"
@@ -446,9 +454,9 @@
               d="M19 9l-7 7-7-7"
             ></path>
           </svg>
-        </button>
+        </button> -->
         <!-- Generation dropdown menu -->
-        <div
+        <!-- <div
           id="dropdownGenerationCheckbox"
           class="z-10 hidden w-48 bg-white divide-y divide-gray-100 rounded-lg shadow"
         >
@@ -593,15 +601,16 @@
               </div>
             </li>
           </ul>
-        </div>
+        </div> -->
         <!-- Favorites only button -->
-        <button
+        <!-- <button
+          onclick="toggleDisplayFavorites()"
           type="button"
           class="w-2/12 sm:w-1/12 text-white bg-yellow-400 focus:ring-0 active:ring-1 active:ring-gray-300 font-medium rounded-lg text-sm px-auto py-2.5 ml-1 mb-2"
         >
           <i class="fa-solid fa-star"></i>
         </button>
-      </div>
+      </div> -->
 
       <!-- Pokedex grid container -->
       <div
@@ -624,12 +633,12 @@
 
       <!-- Back to top button -->
       <button
-      onclick="topFunction()"
-      id="topBtn"
-      title="Go to top"
-      class="text-white bg-red-700 font-medium hidden fixed bottom-5 right-6 z-99 rounded-lg text-sm px-4 py-2.5 my-3 w-fit ml-1"
+        onclick="topFunction()"
+        id="topBtn"
+        title="Go to top"
+        class="text-white bg-red-700 font-medium hidden fixed bottom-5 right-6 z-99 rounded-lg text-sm px-4 py-2.5 my-3 w-fit ml-1"
       >
-      <i class="fa-solid fa-arrow-up"></i>
+        <i class="fa-solid fa-arrow-up"></i>
       </button>
 
       <div class="flex-col justify-center pb-10 mx-auto w-1/2 md:w-full">
@@ -639,35 +648,10 @@
             class="h-8 mx-auto mb-5 items-center"
             alt="Pokemon Portal Logo"
           />
-          <h2 class="self-center text-xl whitespace-nowrap"
-            >Pokédex Portal</h2
-          >
+          <h2 class="self-center text-xl whitespace-nowrap">Pokédex Portal</h2>
           <p>Thank you for using Pokedéx Portal!</p>
         </div>
       </div>
-
-      <!-- <div class = "searchbox ui-widget" aria-autocomplete="off">
-            <input id = "pokemonName" onfocus = "this.value=''"  placeholder = "Pokemon Name" type = "text">
-            <button id = "search">Search</button>
-        </div>
-        <div class = "pokemonBox">
-            <div>
-                <img id = "pictureBox" src = "" alt = "">
-            </div>
-            <div class = "pokemonInfo">
-                <h1 id = "name">Stand In Name</h1>
-                <p id = "desctiption">Discription</p>
-                <div id = "type"></div>
-                <ul id = "baseStats">
-                    <li id = "HP">HP: </li>
-                    <li id = "attack">Attack: </li>
-                    <li id = "defence">Defence: </li>
-                    <li id = "specialAttack">Special Attack: </li>
-                    <li id = "specialDefence">Special Defence: </li>
-                    <li id = "speed">Speed: </li>
-                </ul>
-            </div>
-        </div> -->
     </main>
     <script src="https://code.jquery.com/jquery-3.6.0.js"></script>
     <script src="https://code.jquery.com/ui/1.13.2/jquery-ui.js"></script>
