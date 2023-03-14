@@ -5,11 +5,11 @@ OSU Bootcamp - Group 8 Project 1
 
 ```
 As a User
-I WANT to be able to search for information on any Pokemon from any generation.
+I WANT to be able to search for information on any Pokemon from any generation
 SO THAT I can be fully informed about my Pokemon encounters
 As a User
-I WANT to use the information I’ve gathered to save my favorite Pokemon
-SO THAT I can build the best team for Pokemon battles
+I WANT to be able to save my favorite pokemon
+SO THAT I can easily view their information later
 ```
 
 ## Acceptance Criteria
