@@ -25,3 +25,9 @@ THEN I can select a Pokemon from my favorites and save it in my team-builder
 WHEN I want to rearrange my team
 THEN I can move around my Pokemon in the order that I want use to them in a Pokemon battle
 ```
+## Pokedex Portal Demo
+
+The following images show the web application's appearance and functionality:
+
+![Home Page Demo]() 
+> **Note**: 
