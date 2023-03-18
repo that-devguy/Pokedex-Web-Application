@@ -56,3 +56,6 @@ The following images show the web application's appearance and functionality:
 ![Pokedex Info TCG Demo](./assets/img/pikachu-cards-demo.JPG) 
 > **Note**: On the Pokemon's information page, users can also access the Pokemon's trading cards section. By using the horizontal scroll, they can view more trading cards related to their selected Pokemon. This feature allows users to explore this Pokemon's trading cards and learn more about their favorite Pokemon's TCG history.
 
+## Links
+
+Deployed Application: https://that-devguy.github.io/Pokedex-Web-Application/index.html
