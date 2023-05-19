@@ -58,4 +58,4 @@ The following images show the web application's appearance and functionality:
 
 ## Links
 
-Deployed Application: https://that-devguy.github.io/Pokedex-Web-Application/index.html
+Deployed Application: https://pokedexportal.com/ 
